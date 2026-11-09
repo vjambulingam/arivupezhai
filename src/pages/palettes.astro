@@ -1,0 +1,378 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getUrl } from '../utils/url.js';
+
+const palettes = [
+  {
+    id: "parchment",
+    name_ta: "ஏட்டுச்சுவடி (Warm Parchment)",
+    tagline_ta: "பாரம்பரிய பனை ஓலை மற்றும் வெதுவெதுப்பான காகித வண்ணம்",
+    description_ta: "கண்களைக் கூச வைக்கும் தூய வெள்ளை நிறத்திற்குப் பதிலாக, பழங்கால ஏட்டுச்சுவடிகளை நினைவூட்டும் வெதுவெதுப்பான தந்த நிறம். பகல் வேளையில் நீண்ட நேரம் வாசிப்பதற்கு மிகவும் உகந்தது.",
+    bgHex: "#FAF6EE",
+    surfaceHex: "#F3EBDD",
+    textHex: "#231F1C",
+    accentHex: "#9E3A26",
+    accentName: "செம்மண் (Terracotta)",
+    badgeColor: "bg-[#EAE0CC] text-[#6A3824]"
+  },
+  {
+    id: "bronze",
+    name_ta: "செப்பேடு (Temple Bronze)",
+    tagline_ta: "சோழர் காலச் செப்பேடுகள் மற்றும் கோயில் கற்சிற்பக் குளிர்ச்சி",
+    description_ta: "பழங்காலச் செப்பேடுகளின் செம்பு நிறமும், தஞ்சைப் பெருவுடையார் கோயில் மணற்கற்களின் மிதமான ஒளியும் கலந்த இதமான நிற அமைப்பு.",
+    bgHex: "#F6F2EC",
+    surfaceHex: "#EDE5DA",
+    textHex: "#27221E",
+    accentHex: "#AD5F1D",
+    accentName: "செம்பு / வெண்கலம் (Bronze)",
+    badgeColor: "bg-[#E4D7C5] text-[#7A3F0E]"
+  },
+  {
+    id: "sepia",
+    name_ta: "பழைய தாள் (Vintage Sepia)",
+    tagline_ta: "பழைய நூலகத்தின் வாசனை கமழும் மென்மையான செபியா",
+    description_ta: "நீல ஒளியை (Blue light) வெகுவாகக் குறைத்து, கண்களின் தசைக்கு ஓய்வளிக்கும் பழங்கால புத்தகத் தாள் நிறம். மாலை நேர வாசிப்பிற்கு தலைசிறந்தது.",
+    bgHex: "#EEE5D5",
+    surfaceHex: "#E3D7C3",
+    textHex: "#2B231D",
+    accentHex: "#833136",
+    accentName: "கருஞ்சிவப்பு (Madder Wine)",
+    badgeColor: "bg-[#D9C8AE] text-[#5E2024]"
+  },
+  {
+    id: "night",
+    name_ta: "இரவுக் கூடம் (Midnight Slate)",
+    tagline_ta: "மங்கலான வெளிச்சத்தில் வாசிப்பதற்கான இதமான இருண்ட முறை",
+    description_ta: "கடுமையான கறுப்பு நிறத்திற்கு (Pitch black) மாறாக, சிலேட்டுப் பலகை போன்ற சாம்பல்-கரிம நிறமும், மென்மையான சுண்ணக்கட்டி எழுத்துக்களும் இரவில் கண் கூச்சத்தைத் தடுக்கின்றன.",
+    bgHex: "#17181B",
+    surfaceHex: "#222429",
+    textHex: "#E5E1DB",
+    accentHex: "#DE7851",
+    accentName: "கனல் நிறம் (Amber Terracotta)",
+    badgeColor: "bg-[#2C2F37] text-[#F0A588]"
+  }
+];
+
+const homeUrl = getUrl('/');
+const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
+---
+
+<Layout
+  title="வாசிப்பு வண்ணத் தீம்கள் • அறிவுப்பேழை"
+  description="செவ்வியல் தமிழ் வாசகர்களுக்காக பிரத்யேகமாக வடிவமைக்கப்பட்ட 4 கண்-நல வண்ணத் தீம்களின் ஒப்பீட்டுப் பக்கம்."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    
+    <!-- Breadcrumb & Header -->
+    <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs font-tamil-sans text-[var(--accent-primary)] font-medium">
+        <span>வண்ணத் தேர்வு மாதிரிப் பக்கம்</span>
+      </div>
+      <h1 class="font-tamil-serif font-bold text-3xl sm:text-5xl text-[var(--text-main)] tracking-tight">
+        வாசகர் கண்-நல வண்ணத் தீம்கள்
+      </h1>
+      <p class="font-tamil-sans text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+        தமிழ் செவ்வியல் நூல்களைப் படிக்கும் போது வாசகர்கள் மணிக்கணக்கில் வாசிப்பில் மூழ்குவர். நிதிப்பேழையின் வண்ணத்தைப் பயன்படுத்தாமல், இதமான வாசிப்புக்காக 4 தனித்துவமான தீம்கள் கீழே வடிவமைக்கப்பட்டுள்ளன.
+      </p>
+      <p class="text-xs text-[var(--text-dim)] font-tamil-sans">
+        ஒவ்வொரு வண்ணத்திலும் திருக்குறள் மாதிரி காட்டப்பட்டுள்ளது. நீங்கள் விரும்பும் தீமைத் தேர்ந்தெடுத்து தளத்திற்குப் பொருத்தலாம்.
+      </p>
+    </div>
+
+    <!-- Active Theme Status Banner -->
+    <div class="max-w-xl mx-auto mb-10 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex items-center justify-between">
+      <div class="flex items-center gap-3 font-tamil-sans">
+        <span class="text-xs text-[var(--text-muted)]">தற்போது செயல்படும் தீம்:</span>
+        <span id="current-theme-name" class="font-semibold text-sm text-[var(--accent-primary)]">ஏட்டுச்சுவடி (Parchment)</span>
+      </div>
+      <a
+        href={thirukkuralReaderUrl}
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] text-xs font-semibold hover:bg-[var(--accent-hover)] transition-colors shadow-sm"
+      >
+        <span>வாசிக்கச் செல்க</span>
+        <span>→</span>
+      </a>
+    </div>
+
+    <!-- Palettes Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {palettes.map((p, idx) => (
+        <div
+          class="palette-preview-card rounded-2xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-xl"
+          style={`background-color: ${p.bgHex}; border-color: ${p.accentHex}33; color: ${p.textHex};`}
+          data-palette-id={p.id}
+        >
+          <!-- Card Header -->
+          <div class="p-6 border-b" style={`border-color: ${p.accentHex}22; background-color: ${p.surfaceHex};`}>
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span
+                  class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
+                  style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
+                >
+                  {idx + 1}
+                </span>
+                <div>
+                  <h3 class="font-tamil-serif font-bold text-xl sm:text-2xl" style={`color: ${p.textHex};`}>
+                    {p.name_ta}
+                  </h3>
+                  <p class="font-tamil-sans text-xs opacity-80 mt-0.5" style={`color: ${p.textHex};`}>
+                    {p.tagline_ta}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Select Button -->
+              <button
+                type="button"
+                class="select-theme-btn px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-transform active:scale-95 cursor-pointer whitespace-nowrap"
+                data-theme-choice={p.id}
+                style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
+              >
+                தேர்ந்தெடு
+              </button>
+            </div>
+
+            <!-- Description -->
+            <p class="font-tamil-sans text-xs mt-3 leading-relaxed opacity-90" style={`color: ${p.textHex};`}>
+              {p.description_ta}
+            </p>
+
+            <!-- Color Swatches -->
+            <div class="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t text-[11px] font-mono opacity-90" style={`border-color: ${p.accentHex}20;`}>
+              <span class="text-xs font-tamil-sans opacity-70">வண்ணங்கள்:</span>
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.bgHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.bgHex};`}></span>
+                <span>BG {p.bgHex}</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.surfaceHex};`}></span>
+                <span>Surface {p.surfaceHex}</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.textHex};`}></span>
+                <span>Text {p.textHex}</span>
+              </div>
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.accentHex};`}></span>
+                <span>Accent {p.accentHex}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sample Classical Verses Preview Area -->
+          <div class="p-6 space-y-6">
+            
+            <!-- Verse 1 -->
+            <div class="p-5 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
+              <div class="flex items-center justify-between text-xs mb-3 font-tamil-sans opacity-80">
+                <span class="font-semibold" style={`color: ${p.accentHex};`}>அதிகாரம் 1 • கடவுள் வாழ்த்து</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono border" style={`border-color: ${p.accentHex}40; background-color: ${p.bgHex};`}>
+                  குறள் 1
+                </span>
+              </div>
+
+              <!-- Verse lines with generous line height -->
+              <div class="font-tamil-serif text-lg sm:text-xl font-medium tracking-wide tamil-verse-line">
+                <p>அகர முதல எழுத்தெல்லாம் ஆதி</p>
+                <p class="mt-1">பகவன் முதற்றே உலகு.</p>
+              </div>
+
+              <!-- Commentary / Meaning sample -->
+              <div class="mt-3 pt-3 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
+                <span class="font-semibold" style={`color: ${p.accentHex};`}>பொருள்:</span> எழுத்துக்கள் எல்லாம் அகரத்தை முதலாகக் கொண்டுள்ளன; அதுபோல உலகம் ஆதிபகவனை முதலாகக் கொண்டு இயங்குகிறது.
+              </div>
+            </div>
+
+            <!-- Verse 2 -->
+            <div class="p-5 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
+              <div class="flex items-center justify-between text-xs mb-3 font-tamil-sans opacity-80">
+                <span class="font-semibold" style={`color: ${p.accentHex};`}>அதிகாரம் 8 • அன்புடைமை</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono border" style={`border-color: ${p.accentHex}40; background-color: ${p.bgHex};`}>
+                  குறள் 72
+                </span>
+              </div>
+
+              <div class="font-tamil-serif text-lg sm:text-xl font-medium tracking-wide tamil-verse-line">
+                <p>அன்பிலார் எல்லாம் தமக்குரியர் அன்புடையார்</p>
+                <p class="mt-1">என்பும் உரியர் பிறர்க்கு.</p>
+              </div>
+
+              <div class="mt-3 pt-3 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
+                <span class="font-semibold" style={`color: ${p.accentHex};`}>பொருள்:</span> அன்பில்லாதவர் எல்லாப் பொருளையும் தமக்கே உரியதாகக் கொள்வர்; அன்பு உடையவரோ தம் எலும்பையும் பிறர்க்கு உரிமையாக்குவர்.
+              </div>
+            </div>
+
+            <!-- Choose this theme button -->
+            <button
+              type="button"
+              class="select-theme-btn w-full py-3 rounded-xl text-sm font-semibold transition-transform active:scale-98 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+              data-theme-choice={p.id}
+              style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
+            >
+              <span>இவ்வண்ணத்தை எனது விருப்பமாகத் தேர்ந்தெடு</span>
+              <span>✓</span>
+            </button>
+
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Live Reading Controls Playground -->
+    <div class="mt-16 p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
+      <div class="max-w-3xl mx-auto space-y-6">
+        <div>
+          <h2 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
+            எழுத்துரு & வரியிடைவெளி பரிசோதனைப் பகுதி (Interactive Playground)
+          </h2>
+          <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
+            நீங்கள் தேர்ந்தெடுத்த தீமில் வெவ்வேறு தமிழ் எழுத்துருக்களையும் வரியிடைவெளியையும் சோதித்துப் பார்க்கலாம்.
+          </p>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="flex flex-wrap items-center gap-4 p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-subtle)] font-tamil-sans text-xs">
+          
+          <!-- Font Family Selector -->
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--text-muted)]">எழுத்துரு:</span>
+            <select
+              id="playground-font-select"
+              class="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
+            >
+              <option value="font-tamil-serif">Noto Serif Tamil (செய்யுள்)</option>
+              <option value="font-tamil-malar">Mukta Malar (செவ்வியல்)</option>
+              <option value="font-tamil-sans">Noto Sans Tamil (நவீன உரை)</option>
+            </select>
+          </div>
+
+          <!-- Font Size Controls -->
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--text-muted)]">அளவு:</span>
+            <div class="inline-flex rounded-lg border border-[var(--border-subtle)] overflow-hidden">
+              <button type="button" id="pg-size-dec" class="px-2.5 py-1 bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)]">A-</button>
+              <span id="pg-size-display" class="px-2.5 py-1 bg-[var(--bg-muted)] text-[var(--text-main)] font-mono">1.15rem</span>
+              <button type="button" id="pg-size-inc" class="px-2.5 py-1 bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)]">A+</button>
+            </div>
+          </div>
+
+          <!-- Line Height Selector -->
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--text-muted)]">வரியிடைவெளி:</span>
+            <select
+              id="playground-lh-select"
+              class="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
+            >
+              <option value="1.8">1.8 (இயல்பானது)</option>
+              <option value="2.0" selected>2.0 (பரிந்துரைக்கப்படும் உகந்த இடைவெளி)</option>
+              <option value="2.2">2.2 (அகலமானது - கொம்பு/சுழி முழுமை)</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- Playground Output Box -->
+        <div
+          id="playground-output"
+          class="p-6 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] font-tamil-serif transition-all"
+          style="font-size: 1.15rem; line-height: 2.0;"
+        >
+          <div class="tamil-verse-line">
+            <p>கற்க கசடறக் கற்பவை கற்றபின்</p>
+            <p>நிற்க அதற்குத் தக.</p>
+          </div>
+          <div class="mt-4 pt-4 border-t border-[var(--border-subtle)] text-sm font-tamil-sans opacity-90">
+            <p><strong>விளக்கம்:</strong> கற்கத் தகுந்த நூல்களைக் குற்றமறக் கற்க வேண்டும்; அவ்வாறு கற்ற பிறகு, கற்ற கல்விக்கு ஏற்றவாறு அறநெறியில் நின்று ஒழுக வேண்டும்.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</Layout>
+
+<script>
+  // Theme selection logic
+  const themeNames = {
+    parchment: "ஏட்டுச்சுவடி (Parchment)",
+    bronze: "செப்பேடு (Temple Bronze)",
+    sepia: "பழைய தாள் (Vintage Sepia)",
+    night: "இரவுக் கூடம் (Midnight Slate)"
+  };
+
+  function updateActiveThemeDisplay(theme: string) {
+    const el = document.getElementById('current-theme-name');
+    if (el) {
+      el.textContent = (themeNames as any)[theme] || theme;
+    }
+    // Highlight matching cards
+    document.querySelectorAll('.palette-preview-card').forEach((card) => {
+      const pid = card.getAttribute('data-palette-id');
+      if (pid === theme) {
+        card.classList.add('ring-4', 'ring-[var(--accent-primary)]/50');
+      } else {
+        card.classList.remove('ring-4', 'ring-[var(--accent-primary)]/50');
+      }
+    });
+  }
+
+  // Bind all theme choice buttons
+  document.querySelectorAll('.select-theme-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetTheme = btn.getAttribute('data-theme-choice');
+      if (targetTheme) {
+        document.documentElement.setAttribute('data-theme', targetTheme);
+        localStorage.setItem('arivupezhai_theme', targetTheme);
+        updateActiveThemeDisplay(targetTheme);
+        window.dispatchEvent(new CustomEvent('theme-changed', { detail: targetTheme }));
+      }
+    });
+  });
+
+  // Initialize display
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'parchment';
+  updateActiveThemeDisplay(currentTheme);
+
+  // Playground controls
+  const fontSelect = document.getElementById('playground-font-select') as HTMLSelectElement;
+  const lhSelect = document.getElementById('playground-lh-select') as HTMLSelectElement;
+  const sizeDec = document.getElementById('pg-size-dec');
+  const sizeInc = document.getElementById('pg-size-inc');
+  const sizeDisplay = document.getElementById('pg-size-display');
+  const outputBox = document.getElementById('playground-output');
+
+  let currentFontSize = 1.15;
+
+  if (fontSelect && outputBox) {
+    fontSelect.addEventListener('change', () => {
+      outputBox.classList.remove('font-tamil-serif', 'font-tamil-malar', 'font-tamil-sans');
+      outputBox.classList.add(fontSelect.value);
+    });
+  }
+
+  if (lhSelect && outputBox) {
+    lhSelect.addEventListener('change', () => {
+      outputBox.style.lineHeight = lhSelect.value;
+    });
+  }
+
+  if (sizeDec && sizeInc && sizeDisplay && outputBox) {
+    sizeDec.addEventListener('click', () => {
+      if (currentFontSize > 0.85) {
+        currentFontSize = parseFloat((currentFontSize - 0.1).toFixed(2));
+        outputBox.style.fontSize = `${currentFontSize}rem`;
+        sizeDisplay.textContent = `${currentFontSize}rem`;
+      }
+    });
+
+    sizeInc.addEventListener('click', () => {
+      if (currentFontSize < 1.75) {
+        currentFontSize = parseFloat((currentFontSize + 0.1).toFixed(2));
+        outputBox.style.fontSize = `${currentFontSize}rem`;
+        sizeDisplay.textContent = `${currentFontSize}rem`;
+      }
+    });
+  }
+</script>

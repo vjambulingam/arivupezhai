@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
+import { getUrl } from '../utils/url.js';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "அறிவுப்பேழை • செவ்வியல் தமிழ் இணைய நூலகம்",
+  description = "செவ்வியல் தமிழ் இலக்கியங்களுக்கான தூய, நேர்த்தியான டிஜிட்டல் நூலகம். திருக்குறள், சங்க இலக்கியம், காப்பியங்கள் ஆகியவற்றை கண் சோர்வின்றி வாசிக்க உகந்த தளம்."
+} = Astro.props;
+
+const faviconUrl = getUrl('favicon.svg');
+---
+
+<!doctype html>
+<html lang="ta" data-theme="parchment">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Google Web Fonts: Noto Serif Tamil, Noto Sans Tamil, Mukta Malar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&family=Noto+Serif+Tamil:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Prevent Theme Flash -->
+    <script is:inline>
+      (function () {
+        try {
+          const savedTheme = localStorage.getItem('arivupezhai_theme');
+          if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          } else {
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+              document.documentElement.setAttribute('data-theme', 'night');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'parchment');
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="flex flex-col min-h-screen antialiased selection:bg-[#9E3A26]/20 selection:text-[#9E3A26]">
+    <Header />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+    <SearchModal />
+  </body>
+</html>

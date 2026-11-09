@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/* 
+  அறிவுப்பேழை - Classical Tamil Digital Library Theme System
+  Curated specifically for prolonged, eye-strain-free reading.
+*/
+
+:root,
+[data-theme="parchment"] {
+  --theme-id: "parchment";
+  --bg-page: #FAF6EE;
+  --bg-surface: #F3EBDD;
+  --bg-surface-hover: #ECE2D0;
+  --bg-muted: #EBE1CF;
+  --border-subtle: #DFD3BE;
+  --border-focus: #9E3A26;
+  --text-main: #231F1C;
+  --text-muted: #6B6258;
+  --text-dim: #8E8478;
+  --accent-primary: #9E3A26;
+  --accent-hover: #832F1D;
+  --accent-contrast: #FFFFFF;
+  --accent-soft: #F6DFD9;
+  --badge-bg: #EAE0CC;
+  --badge-text: #6A3824;
+  --card-shadow: 0 4px 20px -2px rgba(60, 40, 20, 0.05);
+}
+
+[data-theme="bronze"] {
+  --theme-id: "bronze";
+  --bg-page: #F6F2EC;
+  --bg-surface: #EDE5DA;
+  --bg-surface-hover: #E3D9CB;
+  --bg-muted: #E4DAC9;
+  --border-subtle: #D8CCC0;
+  --border-focus: #AD5F1D;
+  --text-main: #27221E;
+  --text-muted: #6C6258;
+  --text-dim: #8F8477;
+  --accent-primary: #AD5F1D;
+  --accent-hover: #8F4C13;
+  --accent-contrast: #FFFFFF;
+  --accent-soft: #FAEAD8;
+  --badge-bg: #E4D7C5;
+  --badge-text: #7A3F0E;
+  --card-shadow: 0 4px 20px -2px rgba(60, 45, 15, 0.05);
+}
+
+[data-theme="sepia"] {
+  --theme-id: "sepia";
+  --bg-page: #EEE5D5;
+  --bg-surface: #E3D7C3;
+  --bg-surface-hover: #D7C9B2;
+  --bg-muted: #D8CAAe;
+  --border-subtle: #CABAA0;
+  --border-focus: #833136;
+  --text-main: #2B231D;
+  --text-muted: #685A4E;
+  --text-dim: #8A7B6D;
+  --accent-primary: #833136;
+  --accent-hover: #692429;
+  --accent-contrast: #FFFFFF;
+  --accent-soft: #F2DCDE;
+  --badge-bg: #D9C8AE;
+  --badge-text: #5E2024;
+  --card-shadow: 0 4px 20px -2px rgba(45, 30, 20, 0.06);
+}
+
+[data-theme="night"] {
+  --theme-id: "night";
+  --bg-page: #17181B;
+  --bg-surface: #222429;
+  --bg-surface-hover: #2B2E35;
+  --bg-muted: #282B32;
+  --border-subtle: #343842;
+  --border-focus: #E07D53;
+  --text-main: #E5E1DB;
+  --text-muted: #9E9991;
+  --text-dim: #726E67;
+  --accent-primary: #DE7851;
+  --accent-hover: #E78C69;
+  --accent-contrast: #18191C;
+  --accent-soft: #38241D;
+  --badge-bg: #2C2F37;
+  --badge-text: #F0A588;
+  --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  min-height: 100vh;
+}
+
+/* Classical Tamil Typography Classes */
+.font-tamil-serif {
+  font-family: 'Noto Serif Tamil', 'Mukta Malar', serif;
+}
+
+.font-tamil-sans {
+  font-family: 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.font-tamil-malar {
+  font-family: 'Mukta Malar', 'Noto Serif Tamil', serif;
+}
+
+/* 
+  Tamil vowel and diacritic clearance rules
+  Avoids clipping of kombu (ெ, ே, ை), suzhi (ி, ீ, ு, ூ), and pulli (்)
+*/
+.tamil-verse-line {
+  line-height: 1.95;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  letter-spacing: 0.01em;
+}
+
+.tamil-prose {
+  line-height: 1.85;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}

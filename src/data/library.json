@@ -1,0 +1,122 @@
+[
+  {
+    "id": "thirukkural",
+    "title_ta": "திருக்குறள்",
+    "title_en": "Thirukkural",
+    "author_ta": "திருவள்ளுவர்",
+    "author_en": "Thiruvalluvar",
+    "genre_ta": "நீதி இலக்கியம்",
+    "genre_en": "Ethical Literature",
+    "category_ta": "பதினெண்கீழ்க்கணக்கு",
+    "period_ta": "சங்க மருவிய காலம்",
+    "subsections_label": "133 அதிகாரங்கள் • 1,330 குறள்கள்",
+    "featured_quote": "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு.",
+    "description_ta": "உலகப் பொதுமறை எனப் போற்றப்படும் திருக்குறள், அறம், பொருள், இன்பம் என்ற முப்பால்களையும் 133 அதிகாரங்களில் 1,330 குறட்பாக்களாகத் திகழ்கிறது.",
+    "is_available": true,
+    "badge_color": "terracotta",
+    "stats": {
+      "subsections": 133,
+      "verses": 1330
+    }
+  },
+  {
+    "id": "tholkappiyam",
+    "title_ta": "தொல்காப்பியம்",
+    "title_en": "Tholkappiyam",
+    "author_ta": "தொல்காப்பியர்",
+    "author_en": "Tholkappiyar",
+    "genre_ta": "இலக்கணம் & வாழ்வியல்",
+    "genre_en": "Grammar & Poetics",
+    "category_ta": "தொல்பழங்கால இலக்கணம்",
+    "period_ta": "முச்சங்க காலம் (கி.மு. 5-ஆம் நூற்றாண்டு)",
+    "subsections_label": "3 அதிகாரங்கள் • 27 இயல்கள்",
+    "featured_quote": "எழுத்தெனப் படுப அகர முதல னகர இறுவாய் முப்பஃ தென்ப.",
+    "description_ta": "தமிழின் மிகப் பழமையான முழுமையான இலக்கண நூல். எழுத்ததிகாரம், சொல்லதிகாரம், பொருளதிகாரம் என மொழி மற்றும் தமிழரின் அக-புற வாழ்வியலை வகுத்தளிக்கிறது.",
+    "is_available": false,
+    "badge_color": "sand",
+    "stats": {
+      "subsections": 27,
+      "verses": 1610
+    }
+  },
+  {
+    "id": "silappadikaram",
+    "title_ta": "சிலப்பதிகாரம்",
+    "title_en": "Silappadikaram",
+    "author_ta": "இளங்கோவடிகள்",
+    "author_en": "Ilango Adigal",
+    "genre_ta": "ஐம்பெருங் காப்பியம்",
+    "genre_en": "Epic Literature",
+    "category_ta": "காப்பியங்கள்",
+    "period_ta": "சங்க மருவிய காலம் (கி.பி. 2-ஆம் நூற்றாண்டு)",
+    "subsections_label": "3 காண்டங்கள் • 30 காதைகள்",
+    "featured_quote": "அரசியல் பிழைத்தோர்க்கு அறங்கூற்றாவதூஉம் உரைசால் பத்தினியை உயர்ந்தோர் ஏத்தலும்...",
+    "description_ta": "கண்ணகியின் கற்பின் மாண்பையும், பாண்டிய மன்னன் நெடுஞ்செழியனின் நீதி வழுவாமையையும் உரைக்கும் தமிழின் முதன்மைக் காப்பியம்.",
+    "is_available": false,
+    "badge_color": "copper",
+    "stats": {
+      "subsections": 30,
+      "verses": 5270
+    }
+  },
+  {
+    "id": "purananuru",
+    "title_ta": "புறநானூறு",
+    "title_en": "Purananuru",
+    "author_ta": "பல்வேறு சங்கப் புலவர்கள்",
+    "author_en": "Sangam Poets",
+    "genre_ta": "சங்க இலக்கியம்",
+    "genre_en": "Sangam Poetry",
+    "category_ta": "எட்டுத்தொகை",
+    "period_ta": "சங்க காலம்",
+    "subsections_label": "400 பாடல்கள் • புறத்திணை",
+    "featured_quote": "யாதும் ஊரே யாவரும் கேளிர்; தீதும் நன்றும் பிறர்தர வாரா.",
+    "description_ta": "பண்டைத் தமிழரின் வீரம், கொடை, நட்பு, பண்பாடு, மற்றும் மன்னர்களின் ஆட்சிச் சிறப்பை உரைக்கும் வரலாற்றுச் சுரங்கம்.",
+    "is_available": false,
+    "badge_color": "sepia",
+    "stats": {
+      "subsections": 400,
+      "verses": 400
+    }
+  },
+  {
+    "id": "manimekalai",
+    "title_ta": "மணிமேகலை",
+    "title_en": "Manimekalai",
+    "author_ta": "சீத்தலைச் சாத்தனார்",
+    "author_en": "Seethalai Sathanar",
+    "genre_ta": "ஐம்பெருங் காப்பியம்",
+    "genre_en": "Epic Literature",
+    "category_ta": "காப்பியங்கள்",
+    "period_ta": "சங்க மருவிய காலம்",
+    "subsections_label": "30 காதைகள் • பௌத்த அறம்",
+    "featured_quote": "உண்டி கொடுத்தோர் உயிர் கொடுத்தோரே; உண்டி முதற்றே உணவின் பிண்டம்.",
+    "description_ta": "சிலப்பதிகாரத்தின் தொடர்ச்சியாக, கோவலன்-மாதவியின் மகள் மணிமேகலை துறவு பூண்டு அமுதசுரபி கொண்டு பசிப்பிணி போக்கிய அறக்காப்பியம்.",
+    "is_available": false,
+    "badge_color": "copper",
+    "stats": {
+      "subsections": 30,
+      "verses": 4758
+    }
+  },
+  {
+    "id": "naladiyar",
+    "title_ta": "நாலடியார்",
+    "title_en": "Naladiyar",
+    "author_ta": "சமண முனிவர்கள்",
+    "author_en": "Jain Ascetics",
+    "genre_ta": "நீதி இலக்கியம்",
+    "genre_en": "Ethical Literature",
+    "category_ta": "பதினெண்கீழ்க்கணக்கு",
+    "period_ta": "சங்க மருவிய காலம்",
+    "subsections_label": "40 அதிகாரங்கள் • 400 வெண்பாக்கள்",
+    "featured_quote": "கல்வி கரையில கற்பவர் நாள்சில மெல்ல நினைப்பின் பிணிபல.",
+    "description_ta": "ஆலும் வேலும் பல்லுக்குறுதி, நாலும் இரண்டும் சொல்லுக்குறுதி என்ற பழமொழிக்குரிய, திருக்குறளுக்கு இணையான வாழ்வியல் அற நூல்.",
+    "is_available": false,
+    "badge_color": "terracotta",
+    "stats": {
+      "subsections": 40,
+      "verses": 400
+    }
+  }
+]

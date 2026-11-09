@@ -1,0 +1,197 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BookCard from '../components/BookCard.astro';
+import libraryData from '../data/library.json';
+import { getUrl } from '../utils/url.js';
+
+const palettesUrl = getUrl('palettes');
+const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
+---
+
+<Layout
+  title="அறிவுப்பேழை • செவ்வியல் தமிழ் இணைய நூலகம்"
+  description="செவ்வியல் தமிழ் இலக்கியங்களை கண் சோர்வின்றி வாசிக்க உகந்த நவீன இணைய நூலகம். திருக்குறள் உள்ளிட்ட சங்க இலக்கியக் கருவூலங்கள்."
+>
+  <!-- Hero Section -->
+  <section class="relative pt-8 pb-12 sm:pt-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    
+    <!-- Sister site indicator pill -->
+    <div class="flex items-center justify-center mb-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm text-xs font-tamil-sans text-[var(--text-muted)]">
+        <span class="w-2 h-2 rounded-full bg-[var(--accent-primary)]"></span>
+        <span>நிதிப்பேழையின் (nidhipezhai.com) சகோதரத் தளம்</span>
+        <span class="text-[var(--text-dim)]">•</span>
+        <span class="font-medium text-[var(--text-main)]">இலக்கியக் கருவூலம்</span>
+      </div>
+    </div>
+
+    <!-- Main Title -->
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <h1 class="font-tamil-serif font-bold text-4xl sm:text-5xl md:text-6xl text-[var(--text-main)] tracking-tight leading-tight">
+        செவ்வியல் தமிழ் இலக்கியப் பேழை
+      </h1>
+      <p class="font-tamil-sans text-base sm:text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl mx-auto">
+        பண்டைய தமிழ்ச் சுவடிகளையும் செவ்வியல் காப்பியங்களையும் நவீன திரைகளில் கண் சோர்வின்றி மணிநேரக் கணக்கில் வாசிப்பதற்கென பிரத்யேகமாக வடிக்கப்பட்ட மின்னூலகம்.
+      </p>
+    </div>
+
+    <!-- Palette Announcement Callout -->
+    <div class="mt-8 max-w-2xl mx-auto">
+      <a
+        href={palettesUrl}
+        class="group flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--accent-primary)]/30 hover:border-[var(--accent-primary)] shadow-sm hover:shadow-md transition-all"
+      >
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent-primary)] shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-tamil-serif font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+              4 தனித்துவமான வாசிப்பு வண்ணத் தீம்கள்
+            </div>
+            <div class="font-tamil-sans text-xs text-[var(--text-muted)]">
+              ஏட்டுச்சுவடி, செப்பேடு, பழைய தாள், மற்றும் இரவுக் கூடம் — உங்கள் கண்களுக்குப் பிடித்ததைத் தேர்ந்தெடுக்கவும்
+            </div>
+          </div>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] text-xs font-semibold whitespace-nowrap shadow-sm group-hover:scale-105 transition-transform">
+          <span>ஒப்பிடுக</span>
+          <span>→</span>
+        </div>
+      </a>
+    </div>
+
+  </section>
+
+  <!-- Books Catalog Grid Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+    
+    <!-- Filter Tabs -->
+    <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4 mb-8">
+      <div>
+        <h2 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
+          நூல் அட்டவணை (Library Catalog)
+        </h2>
+        <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
+          தொடக்கப் பதிப்பாக திருக்குறள் முழுமையாகப் பதிவேற்றப்பட்டுள்ளது.
+        </p>
+      </div>
+      
+      <!-- Filter buttons (client-side toggle) -->
+      <div class="hidden md:flex items-center gap-1.5 font-tamil-sans text-xs">
+        <button type="button" class="category-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-category="all">
+          அனைத்தும் ({libraryData.length})
+        </button>
+        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="பதினெண்கீழ்க்கணக்கு">
+          பதினெண்கீழ்க்கணக்கு
+        </button>
+        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="காப்பியங்கள்">
+          காப்பியங்கள்
+        </button>
+        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="எட்டுத்தொகை">
+          சங்க இலக்கியம்
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="books-grid">
+      {libraryData.map((book) => (
+        <div class="book-item" data-category={book.category_ta}>
+          <BookCard book={book} />
+        </div>
+      ))}
+    </div>
+
+    <!-- Literary Philosophy / Quality Pillars -->
+    <div class="mt-20 pt-12 border-t border-[var(--border-subtle)]">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h3 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
+          வாசிப்பு அனுபவத்தின் நான்கு தூண்கள்
+        </h3>
+        <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
+          பாரம்பரிய இலக்கியங்களை எக்கால வாசகர்களுக்கும் எளிமையாகக் கொண்டு சேர்க்கும் வழிமுறை
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-tamil-sans">
+        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
+            1
+          </div>
+          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
+            தூய தமிழ் எழுத்துருக்கள்
+          </h4>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+            பாரம்பரிய செய்யுள்களுக்கு Noto Serif Tamil மற்றும் Mukta Malar, உரைக்கு Noto Sans Tamil உகந்த நேர்த்தியில் ஒருங்கிணைக்கப்பட்டுள்ளன.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
+            2
+          </div>
+          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
+            கொம்பு & சுழி இடைவெளி
+          </h4>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+            1.8 முதல் 2.0 வரையிலான வரியிடைவெளி (line-height) மூலம் புள்ளி, கொம்பு, மற்றும் சுழிகள் திரையில் வெட்டுப்படாமல் முழுமையாகத் தெரியும்.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
+            3
+          </div>
+          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
+            முழுமையான உலகளாவிய தேடல்
+          </h4>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+            நூலின் பெயர், ஆசிரியர், வகை, அதிகாரம் மற்றும் குறட்பா வரிகளை நொடிப் பொழுதில் தேடி உடனடியாக வாசிக்கலாம்.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
+            4
+          </div>
+          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
+            கண் சோர்வில்லா வண்ணங்கள்
+          </h4>
+          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
+            கடுமையான வெள்ளை அல்லது கறுப்பு நிறங்களைத் தவிர்த்து, ஏட்டுச்சுவடி, செப்பேடு மற்றும் இரவுக் கூடம் போன்ற இதமான வண்ணங்கள்.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</Layout>
+
+<script>
+  // Category tabs filtering
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const bookItems = document.querySelectorAll('.book-item');
+
+  categoryBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      categoryBtns.forEach((b) => {
+        b.classList.remove('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
+        b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
+      });
+      btn.classList.add('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
+      btn.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
+
+      const target = btn.getAttribute('data-category');
+      bookItems.forEach((item) => {
+        if (target === 'all' || item.getAttribute('data-category')?.includes(target || '')) {
+          (item as HTMLElement).style.display = 'block';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

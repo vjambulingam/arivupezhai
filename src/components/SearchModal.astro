@@ -1,0 +1,230 @@
+---
+import { getUrl } from '../utils/url.js';
+const searchIndexUrl = getUrl('data/search-index.json');
+---
+
+<div
+  id="search-dialog-backdrop"
+  class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-start justify-center pt-16 sm:pt-24 px-4 overflow-y-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-label="நூல் தேடல்"
+>
+  <div
+    id="search-dialog-box"
+    class="relative w-full max-w-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-2xl overflow-hidden transition-all duration-200 transform opacity-0 scale-95"
+  >
+    <!-- Header Input -->
+    <div class="flex items-center px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--bg-page)]/80">
+      <svg class="w-5 h-5 text-[var(--accent-primary)] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="நூல், ஆசிரியர், வகை (Genre), அதிகாரம் தேடுக..."
+        class="w-full bg-transparent text-[var(--text-main)] placeholder-[var(--text-dim)] text-base font-tamil-sans focus:outline-none"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button
+        type="button"
+        id="search-close-btn"
+        class="p-1 rounded-lg text-[var(--text-dim)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] transition-colors ml-2"
+        aria-label="Close search"
+      >
+        <kbd class="text-xs font-mono px-2 py-1 rounded bg-[var(--bg-muted)] border border-[var(--border-subtle)]">ESC</kbd>
+      </button>
+    </div>
+
+    <!-- Quick filter chips -->
+    <div class="px-4 py-2 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] flex items-center gap-2 overflow-x-auto text-xs font-tamil-sans">
+      <span class="text-[var(--text-dim)] whitespace-nowrap">விரைவு வடிகட்டி:</span>
+      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors" data-filter="திருவள்ளுவர்">
+        திருவள்ளுவர்
+      </button>
+      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors" data-filter="நீதி இலக்கியம்">
+        நீதி இலக்கியம்
+      </button>
+      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors" data-filter="அறத்துப்பால்">
+        அறத்துப்பால்
+      </button>
+      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors" data-filter="பொருட்பால்">
+        பொருட்பால்
+      </button>
+      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors" data-filter="காமத்துப்பால்">
+        காமத்துப்பால்
+      </button>
+    </div>
+
+    <!-- Results Area -->
+    <div id="search-results" class="max-h-96 overflow-y-auto divide-y divide-[var(--border-subtle)]">
+      <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
+        தேட வேண்டிய நூல், ஆசிரியர், அல்லது அதிகாரத்தின் பெயரைத் தட்டச்சு செய்க.
+      </div>
+    </div>
+
+    <!-- Footer Stats / Hint -->
+    <div class="px-4 py-2.5 bg-[var(--bg-page)]/80 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-dim)]">
+      <span>133 அதிகாரங்கள் • 6 செவ்வியல் நூல்கள் குறியிடப்பட்டுள்ளன</span>
+      <span class="hidden sm:inline">வழிகாட்ட: ↑ ↓ தேர்ந்தெடு | Enter வாசிக்க</span>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ searchIndexUrl }}>
+  let searchData = [];
+  let isIndexLoaded = false;
+  const backdrop = document.getElementById('search-dialog-backdrop');
+  const box = document.getElementById('search-dialog-box');
+  const input = document.getElementById('search-input');
+  const resultsContainer = document.getElementById('search-results');
+  const closeBtn = document.getElementById('search-close-btn');
+
+  // Load search index lazily on first modal open
+  async function loadSearchData() {
+    if (isIndexLoaded) return;
+    try {
+      const res = await fetch(searchIndexUrl);
+      if (res.ok) {
+        searchData = await res.json();
+        isIndexLoaded = true;
+      }
+    } catch (e) {
+      console.error('Failed to load search index', e);
+    }
+  }
+
+  function openSearch() {
+    backdrop.classList.remove('hidden');
+    backdrop.classList.add('flex');
+    requestAnimationFrame(() => {
+      box.classList.remove('opacity-0', 'scale-95');
+      box.classList.add('opacity-100', 'scale-100');
+      input.focus();
+    });
+    loadSearchData();
+  }
+
+  function closeSearch() {
+    box.classList.remove('opacity-100', 'scale-100');
+    box.classList.add('opacity-0', 'scale-95');
+    setTimeout(() => {
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+    }, 150);
+  }
+
+  window.addEventListener('open-search', openSearch);
+  if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeSearch();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !backdrop.classList.contains('hidden')) {
+      closeSearch();
+    }
+  });
+
+  // Filter chips click
+  document.querySelectorAll('.search-filter-chip').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.getAttribute('data-filter') || '';
+      input.value = filter;
+      performSearch(filter);
+    });
+  });
+
+  // Search execution
+  input.addEventListener('input', (e) => {
+    performSearch(e.target.value);
+  });
+
+  function performSearch(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      resultsContainer.innerHTML = `
+        <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
+          தேட வேண்டிய நூல், ஆசிரியர், அல்லது அதிகாரத்தின் பெயரைத் தட்டச்சு செய்க.
+        </div>`;
+      return;
+    }
+
+    if (!searchData || searchData.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
+          குறியீடு ஏற்றப்படுகிறது... தயவுசெய்து ஒரு நொடி காத்திருக்கவும்.
+        </div>`;
+      return;
+    }
+
+    // Match query against fields
+    const matches = searchData.filter((item) => {
+      const textToSearch = [
+        item.title,
+        item.title_en,
+        item.author,
+        item.author_en,
+        item.genre,
+        item.category,
+        item.paal,
+        item.iyal,
+        item.snippet,
+        item.athikaram_name
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return textToSearch.includes(q);
+    });
+
+    if (matches.length === 0) {
+      resultsContainer.innerHTML = `
+        <div class="p-8 text-center font-tamil-sans">
+          <p class="text-[var(--text-main)] font-medium">"${query}" என்பதற்கு முடிவுகள் இல்லை</p>
+          <p class="text-xs text-[var(--text-muted)] mt-1">எழுத்துப் பிழையைச் சரிபார்க்கவும் அல்லது வேறு சொல்லைப் பயன்படுத்தவும்.</p>
+        </div>`;
+      return;
+    }
+
+    const html = matches
+      .slice(0, 15)
+      .map((item) => {
+        const isBook = item.type === 'book';
+        const typeBadge = isBook
+          ? `<span class="px-2 py-0.5 rounded text-[10px] bg-[var(--accent-soft)] text-[var(--accent-primary)] font-semibold">நூல்</span>`
+          : `<span class="px-2 py-0.5 rounded text-[10px] bg-[var(--badge-bg)] text-[var(--badge-text)]">அதிகாரம்</span>`;
+
+        const targetUrl = item.url
+          ? (item.url.startsWith('/') ? `${import.meta.env.BASE_URL.replace(/\/$/, '')}${item.url}` : item.url)
+          : '#';
+
+        return `
+        <a
+          href="${targetUrl}"
+          class="block p-4 hover:bg-[var(--bg-surface-hover)] transition-colors group cursor-pointer"
+        >
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                ${typeBadge}
+                <span class="font-tamil-serif font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                  ${item.title}
+                </span>
+                ${item.author ? `<span class="text-xs text-[var(--text-muted)]">• ${item.author}</span>` : ''}
+              </div>
+              <p class="text-xs text-[var(--text-muted)] font-tamil-sans mt-1 line-clamp-1">
+                ${item.snippet || ''}
+              </p>
+            </div>
+            ${item.genre ? `<span class="text-[11px] text-[var(--text-dim)] shrink-0 hidden sm:inline">${item.genre}</span>` : ''}
+          </div>
+        </a>`;
+      })
+      .join('');
+
+    resultsContainer.innerHTML = html;
+  }
+</script>
