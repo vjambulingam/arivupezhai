@@ -42,7 +42,7 @@ const palettes = [
 ];
 
 const homeUrl = getUrl('/');
-const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
+const thirukkuralReaderUrl = getUrl('book/thirukkural/read/1/');
 ---
 
 <Layout
@@ -92,7 +92,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
         >
           <!-- Card Header -->
           <div class="p-5 border-b" style={`border-color: ${p.accentHex}22; background-color: ${p.surfaceHex};`}>
-            <div class="flex items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 <span
                   class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
@@ -204,7 +204,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
     </div>
 
     <!-- Live Reading Controls Playground -->
-    <div class="mt-16 p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
+    <div class="mt-16 p-4 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
       <div class="max-w-3xl mx-auto space-y-6">
         <div>
           <h2 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
@@ -219,17 +219,17 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
         <div class="flex flex-wrap items-center gap-4 p-4 rounded-xl bg-[var(--bg-page)] border border-[var(--border-subtle)] font-tamil-sans text-xs">
           
           <!-- Font Family Selector -->
-          <div class="flex items-center gap-2">
+          <label class="flex flex-col sm:flex-row sm:items-center gap-2 w-full min-w-0">
             <span class="text-[var(--text-muted)]">எழுத்துரு:</span>
             <select
               id="playground-font-select"
-              class="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
+              class="w-full min-w-0 sm:w-auto sm:max-w-full px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
             >
               <option value="font-tamil-serif">Noto Serif Tamil (செய்யுள்)</option>
               <option value="font-tamil-malar">Mukta Malar (செவ்வியல்)</option>
               <option value="font-tamil-sans">Noto Sans Tamil (நவீன உரை)</option>
             </select>
-          </div>
+          </label>
 
           <!-- Font Size Controls -->
           <div class="flex items-center gap-2">
@@ -242,17 +242,17 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
           </div>
 
           <!-- Line Height Selector -->
-          <div class="flex items-center gap-2">
+          <label class="flex flex-col sm:flex-row sm:items-center gap-2 w-full min-w-0">
             <span class="text-[var(--text-muted)]">வரியிடைவெளி:</span>
             <select
               id="playground-lh-select"
-              class="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
+              class="w-full min-w-0 sm:w-auto sm:max-w-full px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-main)] border border-[var(--border-subtle)] focus:outline-none"
             >
               <option value="1.8">1.8 (இயல்பானது)</option>
               <option value="2.0" selected>2.0 (பரிந்துரைக்கப்படும் உகந்த இடைவெளி)</option>
               <option value="2.2">2.2 (அகலமானது - கொம்பு/சுழி முழுமை)</option>
             </select>
-          </div>
+          </label>
 
         </div>
 
@@ -317,6 +317,11 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
   // Initialize display
   const currentTheme = document.documentElement.getAttribute('data-theme') || 'bronze';
   updateActiveThemeDisplay(currentTheme);
+  window.addEventListener('theme-changed', (event) => {
+    if (event instanceof CustomEvent && typeof event.detail === 'string') {
+      updateActiveThemeDisplay(event.detail);
+    }
+  });
 
   // Playground controls
   const fontSelect = document.getElementById('playground-font-select') as HTMLSelectElement;

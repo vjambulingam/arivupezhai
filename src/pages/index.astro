@@ -1,12 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BookCard from '../components/BookCard.astro';
-import libraryData from '../data/library.json';
+import { catalog as libraryData } from '../utils/books';
 import { getUrl } from '../utils/url.js';
 
 const palettesUrl = getUrl('palettes');
-const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
-const logoUrl = getUrl('arivupezhai-logo-sm.png');
+const logoUrl = getUrl('arivupezhai-logo-transparent.png');
 ---
 
 <Layout
@@ -19,7 +18,7 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
     <!-- Hero Logo & Tagline pill -->
     <div class="flex items-center justify-center mb-6">
       <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm text-xs font-tamil-sans text-[var(--text-muted)]">
-        <img src={logoUrl} alt="அறிவுப்பேழை" class="w-6 h-6 rounded-md object-cover shadow-2xs border border-[var(--border-subtle)]" />
+        <img src={logoUrl} alt="அறிவுப்பேழை" class="h-6 w-auto object-contain" />
         <span class="font-semibold text-[var(--text-main)]">அறிவுப்பேழை</span>
         <span class="text-[var(--text-dim)]">•</span>
         <span>செவ்வியல் தமிழ் இணைய நூலகம்</span>
@@ -76,24 +75,18 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
           நூல் அட்டவணை (Library Catalog)
         </h2>
         <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
-          தொடக்கப் பதிப்பாக திருக்குறள் முழுமையாகப் பதிவேற்றப்பட்டுள்ளது.
+          செவ்வியல் நூல்களைத் தேர்ந்தெடுத்து வாசிக்கவும்.
         </p>
       </div>
       
       <!-- Filter buttons (client-side toggle) -->
-      <div class="hidden md:flex items-center gap-1.5 font-tamil-sans text-xs">
+      <div class="hidden md:flex flex-wrap items-center gap-1.5 font-tamil-sans text-xs">
         <button type="button" class="category-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-category="all">
           அனைத்தும் ({libraryData.length})
         </button>
-        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="பதினெண்கீழ்க்கணக்கு">
-          பதினெண்கீழ்க்கணக்கு
-        </button>
-        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="காப்பியங்கள்">
-          காப்பியங்கள்
-        </button>
-        <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category="எட்டுத்தொகை">
-          சங்க இலக்கியம்
-        </button>
+        {[...new Set(libraryData.map((book) => book.category_ta).filter(Boolean))].map((category) => (
+          <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category={category}>{category}</button>
+        ))}
       </div>
     </div>
 
@@ -104,68 +97,6 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
           <BookCard book={book} />
         </div>
       ))}
-    </div>
-
-    <!-- Literary Philosophy / Quality Pillars -->
-    <div class="mt-20 pt-12 border-t border-[var(--border-subtle)]">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <h3 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
-          வாசிப்பு அனுபவத்தின் நான்கு தூண்கள்
-        </h3>
-        <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
-          பாரம்பரிய இலக்கியங்களை எக்கால வாசகர்களுக்கும் எளிமையாகக் கொண்டு சேர்க்கும் வழிமுறை
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-tamil-sans">
-        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
-          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
-            1
-          </div>
-          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
-            தூய தமிழ் எழுத்துருக்கள்
-          </h4>
-          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-            பாரம்பரிய செய்யுள்களுக்கு Noto Serif Tamil மற்றும் Mukta Malar, உரைக்கு Noto Sans Tamil உகந்த நேர்த்தியில் ஒருங்கிணைக்கப்பட்டுள்ளன.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
-          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
-            2
-          </div>
-          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
-            கொம்பு & சுழி இடைவெளி
-          </h4>
-          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-            1.8 முதல் 2.0 வரையிலான வரியிடைவெளி (line-height) மூலம் புள்ளி, கொம்பு, மற்றும் சுழிகள் திரையில் வெட்டுப்படாமல் முழுமையாகத் தெரியும்.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
-          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
-            3
-          </div>
-          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
-            முழுமையான உலகளாவிய தேடல்
-          </h4>
-          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-            நூலின் பெயர், ஆசிரியர், வகை, அதிகாரம் மற்றும் குறட்பா வரிகளை நொடிப் பொழுதில் தேடி உடனடியாக வாசிக்கலாம்.
-          </p>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-2">
-          <div class="w-8 h-8 rounded-lg bg-[var(--accent-soft)] text-[var(--accent-primary)] flex items-center justify-center font-bold text-sm">
-            4
-          </div>
-          <h4 class="font-tamil-serif font-bold text-base text-[var(--text-main)]">
-            கண் சோர்வில்லா வண்ணங்கள்
-          </h4>
-          <p class="text-xs text-[var(--text-muted)] leading-relaxed">
-            கடுமையான வெள்ளை அல்லது கறுப்பு நிறங்களைத் தவிர்த்து, செப்பேடு, இரவுக் கூடம், மற்றும் குறிஞ்சிக் குளிர் போன்ற இதமான வண்ணங்கள்.
-          </p>
-        </div>
-      </div>
     </div>
 
   </section>

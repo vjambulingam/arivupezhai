@@ -1,276 +1,92 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import libraryData from '../../data/library.json';
-import thirukkuralData from '../../data/books/thirukkural.json';
+import { books } from '../../utils/books';
 import { getUrl } from '../../utils/url.js';
+import { chapterUrl } from '../../utils/reader.js';
 
 export function getStaticPaths() {
-  return [
-    { params: { id: 'thirukkural' } }
-  ];
+  return books.map((book) => ({ params: { id: book.id }, props: { book } }));
 }
-
-const { id } = Astro.props;
-const book = thirukkuralData;
-const homeUrl = getUrl('/');
-const startReadingUrl = getUrl('book/thirukkural/read?athikaram=1');
+const { book } = Astro.props;
+const groups = [...new Set(book.sections.map((section) => section.group.split(' / ')[0]).filter(Boolean))];
 ---
 
-<Layout
-  title={`${book.title_ta} (${book.title_en}) • அறிவுப்பேழை`}
-  description={book.description_ta}
->
+<Layout title={`${book.title_ta} • அறிவுப்பேழை`} description={book.description_ta}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-    
-    <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs font-tamil-sans text-[var(--text-muted)] mb-6">
-      <a href={homeUrl} class="hover:text-[var(--accent-primary)] transition-colors">முகப்பு</a>
-      <span>/</span>
-      <span class="text-[var(--text-main)] font-medium">{book.title_ta}</span>
+    <nav class="text-xs font-tamil-sans text-[var(--text-muted)] mb-6">
+      <a href={getUrl('/')} class="hover:underline">முகப்பு</a> / {book.title_ta}
     </nav>
-
-    <!-- Book Hero Section -->
-    <div class="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm">
-      <div class="flex flex-col lg:flex-row items-start justify-between gap-8">
-        
-        <div class="space-y-4 max-w-3xl">
-          <!-- Genre Badges -->
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-[var(--accent-soft)] text-[var(--accent-primary)] border border-[var(--accent-primary)]/20">
-              {book.category_ta}
-            </span>
-            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[var(--badge-bg)] text-[var(--badge-text)]">
-              {book.genre_ta}
-            </span>
-            <span class="px-3 py-1 rounded-full text-xs font-medium bg-[var(--bg-muted)] text-[var(--text-muted)]">
-              {book.period_ta}
-            </span>
-          </div>
-
-          <!-- Title & Author -->
-          <div>
-            <h1 class="font-tamil-serif font-bold text-4xl sm:text-5xl text-[var(--text-main)] tracking-tight">
-              {book.title_ta}
-            </h1>
-            <p class="font-tamil-sans text-lg text-[var(--text-muted)] mt-1">
-              ஆசிரியர்: <span class="font-semibold text-[var(--text-main)]">{book.author_ta}</span> • <span class="text-sm font-sans">{book.author_en}</span>
-            </p>
-          </div>
-
-          <!-- Literary Description -->
-          <p class="font-tamil-sans text-sm sm:text-base text-[var(--text-main)] leading-relaxed max-w-2xl tamil-prose">
-            {book.description_ta}
-          </p>
-        </div>
-
-        <!-- Call to Action Box & Stats -->
-        <div class="w-full lg:w-80 shrink-0 p-6 rounded-2xl bg-[var(--bg-page)] border border-[var(--border-subtle)] space-y-6">
-          
-          <!-- Key Metrics Grid -->
-          <div class="grid grid-cols-2 gap-3 text-center font-tamil-sans">
-            <div class="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-              <div class="font-tamil-serif font-bold text-2xl text-[var(--accent-primary)]">3</div>
-              <div class="text-xs text-[var(--text-muted)] mt-0.5">பால்கள்</div>
-            </div>
-            <div class="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-              <div class="font-tamil-serif font-bold text-2xl text-[var(--accent-primary)]">9</div>
-              <div class="text-xs text-[var(--text-muted)] mt-0.5">இயல்கள்</div>
-            </div>
-            <div class="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-              <div class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">133</div>
-              <div class="text-xs text-[var(--text-muted)] mt-0.5">அதிகாரங்கள்</div>
-            </div>
-            <div class="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-              <div class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">1,330</div>
-              <div class="text-xs text-[var(--text-muted)] mt-0.5">குறள்கள்</div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="space-y-3 font-tamil-sans">
-            <a
-              href={startReadingUrl}
-              class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)] text-[var(--accent-contrast)] text-sm font-semibold shadow-md transition-all active:scale-95"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <span>முதல் அதிகாரத்திலிருந்து வாசிக்க</span>
-            </a>
-
-            <a
-              href="#athikarams-section"
-              class="w-full flex items-center justify-center py-2.5 px-4 rounded-xl bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] text-xs font-medium border border-[var(--border-subtle)] transition-colors"
-            >
-              <span>அதிகாரப் பட்டியல் பார்க்க ↓</span>
-            </a>
-          </div>
-
-        </div>
-
+    <section class="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="px-3 py-1 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)]">{book.genre_ta}</span>
+        {book.category_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.category_ta}</span>}
+        {book.period_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.period_ta}</span>}
       </div>
-    </div>
-
-    <!-- 3 Paals Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-      {book.paals.map((p) => (
-        <div class="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="font-tamil-serif font-bold text-xl text-[var(--text-main)]">
-              {p.name_ta}
-            </h3>
-            <span class="text-xs px-2.5 py-0.5 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)] font-tamil-sans">
-              {p.athikarams_count} அதிகாரங்கள்
-            </span>
-          </div>
-          <p class="text-xs font-tamil-sans text-[var(--text-muted)] leading-relaxed">
-            {p.description_ta}
-          </p>
-          <div class="pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-dim)] font-tamil-sans">
-            <span>குறள் {p.start_athikaram * 10 - 9} - {p.end_athikaram * 10}</span>
-            <a
-              href={getUrl(`book/thirukkural/read?athikaram=${p.start_athikaram}`)}
-              class="text-[var(--accent-primary)] hover:underline font-medium"
-            >
-              வாசிக்க →
-            </a>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- Athikarams Table of Contents Section -->
-    <div id="athikarams-section" class="mt-16 pt-8 border-t border-[var(--border-subtle)]">
-      
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <h2 class="font-tamil-serif font-bold text-3xl text-[var(--text-main)]">
-            முழு அதிகாரப் பட்டியல் (133 அதிகாரங்கள்)
-          </h2>
-          <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
-            எந்தவொரு அதிகாரத்தைத் தொட்டாலும் உடனடியாக வாசிப்புப் பக்கத்திற்குச் செல்லலாம்.
-          </p>
-        </div>
-
-        <!-- Fast Search Input for Athikarams -->
-        <div class="w-full sm:w-72">
-          <input
-            type="text"
-            id="athikaram-filter-input"
-            placeholder="அதிகாரம் தேடுக (எ.கா. கடவுள், நட்பு)..."
-            class="w-full px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-sm font-tamil-sans text-[var(--text-main)] placeholder-[var(--text-dim)] focus:outline-none focus:border-[var(--accent-primary)]"
-          />
-        </div>
+      <h1 class="mt-4 font-tamil-serif font-bold text-4xl sm:text-5xl [overflow-wrap:anywhere]">{book.title_ta}</h1>
+      <p class="mt-2 text-[var(--text-muted)]">ஆசிரியர்: {book.author_ta}{book.author_en && ` • ${book.author_en}`}</p>
+      <p class="mt-4 tamil-prose max-w-3xl">{book.description_ta}</p>
+      <div class="flex flex-wrap gap-3 mt-6 text-sm">
+        <a href={chapterUrl(book.id, book.sections[0].id)} class="px-4 py-3 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-semibold">வாசிக்கத் தொடங்குக</a>
+        <a href="#athikarams-section" class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">பகுதிகள்</a>
+        {book.pdf && <a href={book.pdf.startsWith('/') ? getUrl(book.pdf) : book.pdf} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">PDF</a>}
+        {book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">EPUB</a>}
       </div>
+    </section>
 
-      <!-- Paal Filter Pills -->
-      <div class="flex items-center gap-2 mb-6 overflow-x-auto pb-2 font-tamil-sans text-xs">
-        <button type="button" class="paal-filter-btn active px-3.5 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-semibold shadow-sm" data-paal="all">
-          அனைத்தும் (133)
-        </button>
-        <button type="button" class="paal-filter-btn px-3.5 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-muted)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)]" data-paal="அறத்துப்பால்">
-          அறத்துப்பால் (1 - 38)
-        </button>
-        <button type="button" class="paal-filter-btn px-3.5 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-muted)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)]" data-paal="பொருட்பால்">
-          பொருட்பால் (39 - 108)
-        </button>
-        <button type="button" class="paal-filter-btn px-3.5 py-1.5 rounded-lg bg-[var(--bg-surface)] text-[var(--text-muted)] hover:bg-[var(--bg-surface-hover)] border border-[var(--border-subtle)]" data-paal="காமத்துப்பால்">
-          காமத்துப்பால் (109 - 133)
-        </button>
+    <section id="athikarams-section" class="mt-12">
+      <h2 class="font-tamil-serif font-bold text-3xl">நூல் பகுதிகள் ({book.sections.length})</h2>
+      <label class="block mt-4">
+        <span class="sr-only">பகுதியைத் தேடுக</span>
+        <input id="section-filter-input" type="search" placeholder="பகுதியைத் தேடுக..." class="w-full sm:max-w-sm px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-sm" />
+      </label>
+      {groups.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4 font-tamil-sans text-xs" aria-label="பகுதி வடிகட்டி">
+          <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--accent-primary)] text-[var(--accent-contrast)]" data-group="" aria-pressed="true">அனைத்தும்</button>
+          {groups.map((group) => (
+            <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)]" data-group={group} aria-pressed="false">{group}</button>
+          ))}
+        </div>
+      )}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        {book.sections.map((section) => (
+          <a href={chapterUrl(book.id, section.id)} data-section-name={section.title} data-section-group={section.group.split(' / ')[0]} class="section-card p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)]">
+            <h3 class="font-tamil-serif font-bold text-lg [overflow-wrap:anywhere]">{section.title}</h3>
+            {section.group && <p class="text-xs text-[var(--text-muted)] mt-1">{section.group}</p>}
+            <span class="text-xs text-[var(--accent-primary)]">வாசிக்க →</span>
+          </a>
+        ))}
       </div>
+    </section>
 
-      <!-- Athikarams Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="athikarams-grid">
-        {book.athikarams.map((a) => {
-          const readUrl = getUrl(`book/thirukkural/read?athikaram=${a.number}`);
-          const firstKural = a.kurals[0];
-          return (
-            <a
-              href={readUrl}
-              class="athikaram-card group flex flex-col justify-between p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:shadow-md transition-all active:scale-98"
-              data-paal={a.paal.name_ta}
-              data-name={a.name_ta}
-              data-number={a.number}
-            >
-              <div>
-                <div class="flex items-center justify-between text-xs text-[var(--text-dim)] font-tamil-sans mb-1.5">
-                  <span class="font-mono font-semibold text-[var(--accent-primary)]">
-                    #{a.number}
-                  </span>
-                  <span class="px-2 py-0.5 rounded bg-[var(--bg-muted)] text-[var(--text-muted)]">
-                    {a.iyal}
-                  </span>
-                </div>
-                
-                <h3 class="font-tamil-serif font-bold text-lg text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors leading-snug">
-                  {a.name_ta}
-                </h3>
-
-                {firstKural && (
-                  <p class="font-tamil-serif text-xs text-[var(--text-muted)] mt-2 line-clamp-1 italic opacity-85">
-                    "{firstKural.line1}..."
-                  </p>
-                )}
-              </div>
-
-              <div class="mt-3 pt-2.5 border-t border-[var(--border-subtle)] flex items-center justify-between text-[11px] text-[var(--text-dim)] font-tamil-sans">
-                <span>குறள் {a.start_kural} - {a.end_kural}</span>
-                <span class="text-[var(--accent-primary)] font-semibold group-hover:translate-x-0.5 transition-transform">வாசிக்க →</span>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-
-    </div>
-
+    <section class="mt-12 p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
+      <h2 class="font-tamil-serif font-bold text-2xl">நன்றியுரை</h2>
+      <p class="mt-3 tamil-prose whitespace-pre-line">{book.acknowledgement}</p>
+    </section>
   </div>
 </Layout>
 
 <script>
-  // Filter Athikarams by Paal and by Search text
-  const filterInput = document.getElementById('athikaram-filter-input') as HTMLInputElement;
-  const paalBtns = document.querySelectorAll('.paal-filter-btn');
-  const cards = document.querySelectorAll('.athikaram-card');
-
-  let activePaal = 'all';
-  let searchText = '';
-
-  function applyFilters() {
+  const search = document.querySelector<HTMLInputElement>('#section-filter-input');
+  const cards = document.querySelectorAll<HTMLElement>('.section-card');
+  const filters = document.querySelectorAll<HTMLButtonElement>('.section-filter');
+  let selectedGroup = '';
+  function filterSections() {
+    const query = (search?.value || '').normalize('NFC').toLowerCase().trim();
     cards.forEach((card) => {
-      const paal = card.getAttribute('data-paal') || '';
-      const name = (card.getAttribute('data-name') || '').toLowerCase();
-      const num = card.getAttribute('data-number') || '';
-
-      const matchesPaal = activePaal === 'all' || paal === activePaal;
-      const matchesSearch = !searchText || name.includes(searchText) || num === searchText;
-
-      if (matchesPaal && matchesSearch) {
-        (card as HTMLElement).style.display = 'flex';
-      } else {
-        (card as HTMLElement).style.display = 'none';
-      }
+      const title = (card.dataset.sectionName || '').normalize('NFC').toLowerCase();
+      card.hidden = !title.includes(query) || Boolean(selectedGroup && card.dataset.sectionGroup !== selectedGroup);
     });
   }
-
-  paalBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      paalBtns.forEach((b) => {
-        b.classList.remove('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
-        b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
-      });
-      btn.classList.add('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
-      btn.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
-
-      activePaal = btn.getAttribute('data-paal') || 'all';
-      applyFilters();
+  search?.addEventListener('input', filterSections);
+  filters.forEach((button) => button.addEventListener('click', () => {
+    selectedGroup = button.dataset.group || '';
+    filters.forEach((filter) => {
+      const active = filter === button;
+      filter.setAttribute('aria-pressed', String(active));
+      filter.classList.toggle('bg-[var(--accent-primary)]', active);
+      filter.classList.toggle('text-[var(--accent-contrast)]', active);
+      filter.classList.toggle('bg-[var(--bg-surface)]', !active);
     });
-  });
-
-  if (filterInput) {
-    filterInput.addEventListener('input', (e) => {
-      searchText = (e.target as HTMLInputElement).value.trim().toLowerCase();
-      applyFilters();
-    });
-  }
+    filterSections();
+  }));
 </script>

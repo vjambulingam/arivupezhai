@@ -7,7 +7,8 @@
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "start": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "test": "npm run build && node --test tests/*.test.mjs"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "tailwindcss": "^4.3.5"
   },
   "dependencies": {
-    "minisearch": "^7.2.0"
+    "marked": "^15.0.12",
+    "yaml": "^2.8.1"
   }
 }

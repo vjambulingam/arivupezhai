@@ -1,264 +1,158 @@
 ---
 import { getUrl } from '../utils/url.js';
-import searchDataStatic from '../data/search-index.json';
-
-const rawBase = import.meta.env.BASE_URL || '/';
-const baseUrl = rawBase === '/' ? '' : rawBase.replace(/\/$/, '');
+const indexUrl = getUrl('search-index.json');
 ---
 
-<div
-  id="search-dialog-backdrop"
-  class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-start justify-center pt-16 sm:pt-24 px-4 overflow-y-auto"
-  role="dialog"
-  aria-modal="true"
-  aria-label="நூல் தேடல்"
->
-  <div
-    id="search-dialog-box"
-    class="relative w-full max-w-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-2xl overflow-hidden transition-all duration-200 transform opacity-0 scale-95"
-  >
-    <!-- Header Input -->
-    <div class="flex items-center px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--bg-page)]/90">
-      <svg class="w-5 h-5 text-[var(--accent-primary)] mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-      <input
-        type="text"
-        id="search-input"
-        placeholder="நூல், ஆசிரியர், வகை (Genre), அதிகாரம், சொல் தேடுக..."
-        class="w-full bg-transparent text-[var(--text-main)] placeholder-[var(--text-dim)] text-base font-tamil-sans focus:outline-none"
-        autocomplete="off"
-        spellcheck="false"
-      />
-      <button
-        type="button"
-        id="search-close-btn"
-        class="p-1 rounded-lg text-[var(--text-dim)] hover:text-[var(--text-main)] hover:bg-[var(--bg-muted)] transition-colors ml-2 cursor-pointer"
-        aria-label="Close search"
-      >
-        <kbd class="text-xs font-mono px-2 py-1 rounded bg-[var(--bg-muted)] border border-[var(--border-subtle)]">ESC</kbd>
-      </button>
+<div id="search-dialog-backdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-start justify-center pt-16 sm:pt-24 px-4 overflow-y-auto" role="dialog" aria-modal="true" aria-label="நூல் தேடல்">
+  <div id="search-dialog-box" class="relative w-full max-w-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-2xl overflow-hidden">
+    <div class="flex items-center px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--bg-page)]">
+      <input type="search" id="search-input" aria-label="நூல், ஆசிரியர், வகை அல்லது பாடல் தேடுக" placeholder="நூல், ஆசிரியர், வகை, அதிகாரம், பாடல் தேடுக..." class="min-w-0 w-full bg-transparent text-[var(--text-main)] placeholder-[var(--text-dim)] text-base font-tamil-sans focus:outline-none" autocomplete="off" spellcheck="false" />
+      <button type="button" id="search-close-btn" class="p-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-muted)]" aria-label="தேடலை மூடுக">✕</button>
     </div>
-
-    <!-- Quick filter chips -->
-    <div class="px-4 py-2 border-b border-[var(--border-subtle)] bg-[var(--bg-surface)] flex items-center gap-2 overflow-x-auto text-xs font-tamil-sans">
+    <div class="px-4 py-2 border-b border-[var(--border-subtle)] flex items-center gap-2 overflow-x-auto text-xs font-tamil-sans">
       <span class="text-[var(--text-dim)] whitespace-nowrap">விரைவு வடிகட்டி:</span>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="திருக்குறள்">
-        திருக்குறள்
-      </button>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="திருவள்ளுவர்">
-        திருவள்ளுவர்
-      </button>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="நீதி இலக்கியம்">
-        நீதி இலக்கியம்
-      </button>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="அறத்துப்பால்">
-        அறத்துப்பால்
-      </button>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="பொருட்பால்">
-        பொருட்பால்
-      </button>
-      <button type="button" class="search-filter-chip px-2.5 py-1 rounded-full bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] transition-colors cursor-pointer" data-filter="காமத்துப்பால்">
-        காமத்துப்பால்
-      </button>
+      {['திருக்குறள்', 'திருவள்ளுவர்', 'நீதி இலக்கியம்', 'அறத்துப்பால்', 'பொருட்பால்', 'காமத்துப்பால்'].map((filter) => (
+        <button type="button" class="search-filter-chip shrink-0 px-2.5 py-1 rounded-full bg-[var(--bg-muted)]" data-filter={filter}>{filter}</button>
+      ))}
     </div>
-
-    <!-- Results Area -->
-    <div id="search-results" class="max-h-96 overflow-y-auto divide-y divide-[var(--border-subtle)]">
-      <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
-        தேட வேண்டிய நூல், ஆசிரியர், அல்லது அதிகாரத்தின் பெயரைத் தட்டச்சு செய்க.
-      </div>
-    </div>
-
-    <!-- Footer Stats / Hint -->
-    <div class="px-4 py-2.5 bg-[var(--bg-page)]/80 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs text-[var(--text-dim)] font-tamil-sans">
-      <span>133 அதிகாரங்கள் • 6 செவ்வியல் நூல்கள் குறியிடப்பட்டுள்ளன</span>
-      <span class="hidden sm:inline">வழிகாட்ட: Esc மூட | தட்டச்சு செய்து தேர்ந்தெடுக்கவும்</span>
+    <p id="search-status" role="status" aria-live="polite" class="px-4 py-2 text-xs text-[var(--text-muted)]">நூல், ஆசிரியர், வகை அல்லது பாடலைத் தேடுக.</p>
+    <div id="search-results" class="max-h-96 overflow-y-auto divide-y divide-[var(--border-subtle)]"></div>
+    <div class="px-4 py-3 border-t border-[var(--border-subtle)]">
+      <button type="button" id="search-more" class="hidden px-4 py-2 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)]">மேலும் முடிவுகள்</button>
     </div>
   </div>
 </div>
 
-<!-- Embedded Search Index Data for Instant Zero-Latency Offline Search -->
-<script id="arivupezhai-search-data" type="application/json" set:html={JSON.stringify(searchDataStatic)}></script>
-
-<script define:vars={{ baseUrl }}>
-  let searchData = [];
+<script define:vars={{ indexUrl }}>
   const backdrop = document.getElementById('search-dialog-backdrop');
   const box = document.getElementById('search-dialog-box');
   const input = document.getElementById('search-input');
-  const resultsContainer = document.getElementById('search-results');
-  const closeBtn = document.getElementById('search-close-btn');
+  const status = document.getElementById('search-status');
+  const results = document.getElementById('search-results');
+  const more = document.getElementById('search-more');
+  const closeButton = document.getElementById('search-close-btn');
+  let indexPromise;
+  let matches = [];
+  let shown = 0;
+  let requestId = 0;
+  let returnFocus;
 
-  function initData() {
-    if (searchData.length === 0) {
-      try {
-        const dataTag = document.getElementById('arivupezhai-search-data');
-        if (dataTag && dataTag.textContent) {
-          searchData = JSON.parse(dataTag.textContent);
-        }
-      } catch (err) {
-        console.error('Failed to parse search data', err);
-      }
+  function normalize(value) {
+    return value.normalize('NFC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function loadIndex() {
+    if (!indexPromise) {
+      indexPromise = fetch(indexUrl).then((response) => {
+        if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+        return response.json();
+      }).catch((error) => {
+        indexPromise = undefined;
+        throw error;
+      });
     }
+    return indexPromise;
   }
 
   function openSearch() {
-    initData();
-    if (!backdrop || !box || !input) return;
+    if (!backdrop.classList.contains('hidden')) return;
+    returnFocus = document.activeElement;
     backdrop.classList.remove('hidden');
     backdrop.classList.add('flex');
-    requestAnimationFrame(() => {
-      box.classList.remove('opacity-0', 'scale-95');
-      box.classList.add('opacity-100', 'scale-100');
-      input.focus();
-    });
+    input.focus();
   }
 
   function closeSearch() {
-    if (!backdrop || !box) return;
-    box.classList.remove('opacity-100', 'scale-100');
-    box.classList.add('opacity-0', 'scale-95');
-    setTimeout(() => {
-      backdrop.classList.add('hidden');
-      backdrop.classList.remove('flex');
-    }, 150);
+    backdrop.classList.add('hidden');
+    backdrop.classList.remove('flex');
+    if (returnFocus instanceof HTMLElement) returnFocus.focus();
   }
 
-  // Listen for open search event
   window.addEventListener('open-search', openSearch);
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeSearch);
-  }
-
-  if (backdrop) {
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeSearch();
-    });
-  }
-
-  window.addEventListener('keydown', (e) => {
-    // Esc to close
-    if (e.key === 'Escape' && backdrop && !backdrop.classList.contains('hidden')) {
-      closeSearch();
+  closeButton.addEventListener('click', closeSearch);
+  backdrop.addEventListener('click', (event) => {
+    if (event.target === backdrop) closeSearch();
+  });
+  window.addEventListener('keydown', (event) => {
+    const open = !backdrop.classList.contains('hidden');
+    if (event.key === 'Escape' && open) closeSearch();
+    if (open && event.key === 'Tab') {
+      const controls = [...box.querySelectorAll('input, button:not(.hidden), a[href]')].filter((element) => element.offsetParent !== null);
+      if (event.shiftKey && document.activeElement === controls[0]) {
+        event.preventDefault();
+        controls[controls.length - 1].focus();
+      } else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) {
+        event.preventDefault();
+        controls[0].focus();
+      }
     }
-    // Global Cmd+K / Ctrl+K / '/' trigger
-    if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
-      e.preventDefault();
+    if ((event.key === '/' || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k')) && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName || '')) {
+      event.preventDefault();
       openSearch();
     }
   });
 
-  // Filter chips click
+  function appendResults() {
+    const next = matches.slice(shown, shown + 15);
+    for (const item of next) {
+      const element = document.createElement(item.url ? 'a' : 'div');
+      element.className = 'block p-4 font-tamil-sans';
+      if (item.url) {
+        element.href = item.url;
+        element.classList.add('hover:bg-[var(--bg-surface-hover)]');
+      }
+      const title = document.createElement('div');
+      title.className = 'font-tamil-serif font-bold text-base text-[var(--text-main)]';
+      title.textContent = item.title;
+      const metadata = document.createElement('p');
+      metadata.className = 'text-xs text-[var(--text-muted)] mt-1';
+      const kind = item.type === 'book' ? 'நூல்' : item.type === 'chapter' ? 'பகுதி' : 'பாடல் / உரை';
+      metadata.textContent = [kind, item.author, item.url ? '' : 'விரைவில்'].filter(Boolean).join(' • ');
+      const snippet = document.createElement('p');
+      snippet.className = 'text-sm text-[var(--text-muted)] mt-1 [overflow-wrap:anywhere]';
+      snippet.textContent = item.snippet;
+      element.append(title, metadata, snippet);
+      results.append(element);
+    }
+    shown += next.length;
+    status.textContent = `${matches.length} முடிவுகள் • ${shown} காட்டப்படுகின்றன`;
+    more.classList.toggle('hidden', shown >= matches.length);
+  }
+
+  async function performSearch() {
+    const query = normalize(input.value);
+    const currentRequest = ++requestId;
+    results.replaceChildren();
+    more.classList.add('hidden');
+    if (!query) {
+      status.textContent = 'நூல், ஆசிரியர், வகை அல்லது பாடலைத் தேடுக.';
+      return;
+    }
+    status.textContent = 'தேடுகிறது...';
+    try {
+      const index = await loadIndex();
+      if (currentRequest !== requestId) return;
+      matches = index.filter((item) => item.searchable.some((field) => normalize(field).includes(query)));
+      shown = 0;
+      if (!matches.length) {
+        status.textContent = 'முடிவுகள் இல்லை. வேறு சொல்லை முயற்சிக்கவும்.';
+        return;
+      }
+      appendResults();
+    } catch (error) {
+      if (currentRequest !== requestId) return;
+      console.error('Unable to load the search index', error);
+      status.textContent = 'தேடல் குறியீட்டை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.';
+    }
+  }
+
+  input.addEventListener('input', performSearch);
+  more.addEventListener('click', appendResults);
   document.querySelectorAll('.search-filter-chip').forEach((chip) => {
     chip.addEventListener('click', () => {
-      const filter = chip.getAttribute('data-filter') || '';
-      if (input) {
-        input.value = filter;
-        performSearch(filter);
-      }
+      input.value = chip.getAttribute('data-filter') || '';
+      input.focus();
+      performSearch();
     });
   });
-
-  // Search input change
-  if (input) {
-    input.addEventListener('input', (e) => {
-      performSearch(e.target.value);
-    });
-  }
-
-  function performSearch(query) {
-    initData();
-    if (!resultsContainer) return;
-
-    const q = query.trim().toLowerCase();
-    if (!q) {
-      resultsContainer.innerHTML = `
-        <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
-          தேட வேண்டிய நூல், ஆசிரியர், அல்லது அதிகாரத்தின் பெயரைத் தட்டச்சு செய்க.
-        </div>`;
-      return;
-    }
-
-    if (!searchData || searchData.length === 0) {
-      resultsContainer.innerHTML = `
-        <div class="p-8 text-center text-sm text-[var(--text-muted)] font-tamil-sans">
-          குறியீடு ஏற்றப்படவில்லை. தயவுசெய்து பக்கத்தை மறுஏற்றம் (Refresh) செய்யவும்.
-        </div>`;
-      return;
-    }
-
-    // Match query against all relevant fields
-    const matches = searchData.filter((item) => {
-      const textToSearch = [
-        item.title,
-        item.title_en,
-        item.author,
-        item.author_en,
-        item.genre,
-        item.category,
-        item.paal,
-        item.iyal,
-        item.snippet,
-        item.athikaram_name
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-
-      return textToSearch.includes(q);
-    });
-
-    if (matches.length === 0) {
-      resultsContainer.innerHTML = `
-        <div class="p-8 text-center font-tamil-sans">
-          <p class="text-[var(--text-main)] font-medium">"${query}" என்பதற்கு முடிவுகள் இல்லை</p>
-          <p class="text-xs text-[var(--text-muted)] mt-1">எழுத்துப் பிழையைச் சரிபார்க்கவும் அல்லது வேறு சொல்லைப் பயன்படுத்தவும் (எ.கா. கடவுள், அன்பு, திருக்குறள்).</p>
-        </div>`;
-      return;
-    }
-
-    const html = matches
-      .slice(0, 15)
-      .map((item) => {
-        const isBook = item.type === 'book';
-        const typeBadge = isBook
-          ? `<span class="px-2 py-0.5 rounded text-[10px] bg-[var(--accent-soft)] text-[var(--accent-primary)] font-semibold">நூல்</span>`
-          : `<span class="px-2 py-0.5 rounded text-[10px] bg-[var(--badge-bg)] text-[var(--badge-text)]">அதிகாரம்</span>`;
-
-        let targetUrl = '#';
-        if (item.url) {
-          if (item.url.startsWith('/')) {
-            targetUrl = `${baseUrl}${item.url}`;
-          } else {
-            targetUrl = item.url;
-          }
-        }
-
-        return `
-        <a
-          href="${targetUrl}"
-          class="block p-4 hover:bg-[var(--bg-surface-hover)] transition-colors group cursor-pointer"
-        >
-          <div class="flex items-start justify-between gap-2">
-            <div>
-              <div class="flex items-center gap-2">
-                ${typeBadge}
-                <span class="font-tamil-serif font-bold text-base text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
-                  ${item.title}
-                </span>
-                ${item.author ? `<span class="text-xs text-[var(--text-muted)] font-tamil-sans">• ${item.author}</span>` : ''}
-              </div>
-              <p class="text-xs text-[var(--text-muted)] font-tamil-sans mt-1 line-clamp-1">
-                ${item.snippet || ''}
-              </p>
-            </div>
-            ${item.genre ? `<span class="text-[11px] text-[var(--text-dim)] font-tamil-sans shrink-0 hidden sm:inline">${item.genre}</span>` : ''}
-          </div>
-        </a>`;
-      })
-      .join('');
-
-    resultsContainer.innerHTML = html;
-  }
 </script>

@@ -18,7 +18,7 @@ const {
 const faviconUrl = getUrl('favicon.svg');
 const appleTouchIconUrl = getUrl('apple-touch-icon.png');
 const manifestUrl = getUrl('manifest.json');
-const ogImageUrl = getUrl('icon-512.png');
+const ogImageUrl = new URL(getUrl('icon-512.png'), Astro.site).href;
 ---
 
 <!doctype html>
@@ -34,6 +34,8 @@ const ogImageUrl = getUrl('icon-512.png');
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+
+    <script is:inline data-goatcounter="https://arivupezhai.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website" />

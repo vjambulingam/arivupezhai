@@ -3,8 +3,12 @@ import { getUrl } from '../utils/url.js';
 
 const homeUrl = getUrl('/');
 const thirukkuralUrl = getUrl('/book/thirukkural');
-const palettesUrl = getUrl('/palettes');
-const logoUrl = getUrl('arivupezhai-logo-sm.png');
+const logoUrl = getUrl('arivupezhai-logo-transparent.png');
+const themes = [
+  { id: 'bronze', name: 'செப்பேடு' },
+  { id: 'night', name: 'இரவுக் கூடம்' },
+  { id: 'mist', name: 'குறிஞ்சிக் குளிர்' },
+];
 ---
 
 <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-page)]/90 border-b border-[var(--border-subtle)] transition-colors duration-200">
@@ -12,19 +16,17 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
     <div class="flex items-center justify-between h-18">
       
       <!-- Brand Logo & Title -->
-      <a href={homeUrl} class="group flex items-center space-x-3 transition-opacity hover:opacity-90">
-        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-sm group-hover:scale-105 transition-transform border border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
+      <a href={homeUrl} class="group flex items-center space-x-3 max-[359px]:space-x-2 transition-opacity hover:opacity-90">
+        <div class="h-10 max-[359px]:h-8 sm:h-11 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
           <img
             src={logoUrl}
             alt="அறிவுப்பேழை"
-            class="w-full h-full object-cover"
-            width="44"
-            height="44"
+            class="h-10 max-[359px]:h-8 sm:h-11 w-auto max-w-[120px] object-contain"
             loading="eager"
           />
         </div>
         <div class="flex flex-col">
-          <span class="font-tamil-serif font-bold text-xl sm:text-2xl text-[var(--text-main)] tracking-tight">
+          <span class="font-tamil-serif font-bold text-xl max-[359px]:text-lg sm:text-2xl text-[var(--text-main)] tracking-tight">
             அறிவுப்பேழை
           </span>
           <span class="text-xs text-[var(--text-muted)] font-tamil-sans hidden sm:block">
@@ -34,7 +36,7 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
       </a>
 
       <!-- Search Trigger Button -->
-      <div class="flex-1 max-w-md mx-4 hidden sm:block">
+      <div class="flex-1 min-w-0 max-w-md mx-4 hidden sm:block">
         <button
           type="button"
           id="search-trigger-btn"
@@ -53,8 +55,8 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
       </div>
 
       <!-- Navigation & Theme Switcher -->
-      <div class="flex items-center gap-3">
-        <nav class="hidden md:flex items-center gap-1 font-tamil-sans text-sm font-medium">
+      <div class="flex items-center gap-3 max-[359px]:gap-2">
+        <nav class="hidden lg:flex items-center gap-1 font-tamil-sans text-sm font-medium">
           <a
             href={homeUrl}
             class="px-3 py-1.5 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)] transition-colors"
@@ -67,39 +69,14 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
           >
             திருக்குறள்
           </a>
-          <a
-            href={palettesUrl}
-            class="px-3 py-1.5 rounded-lg text-[var(--accent-primary)] font-semibold hover:bg-[var(--bg-surface)] transition-colors flex items-center gap-1.5"
-          >
-            <span class="w-2 h-2 rounded-full bg-[var(--accent-primary)]"></span>
-            வண்ணத் தீம்கள்
-          </a>
         </nav>
 
-        <!-- Quick Theme Selector Pill -->
-        <div class="flex items-center bg-[var(--bg-surface)] p-1 rounded-full border border-[var(--border-subtle)] shadow-inner" title="வாசிப்பு வண்ணத்தை மாற்றுக">
-          <button
-            type="button"
-            data-set-theme="bronze"
-            class="theme-btn w-6 h-6 rounded-full bg-[#F6F2EC] border border-[#AD5F1D] transition-transform hover:scale-110 active:scale-95"
-            title="செப்பேடு (Temple Bronze)"
-            aria-label="Bronze Theme"
-          ></button>
-          <button
-            type="button"
-            data-set-theme="night"
-            class="theme-btn w-6 h-6 rounded-full bg-[#17181B] border border-[#343842] ml-1 transition-transform hover:scale-110 active:scale-95"
-            title="இரவுக் கூடம் (Midnight Slate)"
-            aria-label="Night Theme"
-          ></button>
-          <button
-            type="button"
-            data-set-theme="mist"
-            class="theme-btn w-6 h-6 rounded-full bg-[#F0F4F8] border border-[#27567B] ml-1 transition-transform hover:scale-110 active:scale-95"
-            title="குறிஞ்சிக் குளிர் (Cool Mountain Mist)"
-            aria-label="Cool Mist Theme"
-          ></button>
-        </div>
+        <select
+          class="theme-select hidden lg:block rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2 font-tamil-sans text-sm text-[var(--text-main)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--border-focus)]"
+          aria-label="வாசிப்பு வண்ணத்தைத் தேர்ந்தெடுக்கவும்"
+        >
+          {themes.map((theme) => <option value={theme.id}>{theme.name}</option>)}
+        </select>
 
         <!-- Mobile Search Button -->
         <button
@@ -117,7 +94,7 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
         <button
           type="button"
           id="mobile-menu-btn"
-          class="md:hidden p-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]"
+          class="lg:hidden p-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]"
           aria-label="Toggle Menu"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,30 +107,35 @@ const logoUrl = getUrl('arivupezhai-logo-sm.png');
   </div>
 
   <!-- Mobile Dropdown Menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--border-subtle)] bg-[var(--bg-page)] px-4 py-3 space-y-2 font-tamil-sans">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-[var(--border-subtle)] bg-[var(--bg-page)] px-4 py-3 space-y-2 font-tamil-sans">
     <a href={homeUrl} class="block px-3 py-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)]">
       நூல்கள் (Library)
     </a>
     <a href={thirukkuralUrl} class="block px-3 py-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)]">
       திருக்குறள் (Thirukkural)
     </a>
-    <a href={palettesUrl} class="block px-3 py-2 rounded-lg text-[var(--accent-primary)] font-semibold hover:bg-[var(--bg-surface)]">
-      வண்ணத் தீம்கள் (Reading Themes)
-    </a>
+    <label class="flex items-center justify-between gap-3 px-3 py-2 text-sm text-[var(--text-main)]">
+      <span>வாசிப்பு வண்ணம்</span>
+      <select class="theme-select rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-main)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--border-focus)]">
+        {themes.map((theme) => <option value={theme.id}>{theme.name}</option>)}
+      </select>
+    </label>
   </div>
 </header>
 
 <script>
-  // Theme Switching functionality
-  const themeButtons = document.querySelectorAll('.theme-btn');
-  themeButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const targetTheme = btn.getAttribute('data-set-theme');
-      if (targetTheme) {
-        document.documentElement.setAttribute('data-theme', targetTheme);
-        localStorage.setItem('arivupezhai_theme', targetTheme);
-        window.dispatchEvent(new CustomEvent('theme-changed', { detail: targetTheme }));
-      }
+  const themeSelects = document.querySelectorAll<HTMLSelectElement>('.theme-select');
+  function syncThemeSelects() {
+    const theme = document.documentElement.getAttribute('data-theme') || 'bronze';
+    themeSelects.forEach((select) => { select.value = theme; });
+  }
+  syncThemeSelects();
+  window.addEventListener('theme-changed', syncThemeSelects);
+  themeSelects.forEach((select) => {
+    select.addEventListener('change', () => {
+      document.documentElement.setAttribute('data-theme', select.value);
+      localStorage.setItem('arivupezhai_theme', select.value);
+      window.dispatchEvent(new CustomEvent('theme-changed', { detail: select.value }));
     });
   });
 
