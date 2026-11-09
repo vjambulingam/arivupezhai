@@ -4,6 +4,7 @@ import { getUrl } from '../utils/url.js';
 const homeUrl = getUrl('/');
 const thirukkuralUrl = getUrl('/book/thirukkural');
 const palettesUrl = getUrl('/palettes');
+const logoUrl = getUrl('arivupezhai-logo-sm.png');
 ---
 
 <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-page)]/90 border-b border-[var(--border-subtle)] transition-colors duration-200">
@@ -12,8 +13,15 @@ const palettesUrl = getUrl('/palettes');
       
       <!-- Brand Logo & Title -->
       <a href={homeUrl} class="group flex items-center space-x-3 transition-opacity hover:opacity-90">
-        <div class="w-10 h-10 rounded-xl bg-[var(--accent-primary)] flex items-center justify-center text-[var(--accent-contrast)] shadow-sm group-hover:scale-105 transition-transform">
-          <span class="font-tamil-serif font-bold text-xl leading-none">அ</span>
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-sm group-hover:scale-105 transition-transform border border-[var(--border-subtle)] shrink-0 bg-[var(--bg-surface)]">
+          <img
+            src={logoUrl}
+            alt="அறிவுப்பேழை"
+            class="w-full h-full object-cover"
+            width="44"
+            height="44"
+            loading="eager"
+          />
         </div>
         <div class="flex flex-col">
           <span class="font-tamil-serif font-bold text-xl sm:text-2xl text-[var(--text-main)] tracking-tight">

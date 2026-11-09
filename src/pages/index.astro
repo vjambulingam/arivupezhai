@@ -6,6 +6,7 @@ import { getUrl } from '../utils/url.js';
 
 const palettesUrl = getUrl('palettes');
 const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
+const logoUrl = getUrl('arivupezhai-logo-sm.png');
 ---
 
 <Layout
@@ -15,13 +16,13 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
   <!-- Hero Section -->
   <section class="relative pt-8 pb-12 sm:pt-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
     
-    <!-- Tagline pill -->
+    <!-- Hero Logo & Tagline pill -->
     <div class="flex items-center justify-center mb-6">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm text-xs font-tamil-sans text-[var(--text-muted)]">
-        <span class="w-2 h-2 rounded-full bg-[var(--accent-primary)]"></span>
-        <span>செவ்வியல் தமிழ் இணைய நூலகம்</span>
+      <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm text-xs font-tamil-sans text-[var(--text-muted)]">
+        <img src={logoUrl} alt="அறிவுப்பேழை" class="w-6 h-6 rounded-md object-cover shadow-2xs border border-[var(--border-subtle)]" />
+        <span class="font-semibold text-[var(--text-main)]">அறிவுப்பேழை</span>
         <span class="text-[var(--text-dim)]">•</span>
-        <span class="font-medium text-[var(--text-main)]">தூய வாசிப்பு மேடை</span>
+        <span>செவ்வியல் தமிழ் இணைய நூலகம்</span>
       </div>
     </div>
 
