@@ -4,40 +4,16 @@ import { getUrl } from '../utils/url.js';
 
 const palettes = [
   {
-    id: "parchment",
-    name_ta: "ஏட்டுச்சுவடி (Warm Parchment)",
-    tagline_ta: "பாரம்பரிய பனை ஓலை மற்றும் வெதுவெதுப்பான காகித வண்ணம்",
-    description_ta: "கண்களைக் கூச வைக்கும் தூய வெள்ளை நிறத்திற்குப் பதிலாக, பழங்கால ஏட்டுச்சுவடிகளை நினைவூட்டும் வெதுவெதுப்பான தந்த நிறம். பகல் வேளையில் நீண்ட நேரம் வாசிப்பதற்கு மிகவும் உகந்தது.",
-    bgHex: "#FAF6EE",
-    surfaceHex: "#F3EBDD",
-    textHex: "#231F1C",
-    accentHex: "#9E3A26",
-    accentName: "செம்மண் (Terracotta)",
-    badgeColor: "bg-[#EAE0CC] text-[#6A3824]"
-  },
-  {
     id: "bronze",
     name_ta: "செப்பேடு (Temple Bronze)",
     tagline_ta: "சோழர் காலச் செப்பேடுகள் மற்றும் கோயில் கற்சிற்பக் குளிர்ச்சி",
-    description_ta: "பழங்காலச் செப்பேடுகளின் செம்பு நிறமும், தஞ்சைப் பெருவுடையார் கோயில் மணற்கற்களின் மிதமான ஒளியும் கலந்த இதமான நிற அமைப்பு.",
+    description_ta: "பழங்காலச் செப்பேடுகளின் செம்பு நிறமும், தஞ்சைப் பெருவுடையார் கோயில் மணற்கற்களின் மிதமான ஒளியும் கலந்த இதமான நிற அமைப்பு. பகல் வாசிப்பிற்கு மிகச் சிறந்தது.",
     bgHex: "#F6F2EC",
     surfaceHex: "#EDE5DA",
     textHex: "#27221E",
     accentHex: "#AD5F1D",
     accentName: "செம்பு / வெண்கலம் (Bronze)",
     badgeColor: "bg-[#E4D7C5] text-[#7A3F0E]"
-  },
-  {
-    id: "sepia",
-    name_ta: "பழைய தாள் (Vintage Sepia)",
-    tagline_ta: "பழைய நூலகத்தின் வாசனை கமழும் மென்மையான செபியா",
-    description_ta: "நீல ஒளியை (Blue light) வெகுவாகக் குறைத்து, கண்களின் தசைக்கு ஓய்வளிக்கும் பழங்கால புத்தகத் தாள் நிறம். மாலை நேர வாசிப்பிற்கு தலைசிறந்தது.",
-    bgHex: "#EEE5D5",
-    surfaceHex: "#E3D7C3",
-    textHex: "#2B231D",
-    accentHex: "#833136",
-    accentName: "கருஞ்சிவப்பு (Madder Wine)",
-    badgeColor: "bg-[#D9C8AE] text-[#5E2024]"
   },
   {
     id: "night",
@@ -71,7 +47,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
 
 <Layout
   title="வாசிப்பு வண்ணத் தீம்கள் • அறிவுப்பேழை"
-  description="செவ்வியல் தமிழ் வாசகர்களுக்காக பிரத்யேகமாக வடிவமைக்கப்பட்ட 4 கண்-நல வண்ணத் தீம்களின் ஒப்பீட்டுப் பக்கம்."
+  description="செவ்வியல் தமிழ் வாசகர்களுக்காக பிரத்யேகமாக வடிவமைக்கப்பட்ட 3 கண்-நல வண்ணத் தீம்களின் ஒப்பீட்டுப் பக்கம்."
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
     
@@ -84,7 +60,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
         வாசகர் கண்-நல வண்ணத் தீம்கள்
       </h1>
       <p class="font-tamil-sans text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-        தமிழ் செவ்வியல் நூல்களைப் படிக்கும் போது வாசகர்கள் மணிக்கணக்கில் வாசிப்பில் மூழ்குவர். நிதிப்பேழையின் வண்ணத்தைப் பயன்படுத்தாமல், இதமான வாசிப்புக்காக 5 தனித்துவமான தீம்கள் (வெதுவெதுப்பான சுவடி முதல் குளுமையான குறிஞ்சி வரை) கீழே வடிவமைக்கப்பட்டுள்ளன.
+        தமிழ் செவ்வியல் நூல்களைப் படிக்கும் போது வாசகர்கள் மணிக்கணக்கில் வாசிப்பில் மூழ்குவர். இதமான நீடித்த வாசிப்புக்காக பிரத்யேகமாக தேர்ந்தெடுக்கப்பட்ட 3 தனித்துவமான தீம்கள் (செப்பேடு, இரவுக் கூடம், குறிஞ்சிக் குளிர்) கீழே வடிவமைக்கப்பட்டுள்ளன.
       </p>
       <p class="text-xs text-[var(--text-dim)] font-tamil-sans">
         ஒவ்வொரு வண்ணத்திலும் திருக்குறள் மாதிரி காட்டப்பட்டுள்ளது. நீங்கள் விரும்பும் தீமைத் தேர்ந்தெடுத்து தளத்திற்குப் பொருத்தலாம்.
@@ -95,7 +71,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
     <div class="max-w-xl mx-auto mb-10 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex items-center justify-between">
       <div class="flex items-center gap-3 font-tamil-sans">
         <span class="text-xs text-[var(--text-muted)]">தற்போது செயல்படும் தீம்:</span>
-        <span id="current-theme-name" class="font-semibold text-sm text-[var(--accent-primary)]">ஏட்டுச்சுவடி (Parchment)</span>
+        <span id="current-theme-name" class="font-semibold text-sm text-[var(--accent-primary)]">செப்பேடு (Temple Bronze)</span>
       </div>
       <a
         href={thirukkuralReaderUrl}
@@ -107,7 +83,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
     </div>
 
     <!-- Palettes Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {palettes.map((p, idx) => (
         <div
           class="palette-preview-card rounded-2xl border transition-all duration-300 overflow-hidden shadow-sm hover:shadow-xl"
@@ -115,29 +91,26 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
           data-palette-id={p.id}
         >
           <!-- Card Header -->
-          <div class="p-6 border-b" style={`border-color: ${p.accentHex}22; background-color: ${p.surfaceHex};`}>
+          <div class="p-5 border-b" style={`border-color: ${p.accentHex}22; background-color: ${p.surfaceHex};`}>
             <div class="flex items-center justify-between gap-3">
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2.5">
                 <span
-                  class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
+                  class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
                   style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
                 >
                   {idx + 1}
                 </span>
                 <div>
-                  <h3 class="font-tamil-serif font-bold text-xl sm:text-2xl" style={`color: ${p.textHex};`}>
+                  <h3 class="font-tamil-serif font-bold text-lg sm:text-xl" style={`color: ${p.textHex};`}>
                     {p.name_ta}
                   </h3>
-                  <p class="font-tamil-sans text-xs opacity-80 mt-0.5" style={`color: ${p.textHex};`}>
-                    {p.tagline_ta}
-                  </p>
                 </div>
               </div>
 
               <!-- Select Button -->
               <button
                 type="button"
-                class="select-theme-btn px-4 py-2 rounded-xl text-xs font-semibold shadow-sm transition-transform active:scale-95 cursor-pointer whitespace-nowrap"
+                class="select-theme-btn px-3 py-1.5 rounded-xl text-xs font-semibold shadow-sm transition-transform active:scale-95 cursor-pointer whitespace-nowrap"
                 data-theme-choice={p.id}
                 style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
               >
@@ -145,39 +118,38 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
               </button>
             </div>
 
+            <p class="font-tamil-sans text-xs opacity-80 mt-2" style={`color: ${p.textHex};`}>
+              {p.tagline_ta}
+            </p>
+
             <!-- Description -->
-            <p class="font-tamil-sans text-xs mt-3 leading-relaxed opacity-90" style={`color: ${p.textHex};`}>
+            <p class="font-tamil-sans text-xs mt-2.5 leading-relaxed opacity-90" style={`color: ${p.textHex};`}>
               {p.description_ta}
             </p>
 
             <!-- Color Swatches -->
-            <div class="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t text-[11px] font-mono opacity-90" style={`border-color: ${p.accentHex}20;`}>
-              <span class="text-xs font-tamil-sans opacity-70">வண்ணங்கள்:</span>
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.bgHex}; border-color: ${p.accentHex}30;`}>
-                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.bgHex};`}></span>
+            <div class="flex flex-wrap items-center gap-1.5 mt-3 pt-2.5 border-t text-[10px] font-mono opacity-90" style={`border-color: ${p.accentHex}20;`}>
+              <div class="flex items-center gap-1 px-1.5 py-0.5 rounded border" style={`background-color: ${p.bgHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2 h-2 rounded-full border border-black/10" style={`background-color: ${p.bgHex};`}></span>
                 <span>BG {p.bgHex}</span>
               </div>
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
-                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.surfaceHex};`}></span>
+              <div class="flex items-center gap-1 px-1.5 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2 h-2 rounded-full border border-black/10" style={`background-color: ${p.surfaceHex};`}></span>
                 <span>Surface {p.surfaceHex}</span>
               </div>
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
-                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.textHex};`}></span>
-                <span>Text {p.textHex}</span>
-              </div>
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
-                <span class="w-2.5 h-2.5 rounded-full border border-black/10" style={`background-color: ${p.accentHex};`}></span>
+              <div class="flex items-center gap-1 px-1.5 py-0.5 rounded border" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}30;`}>
+                <span class="w-2 h-2 rounded-full border border-black/10" style={`background-color: ${p.accentHex};`}></span>
                 <span>Accent {p.accentHex}</span>
               </div>
             </div>
           </div>
 
           <!-- Sample Classical Verses Preview Area -->
-          <div class="p-6 space-y-6">
+          <div class="p-5 space-y-4">
             
             <!-- Verse 1 -->
-            <div class="p-5 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
-              <div class="flex items-center justify-between text-xs mb-3 font-tamil-sans opacity-80">
+            <div class="p-4 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
+              <div class="flex items-center justify-between text-xs mb-2.5 font-tamil-sans opacity-80">
                 <span class="font-semibold" style={`color: ${p.accentHex};`}>அதிகாரம் 1 • கடவுள் வாழ்த்து</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-mono border" style={`border-color: ${p.accentHex}40; background-color: ${p.bgHex};`}>
                   குறள் 1
@@ -185,32 +157,32 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
               </div>
 
               <!-- Verse lines with generous line height -->
-              <div class="font-tamil-serif text-lg sm:text-xl font-medium tracking-wide tamil-verse-line">
+              <div class="font-tamil-serif text-base sm:text-lg font-medium tracking-wide tamil-verse-line">
                 <p>அகர முதல எழுத்தெல்லாம் ஆதி</p>
                 <p class="mt-1">பகவன் முதற்றே உலகு.</p>
               </div>
 
               <!-- Commentary / Meaning sample -->
-              <div class="mt-3 pt-3 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
+              <div class="mt-2.5 pt-2.5 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
                 <span class="font-semibold" style={`color: ${p.accentHex};`}>பொருள்:</span> எழுத்துக்கள் எல்லாம் அகரத்தை முதலாகக் கொண்டுள்ளன; அதுபோல உலகம் ஆதிபகவனை முதலாகக் கொண்டு இயங்குகிறது.
               </div>
             </div>
 
             <!-- Verse 2 -->
-            <div class="p-5 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
-              <div class="flex items-center justify-between text-xs mb-3 font-tamil-sans opacity-80">
+            <div class="p-4 rounded-xl border transition-all" style={`background-color: ${p.surfaceHex}; border-color: ${p.accentHex}25;`}>
+              <div class="flex items-center justify-between text-xs mb-2.5 font-tamil-sans opacity-80">
                 <span class="font-semibold" style={`color: ${p.accentHex};`}>அதிகாரம் 8 • அன்புடைமை</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-mono border" style={`border-color: ${p.accentHex}40; background-color: ${p.bgHex};`}>
                   குறள் 72
                 </span>
               </div>
 
-              <div class="font-tamil-serif text-lg sm:text-xl font-medium tracking-wide tamil-verse-line">
+              <div class="font-tamil-serif text-base sm:text-lg font-medium tracking-wide tamil-verse-line">
                 <p>அன்பிலார் எல்லாம் தமக்குரியர் அன்புடையார்</p>
                 <p class="mt-1">என்பும் உரியர் பிறர்க்கு.</p>
               </div>
 
-              <div class="mt-3 pt-3 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
+              <div class="mt-2.5 pt-2.5 border-t text-xs font-tamil-sans leading-relaxed opacity-85" style={`border-color: ${p.accentHex}15;`}>
                 <span class="font-semibold" style={`color: ${p.accentHex};`}>பொருள்:</span> அன்பில்லாதவர் எல்லாப் பொருளையும் தமக்கே உரியதாகக் கொள்வர்; அன்பு உடையவரோ தம் எலும்பையும் பிறர்க்கு உரிமையாக்குவர்.
               </div>
             </div>
@@ -218,11 +190,11 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
             <!-- Choose this theme button -->
             <button
               type="button"
-              class="select-theme-btn w-full py-3 rounded-xl text-sm font-semibold transition-transform active:scale-98 shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+              class="select-theme-btn w-full py-2.5 rounded-xl text-xs font-semibold transition-transform active:scale-98 shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
               data-theme-choice={p.id}
               style={`background-color: ${p.accentHex}; color: #FFFFFF;`}
             >
-              <span>இவ்வண்ணத்தை எனது விருப்பமாகத் தேர்ந்தெடு</span>
+              <span>இவ்வண்ணத்தைத் தேர்ந்தெடு</span>
               <span>✓</span>
             </button>
 
@@ -308,9 +280,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
 <script>
   // Theme selection logic
   const themeNames = {
-    parchment: "ஏட்டுச்சுவடி (Parchment)",
     bronze: "செப்பேடு (Temple Bronze)",
-    sepia: "பழைய தாள் (Vintage Sepia)",
     night: "இரவுக் கூடம் (Midnight Slate)",
     mist: "குறிஞ்சிக் குளிர் (Cool Mountain Mist)"
   };
@@ -345,7 +315,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
   });
 
   // Initialize display
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'parchment';
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'bronze';
   updateActiveThemeDisplay(currentTheme);
 
   // Playground controls

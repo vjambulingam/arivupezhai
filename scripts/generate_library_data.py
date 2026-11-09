@@ -135,8 +135,6 @@ thirukkural_book = {
     "period_en": "Post-Sangam Classical Era",
     "description_ta": "உலகப் பொதுமறை எனப் போற்றப்படும் திருக்குறள், திருவள்ளுவரால் அருளப்பட்ட உலகளாவிய வாழ்வியல் அறநூல். அறம், பொருள், இன்பம் என்ற முப்பால்களையும் 133 அதிகாரங்களில் 1,330 குறட்பாக்களாகத் திகழ்கிறது.",
     "description_en": "Celebrated worldwide as the Universal Veda of Humanity, Thirukkural synthesizes moral virtue, ethical governance, and profound human love into 1,330 immortal couplets across 133 chapters.",
-    "source_name": "Project Madurai (திட்ட மதுரை)",
-    "source_url": "https://projectmadurai.org/pm_etexts/utf8/pmuni0001.html",
     "is_available": True,
     "stats": {
         "paals_count": 3,
@@ -275,7 +273,7 @@ library_catalog = [
         "featured_quote": "யாதும் ஊரே யாவரும் கேளிர்; தீதும் நன்றும் பிறர்தர வாரா.",
         "description_ta": "பண்டைத் தமிழரின் வீரம், கொடை, நட்பு, பண்பாடு, மற்றும் மன்னர்களின் ஆட்சிச் சிறப்பை உரைக்கும் வரலாற்றுச் சுரங்கம்.",
         "is_available": False,
-        "badge_color": "sepia",
+        "badge_color": "bronze",
         "stats": {
             "subsections": 400,
             "verses": 400

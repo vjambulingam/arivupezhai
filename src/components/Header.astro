@@ -16,14 +16,9 @@ const palettesUrl = getUrl('/palettes');
           <span class="font-tamil-serif font-bold text-xl leading-none">அ</span>
         </div>
         <div class="flex flex-col">
-          <div class="flex items-center gap-2">
-            <span class="font-tamil-serif font-bold text-xl sm:text-2xl text-[var(--text-main)] tracking-tight">
-              அறிவுப்பேழை
-            </span>
-            <span class="hidden md:inline-block text-[10px] font-medium px-2 py-0.5 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)] border border-[var(--border-subtle)]">
-              நிதிப்பேழை சகோதரி
-            </span>
-          </div>
+          <span class="font-tamil-serif font-bold text-xl sm:text-2xl text-[var(--text-main)] tracking-tight">
+            அறிவுப்பேழை
+          </span>
           <span class="text-xs text-[var(--text-muted)] font-tamil-sans hidden sm:block">
             செவ்வியல் தமிழ் இணைய நூலகம்
           </span>
@@ -77,24 +72,10 @@ const palettesUrl = getUrl('/palettes');
         <div class="flex items-center bg-[var(--bg-surface)] p-1 rounded-full border border-[var(--border-subtle)] shadow-inner" title="வாசிப்பு வண்ணத்தை மாற்றுக">
           <button
             type="button"
-            data-set-theme="parchment"
-            class="theme-btn w-6 h-6 rounded-full bg-[#FAF6EE] border border-[#DFD3BE] transition-transform hover:scale-110 active:scale-95"
-            title="ஏட்டுச்சுவடி (Parchment)"
-            aria-label="Parchment Theme"
-          ></button>
-          <button
-            type="button"
             data-set-theme="bronze"
-            class="theme-btn w-6 h-6 rounded-full bg-[#F6F2EC] border border-[#AD5F1D] ml-1 transition-transform hover:scale-110 active:scale-95"
+            class="theme-btn w-6 h-6 rounded-full bg-[#F6F2EC] border border-[#AD5F1D] transition-transform hover:scale-110 active:scale-95"
             title="செப்பேடு (Temple Bronze)"
             aria-label="Bronze Theme"
-          ></button>
-          <button
-            type="button"
-            data-set-theme="sepia"
-            class="theme-btn w-6 h-6 rounded-full bg-[#EEE5D5] border border-[#CABAA0] ml-1 transition-transform hover:scale-110 active:scale-95"
-            title="பழைய தாள் (Vintage Sepia)"
-            aria-label="Sepia Theme"
           ></button>
           <button
             type="button"
@@ -151,12 +132,6 @@ const palettesUrl = getUrl('/palettes');
     <a href={palettesUrl} class="block px-3 py-2 rounded-lg text-[var(--accent-primary)] font-semibold hover:bg-[var(--bg-surface)]">
       வண்ணத் தீம்கள் (Reading Themes)
     </a>
-    <div class="pt-2 border-t border-[var(--border-subtle)] text-xs text-[var(--text-muted)] flex items-center justify-between">
-      <span>நிதிப்பேழையின் சகோதரத் தளம்</span>
-      <a href="https://nidhipezhai.com" target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] underline">
-        nidhipezhai.com ↗
-      </a>
-    </div>
   </div>
 </header>
 

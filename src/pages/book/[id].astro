@@ -61,14 +61,6 @@ const startReadingUrl = getUrl('book/thirukkural/read?athikaram=1');
           <p class="font-tamil-sans text-sm sm:text-base text-[var(--text-main)] leading-relaxed max-w-2xl tamil-prose">
             {book.description_ta}
           </p>
-
-          <!-- Source Credit -->
-          <div class="text-xs text-[var(--text-muted)] font-tamil-sans flex items-center gap-2">
-            <span>மூல உரை:</span>
-            <a href={book.source_url} target="_blank" rel="noopener noreferrer" class="text-[var(--accent-primary)] hover:underline">
-              {book.source_name} ↗
-            </a>
-          </div>
         </div>
 
         <!-- Call to Action Box & Stats -->

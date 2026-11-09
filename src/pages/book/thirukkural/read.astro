@@ -245,19 +245,35 @@ const homeUrl = getUrl('/');
             குறள் ${k.number}
           </span>
 
-          <!-- Copy Button -->
-          <button
-            type="button"
-            class="copy-kural-btn p-1.5 rounded-lg text-[var(--text-dim)] hover:text-[var(--accent-primary)] hover:bg-[var(--bg-muted)] transition-colors cursor-pointer"
-            data-kural="${k.number}"
-            data-text="${k.line1}\n${k.line2}"
-            title="குறட்பாவை நகலெடு (Copy)"
-            aria-label="Copy verse"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-            </svg>
-          </button>
+          <div class="flex items-center gap-1">
+            <!-- Share Button (Web Share API for WhatsApp/Social) -->
+            <button
+              type="button"
+              class="share-kural-btn p-1.5 rounded-lg text-[var(--text-dim)] hover:text-[var(--accent-primary)] hover:bg-[var(--bg-muted)] transition-colors cursor-pointer"
+              data-kural="${k.number}"
+              data-text="${k.line1}\n${k.line2}\n\n— திருக்குறள் (${data.name_ta}, குறள் ${k.number})"
+              title="பகிர் (Share on WhatsApp/Social)"
+              aria-label="Share verse"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+
+            <!-- Copy Button -->
+            <button
+              type="button"
+              class="copy-kural-btn p-1.5 rounded-lg text-[var(--text-dim)] hover:text-[var(--accent-primary)] hover:bg-[var(--bg-muted)] transition-colors cursor-pointer"
+              data-kural="${k.number}"
+              data-text="${k.line1}\n${k.line2}"
+              title="குறட்பாவை நகலெடு (Copy)"
+              aria-label="Copy verse"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Couplet Text (Generous line height & padding to prevent diacritic clipping) -->
@@ -277,6 +293,26 @@ const homeUrl = getUrl('/');
         navigator.clipboard.writeText(text).then(() => {
           showToast('குறள் நகலெடுக்கப்பட்டது (Copied)');
         });
+      });
+    });
+
+    // Attach Share Handlers (Web Share API)
+    document.querySelectorAll('.share-kural-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-text') || '';
+        const kNum = btn.getAttribute('data-kural') || '';
+        const shareUrl = `${window.location.origin}${window.location.pathname}?athikaram=${currentAthikaramNum}#kural-${kNum}`;
+        if (navigator.share) {
+          navigator.share({
+            title: `திருக்குறள் - குறள் ${kNum}`,
+            text: text,
+            url: shareUrl
+          }).catch(() => {});
+        } else {
+          navigator.clipboard.writeText(`${text}\n${shareUrl}`).then(() => {
+            showToast('குறள் இணைப்புடன் நகலெடுக்கப்பட்டது (Copied with link)');
+          });
+        }
       });
     });
 

@@ -3,29 +3,13 @@
 /* 
   அறிவுப்பேழை - Classical Tamil Digital Library Theme System
   Curated specifically for prolonged, eye-strain-free reading.
+  Themes: 
+    1. செப்பேடு (Temple Bronze - Default)
+    2. இரவுக் கூடம் (Midnight Slate)
+    3. குறிஞ்சிக் குளிர் (Cool Mountain Mist)
 */
 
 :root,
-[data-theme="parchment"] {
-  --theme-id: "parchment";
-  --bg-page: #FAF6EE;
-  --bg-surface: #F3EBDD;
-  --bg-surface-hover: #ECE2D0;
-  --bg-muted: #EBE1CF;
-  --border-subtle: #DFD3BE;
-  --border-focus: #9E3A26;
-  --text-main: #231F1C;
-  --text-muted: #6B6258;
-  --text-dim: #8E8478;
-  --accent-primary: #9E3A26;
-  --accent-hover: #832F1D;
-  --accent-contrast: #FFFFFF;
-  --accent-soft: #F6DFD9;
-  --badge-bg: #EAE0CC;
-  --badge-text: #6A3824;
-  --card-shadow: 0 4px 20px -2px rgba(60, 40, 20, 0.05);
-}
-
 [data-theme="bronze"] {
   --theme-id: "bronze";
   --bg-page: #F6F2EC;
@@ -44,26 +28,6 @@
   --badge-bg: #E4D7C5;
   --badge-text: #7A3F0E;
   --card-shadow: 0 4px 20px -2px rgba(60, 45, 15, 0.05);
-}
-
-[data-theme="sepia"] {
-  --theme-id: "sepia";
-  --bg-page: #EEE5D5;
-  --bg-surface: #E3D7C3;
-  --bg-surface-hover: #D7C9B2;
-  --bg-muted: #D8CAAe;
-  --border-subtle: #CABAA0;
-  --border-focus: #833136;
-  --text-main: #2B231D;
-  --text-muted: #685A4E;
-  --text-dim: #8A7B6D;
-  --accent-primary: #833136;
-  --accent-hover: #692429;
-  --accent-contrast: #FFFFFF;
-  --accent-soft: #F2DCDE;
-  --badge-bg: #D9C8AE;
-  --badge-text: #5E2024;
-  --card-shadow: 0 4px 20px -2px rgba(45, 30, 20, 0.06);
 }
 
 [data-theme="night"] {

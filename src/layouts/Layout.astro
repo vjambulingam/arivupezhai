@@ -19,7 +19,7 @@ const faviconUrl = getUrl('favicon.svg');
 ---
 
 <!doctype html>
-<html lang="ta" data-theme="parchment">
+<html lang="ta" data-theme="bronze">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,14 +41,15 @@ const faviconUrl = getUrl('favicon.svg');
       (function () {
         try {
           const savedTheme = localStorage.getItem('arivupezhai_theme');
-          if (savedTheme) {
+          const validThemes = ['bronze', 'night', 'mist'];
+          if (savedTheme && validThemes.includes(savedTheme)) {
             document.documentElement.setAttribute('data-theme', savedTheme);
           } else {
             // Check system preference
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
               document.documentElement.setAttribute('data-theme', 'night');
             } else {
-              document.documentElement.setAttribute('data-theme', 'parchment');
+              document.documentElement.setAttribute('data-theme', 'bronze');
             }
           }
         } catch (e) {}
