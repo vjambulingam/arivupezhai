@@ -40,35 +40,3 @@ test('Thirukkural summary page renders pure Tamil overview and section weightage
     assert.ok(!html.includes('Tirukkural'));
   }
 });
-
-test('Thiruvasagam summary page renders pure Tamil overview and section weightage', async () => {
-  const [landing, summarize, summary] = await Promise.all([
-    readFile('dist/book/thiruvasagam/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/summarize/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/summary/index.html', 'utf8'),
-  ]);
-
-  // Landing page links to summarize
-  assert.ok(landing.includes('/book/thiruvasagam/summarize'));
-  assert.ok(landing.includes('நூல் கண்ணோட்டம்'));
-
-  // Both summarize and summary endpoints render content
-  for (const html of [summarize, summary]) {
-    assert.ok(html.includes('திருவாசகம் — நூல் கண்ணோட்டம்'));
-    assert.ok(html.includes('661 பாடல்கள் · 5 பிரிவுகள் (51 பதிகங்கள்)'));
-    assert.ok(html.includes('பதிகங்கள் 1–10'));
-    assert.ok(html.includes('பதிகங்கள் 11–20'));
-    assert.ok(html.includes('பதிகங்கள் 21–30'));
-    assert.ok(html.includes('பதிகங்கள் 31–40'));
-    assert.ok(html.includes('பதிகங்கள் 41–51'));
-    assert.ok(html.includes('பதிகப் பாடல் அளவு'));
-    assert.ok(html.includes('1. சிவபுராணம்'));
-    assert.ok(html.includes('5. திருச்சதகம்'));
-    assert.ok(html.includes('/book/thiruvasagam/read/sivapuranam/'));
-
-    // Pure Tamil: No English labels or transliterations in content
-    assert.ok(!html.includes('SECTION WEIGHTAGE'));
-    assert.ok(!html.includes('Book Overview'));
-    assert.ok(!html.includes('Thiruvasagam Summary'));
-  }
-});

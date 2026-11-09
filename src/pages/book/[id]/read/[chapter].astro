@@ -10,7 +10,8 @@ export function getStaticPaths() {
     book.sections.flatMap((section) => {
       const paths = [{ params: { id: book.slug, chapter: section.id }, props: { book, section, legacy: false } }];
       seen.add(`${book.slug}/${section.id}`);
-      const legacyIds = [book.id, book.catalog_id, ...(book.aliases || [])].filter((val) => typeof val === 'string' && val.trim() && /^[a-zA-Z0-9_-]+$/.test(val));
+      const legacyIds = [book.id, book.catalog_id, ...(book.slug === 'thiruvasagam' ? ['AP007'] : [])]
+        .filter((val) => typeof val === 'string' && /^AP\d+$/.test(val.trim()));
       for (const legacyId of legacyIds) {
         const key = `${legacyId}/${section.id}`;
         if (!seen.has(key)) {

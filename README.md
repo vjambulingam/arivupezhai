@@ -97,16 +97,6 @@ aliases:
 - Search uses Unicode NFC normalization. The index is generated at build time; its entries include every book, section and passage.
 - Book cards show an approximate time for the whole book, calculated from passage text at 150 words per minute and rounded up to at least one minute. Actual reading time varies.
 
-### Project Madurai catalog reference
-
-[`src/data/project-madurai-catalog.json`](src/data/project-madurai-catalog.json) is a snapshot of the titles, authors, genres, work numbers, PDF links and Unicode HTML links in [Project Madurai's list of works](https://projectmadurai.org/pmworks.html). Each row has its own sequential `id` (`AP001`, `AP002`, ...), because a Project Madurai work number can cover multiple titles. Link fields are arrays, empty when the source has no link. Empty authors are recorded as `null`; source metadata is not independently verified.
-
-Keep assigned IDs stable: do not renumber or regenerate them based on source row order when the catalog changes. Assign new entries the next unused number. Use the catalog ID in a new book's frontmatter where appropriate. Books already published with another ID, such as `thirukkural`, should retain it to preserve existing links; don't add them again with a second ID. The book template's `pdf` field accepts one URL, so select the appropriate link from `pdf_links` when adding a book.
-
-AP035 includes verses 1155–1418 from its linked PDF because the linked HTML omits them. It remains `pending` because the PDF transcription contains corrupted characters and needs proofreading; passages with detected Latin characters are flagged, but other errors may remain. AP036 deliberately publishes its two linked HTML sources separately, and AP037 and AP038 deliberately publish overlapping source editions as separate catalog entries.
-
-This reference file is not imported into the website or search index, and does not contain book texts. To publish a book, follow the template instructions above and check the source's terms and attribution requirements.
-
 ---
 
 ## 🛠️ தொழில்நுட்பக் கட்டமைப்பு (Tech Stack)

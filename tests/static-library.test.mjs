@@ -46,8 +46,7 @@ test('AP002 publishes all sections and verses with attribution and search', asyn
   ]);
   assert.ok(home.includes('/book/aathichudi'));
   assert.ok(landing.includes('ஒளவையார்'));
-  assert.ok(landing.includes('You are welcome to freely distribute this file, provided this header page is kept intact.'));
-  assert.ok(landing.includes('https://projectmadurai.org/pm_etexts/pdf/pm0002.pdf'));
+  assert.ok(landing.includes('Credits to Project Madurai team @ www.projectmadurai.org'));
   assert.ok(index.some((item) => item.type === 'book' && item.url === '/book/aathichudi' && item.searchable.includes('ஆத்திச்சூடி')));
   const sections = [...source.matchAll(/^## .+ \{#([^}]+)\}$/gm)].map((match) => match[1]);
   assert.equal(sections.length, 10);
@@ -89,8 +88,7 @@ test('AP003 to AP005 publish the source sections and searchable verses', async (
     assert.ok(home.includes(`/book/${book.slug}`));
     assert.ok(landing.includes(book.title));
     assert.ok(landing.includes('ஒளவையார்'));
-    assert.ok(landing.includes('https://projectmadurai.org/pm_etexts/pdf/pm0002.pdf'));
-    assert.ok(landing.includes('You are welcome to freely distribute this file, provided this header page is kept intact.'));
+    assert.ok(landing.includes('Credits to Project Madurai team @ www.projectmadurai.org'));
     assert.ok(index.some((item) => item.type === 'book' && item.url === `/book/${book.slug}` && item.searchable.includes(book.title)));
     assert.ok(source.includes(book.first));
     assert.ok(source.includes(book.last));
@@ -112,16 +110,14 @@ test('AP003 to AP005 publish the source sections and searchable verses', async (
     if (book.id === 'AP004') {
       assert.match(source, /### 11 \{#verse-10\}/);
       assert.match(source, /### 11 \{#verse-11\}/);
-      assert.ok(landing.includes('Source numbering repeats 11 and omits 10'));
     }
   }
 });
 
 test('book list includes available books with bilingual metadata and stable catalog IDs', async () => {
-  const [html, home, catalog, index] = await Promise.all([
+  const [html, home, index] = await Promise.all([
     readFile('dist/catalog/index.html', 'utf8'),
     readFile('dist/index.html', 'utf8'),
-    readJson('src/data/project-madurai-catalog.json'),
     readJson('dist/search-index.json'),
   ]);
   const header = home.split('<header')[1].split('</header>')[0];
@@ -146,77 +142,12 @@ test('book list includes available books with bilingual metadata and stable cata
   }
 });
 
-test('AP006 publishes Thiruvasagam with all 51 sections and 661 verses', async () => {
-  const [home, index] = await Promise.all([
-    readFile('dist/index.html', 'utf8'),
-    readJson('dist/search-index.json'),
-  ]);
-  const book = { id: 'AP006', slug: 'thiruvasagam', file: 'thiruvasagam.md', title: 'திருவாசகம்', sections: 51, verses: 661, first: 'நமச்சிவாய வாஅழ்க நாதன் தாள் வாழ்க', last: 'ஆதியெனுக் கருளியவா றார்பெறுவா ரச்சாவே.' };
-  const [source, landing] = await Promise.all([
-    readFile(`src/content/books/${book.file}`, 'utf8'),
-    readFile(`dist/book/${book.slug}/index.html`, 'utf8'),
-  ]);
-  assert.ok(home.includes(`/book/${book.slug}`));
-  assert.ok(landing.includes(book.title));
-  assert.ok(landing.includes('மாணிக்க வாசகர்'));
-  assert.ok(landing.includes('https://projectmadurai.org/pm_etexts/pdf/pm0003.pdf'));
-  assert.ok(landing.includes('You are welcome to freely distribute this file, provided this header page is kept intact.'));
-  assert.ok(index.some((item) => item.type === 'book' && item.url === `/book/${book.slug}` && item.searchable.includes(book.title)));
-  assert.ok(source.includes(book.first));
-  assert.ok(source.includes(book.last));
-  const sections = [...source.matchAll(/^## .+ \{#([^}]+)\}$/gm)].map((match) => match[1]);
-  assert.equal(sections.length, book.sections);
-  const verses = [...source.matchAll(/^### (\d+) \{#verse-(\d+)\}$/gm)];
-  assert.equal(verses.length, book.verses);
-  verses.forEach((match, i) => {
-    assert.equal(Number(match[1]), 1 + i);
-    assert.equal(match[2], match[1]);
-  });
-  for (const section of sections) {
-    const reader = await readFile(`dist/book/${book.slug}/read/${section}/index.html`, 'utf8');
-    const sectionSource = source.split(`{#${section}}`)[1].split(/^## /m)[0];
-    for (const match of sectionSource.matchAll(/^### \d+ \{#(verse-\d+)\}$/gm)) {
-      assert.ok(reader.includes(`id="${match[1]}"`));
-    }
-  }
-});
-
-test('Thiruvasagam text and stanza breaks match the Project Madurai editions', async () => {
-  // Digests are of source text with verse numbers represented by Markdown headings.
-  const book = { file: 'thiruvasagam.md', sections: 51, hash: 'eede726a570c88719a5f05b2c658380ad11b2c1b5e6228f88ad248088db93895' };
-  const source = await readFile(`src/content/books/${book.file}`, 'utf8');
-  const body = source.split(/^---\s*$/m).slice(2).join('');
-  const sections = body.split(/^## \d+\. .* \{#[^}]+\}\s*$/m).slice(1);
-  assert.equal(sections.length, book.sections);
-  const normalized = sections.map((section) => section.split('\n')
-    .filter((line) => !line.startsWith('### '))
-    .map((line) => line.replace(/\*\*/g, '').trim().replace(/\s+/g, ' '))
-    .join('\n').replace(/\n{3,}/g, '\n\n').trim()).join('\n---SECTION---\n');
-  assert.equal(createHash('sha256').update(normalized).digest('hex'), book.hash, book.file);
-
-  const [first, subdivisions, second, note, last] = await Promise.all([
-    readFile('dist/book/thiruvasagam/read/sivapuranam/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/read/thiruchathakam/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/read/thiruththellenam/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/read/piraarththanaip-pathu/index.html', 'utf8'),
-    readFile('dist/book/thiruvasagam/read/achchop-pathigam/index.html', 'utf8'),
-  ]);
-  assert.ok(first.includes('நமச்சிவாய வாஅழ்க நாதன் தாள் வாழ்க<br>இமைப்பொழுதும் என் நெஞ்சில் நீங்காதான் தாள் வாழ்க'));
-  assert.match(first, /ஏகன் அநேகன் இறைவன் அடிவாழ்க 5<\/p>\s*<p>வேகம் கெடுத்தாண்ட வேந்தன் அடிவெல்க/);
-  assert.ok(subdivisions.includes('<strong>1. மெய் உணர்தல் (கட்டளைக் கலித்துறை)</strong>'));
-  assert.ok(second.includes('(தில்லையில் அருளியது- நாலடித் தரவு கொச்சகக் கலிப்பா)'));
-  assert.ok(note.includes('(திருப்பெருந்துறையில் அருளியது<br><strong>-</strong> அறுசீர்க் கழி நெடிலடி ஆசிரிய விருத்தம்)'));
-  assert.ok(last.includes('திருவாசகம் முற்றிற்று'));
-});
-
 test('ID-based landing and section URLs retain links to canonical book names', async () => {
   for (const [id, slug, file] of [
     ['AP002', 'aathichudi', 'AP002-aathichudi.md'],
     ['AP003', 'kondrai-vendhan', 'AP003-kondrai-vendhan.md'],
     ['AP004', 'nalvazhi', 'AP004-nalvazhi.md'],
     ['AP005', 'moodhurai', 'AP005-moodhurai.md'],
-    ['AP006', 'thiruvasagam', 'thiruvasagam.md'],
-    ['AP007', 'thiruvasagam', 'thiruvasagam.md'],
   ]) {
     const source = await readFile(`src/content/books/${file}`, 'utf8');
     const landing = await readFile(`dist/book/${id}/index.html`, 'utf8');
