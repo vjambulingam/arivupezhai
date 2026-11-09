@@ -50,6 +50,18 @@ const palettes = [
     accentHex: "#DE7851",
     accentName: "கனல் நிறம் (Amber Terracotta)",
     badgeColor: "bg-[#2C2F37] text-[#F0A588]"
+  },
+  {
+    id: "mist",
+    name_ta: "குறிஞ்சிக் குளிர் (Cool Mountain Mist)",
+    tagline_ta: "குறிஞ்சி மலையின் பனிமூட்டமும் கண்களுக்குக் குளுமையூட்டும் நீல-சாம்பல் நிறமும்",
+    description_ta: "வெதுவெதுப்பான நிறங்களுக்குப் பதிலாக, தெளிவான நீல-சாம்பல் குளுமையும் (Cool Slate & Pearl), தூய நள்ளிரவு மை எழுத்துக்களும் கொண்டது. கண்களை அமைதிப்படுத்தி, கூர்மையான வாசிப்புத் தெளிவைத் தரும்.",
+    bgHex: "#F0F4F8",
+    surfaceHex: "#E4ECF3",
+    textHex: "#18222E",
+    accentHex: "#27567B",
+    accentName: "குறிஞ்சி நீலம் (Kurinji Slate Blue)",
+    badgeColor: "bg-[#D6E3EF] text-[#194060]"
   }
 ];
 
@@ -72,7 +84,7 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
         வாசகர் கண்-நல வண்ணத் தீம்கள்
       </h1>
       <p class="font-tamil-sans text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-        தமிழ் செவ்வியல் நூல்களைப் படிக்கும் போது வாசகர்கள் மணிக்கணக்கில் வாசிப்பில் மூழ்குவர். நிதிப்பேழையின் வண்ணத்தைப் பயன்படுத்தாமல், இதமான வாசிப்புக்காக 4 தனித்துவமான தீம்கள் கீழே வடிவமைக்கப்பட்டுள்ளன.
+        தமிழ் செவ்வியல் நூல்களைப் படிக்கும் போது வாசகர்கள் மணிக்கணக்கில் வாசிப்பில் மூழ்குவர். நிதிப்பேழையின் வண்ணத்தைப் பயன்படுத்தாமல், இதமான வாசிப்புக்காக 5 தனித்துவமான தீம்கள் (வெதுவெதுப்பான சுவடி முதல் குளுமையான குறிஞ்சி வரை) கீழே வடிவமைக்கப்பட்டுள்ளன.
       </p>
       <p class="text-xs text-[var(--text-dim)] font-tamil-sans">
         ஒவ்வொரு வண்ணத்திலும் திருக்குறள் மாதிரி காட்டப்பட்டுள்ளது. நீங்கள் விரும்பும் தீமைத் தேர்ந்தெடுத்து தளத்திற்குப் பொருத்தலாம்.
@@ -299,7 +311,8 @@ const thirukkuralReaderUrl = getUrl('book/thirukkural/read?athikaram=1');
     parchment: "ஏட்டுச்சுவடி (Parchment)",
     bronze: "செப்பேடு (Temple Bronze)",
     sepia: "பழைய தாள் (Vintage Sepia)",
-    night: "இரவுக் கூடம் (Midnight Slate)"
+    night: "இரவுக் கூடம் (Midnight Slate)",
+    mist: "குறிஞ்சிக் குளிர் (Cool Mountain Mist)"
   };
 
   function updateActiveThemeDisplay(theme: string) {
