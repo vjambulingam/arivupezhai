@@ -1,0 +1,149 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type { Book } from '../../utils/books';
+import { getUrl } from '../../utils/url.js';
+import { chapterUrl } from '../../utils/reader.js';
+
+interface Props { book: Book }
+const { book } = Astro.props;
+const groups = [...new Set(book.sections.flatMap((section) =>
+  section.ancestors.map((_, index) => section.ancestors.slice(0, index + 1).join(' / '))
+))];
+
+function formatInfo(text: string): string {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return escaped.replace(
+    /(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="underline text-[var(--accent-primary)] hover:opacity-80">$1</a>'
+  );
+}
+---
+
+<Layout title={`${book.title_ta} • அறிவுப்பேழை`} description={book.description_ta}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <nav class="text-xs font-tamil-sans text-[var(--text-muted)] mb-6">
+      <a href={getUrl('/')} class="hover:underline">முகப்பு</a> / {book.title_ta}
+    </nav>
+    <section class="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm">
+      <div class="flex flex-wrap gap-2 text-xs">
+        <span class="px-3 py-1 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)]">{book.genre_ta}</span>
+        {book.category_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.category_ta}</span>}
+        {book.period_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.period_ta}</span>}
+      </div>
+      <h1 class="mt-4 font-tamil-serif font-bold text-4xl sm:text-5xl [overflow-wrap:anywhere]">{book.title_ta}</h1>
+      <p class="mt-2 text-[var(--text-muted)]">ஆசிரியர்: {book.author_ta}{book.author_en && ` • ${book.author_en}`}</p>
+      <p class="mt-4 tamil-prose max-w-3xl leading-relaxed">{book.description_ta}</p>
+      <div class="flex flex-wrap gap-3 mt-6 text-sm">
+        <a href={chapterUrl(book.slug, book.sections[0].id)} class="px-5 py-3 rounded-xl bg-[var(--accent-primary)] hover:bg-[var(--accent-hover)] text-[var(--accent-contrast)] font-semibold shadow-sm transition-all active:scale-95 inline-flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <span>வாசிக்கத் தொடங்குக</span>
+        </a>
+        <a href="#athikarams-section" class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">
+          பகுதிகள் ({book.sections.length})
+        </a>
+        {['thirumanthiram', 'thirukkural', 'thiruvasagam'].includes(book.slug) && (
+          <a href={getUrl(`book/${book.slug}/summarize`)} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors inline-flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-[var(--accent-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            <span>நூல் கண்ணோட்டம்</span>
+          </a>
+        )}
+        {book.pdf && <a href={book.pdf.startsWith('/') ? getUrl(book.pdf) : book.pdf} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">PDF</a>}
+        {book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">EPUB</a>}
+      </div>
+
+      <!-- Book Info (Acknowledgement / Attribution / License) -->
+      {book.acknowledgement && (
+        <div class="mt-8 pt-6 border-t border-[var(--border-subtle)]" id="book-info">
+          <div class="flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-[var(--bg-page)]/70 border border-[var(--border-subtle)]">
+            <div class="w-8 h-8 rounded-xl bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] flex items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 mb-1.5 font-tamil-sans">
+                <h2 class="font-bold text-sm text-[var(--text-main)]">தகவல் (Info)</h2>
+                <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border-subtle)]">பதிப்பு &amp; உரை மூலம்</span>
+              </div>
+              <p class="font-tamil-sans text-xs sm:text-sm text-[var(--text-muted)] whitespace-pre-line leading-relaxed" set:html={formatInfo(book.acknowledgement)} />
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+
+    <section id="athikarams-section" class="mt-12">
+      <h2 class="font-tamil-serif font-bold text-3xl">நூல் பகுதிகள் ({book.sections.length})</h2>
+      <label class="block mt-4">
+        <span class="sr-only">பகுதியைத் தேடுக</span>
+        <input id="section-filter-input" type="search" placeholder="பகுதியைத் தேடுக..." class="w-full sm:max-w-sm px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-sm" />
+      </label>
+      {groups.length > 0 && (
+        <div class="flex flex-wrap gap-2 mt-4 font-tamil-sans text-xs" aria-label="பகுதி வடிகட்டி">
+          <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--accent-primary)] text-[var(--accent-contrast)]" data-group="" aria-pressed="true">அனைத்தும்</button>
+          {groups.map((group) => (
+            <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)]" data-group={group} aria-pressed="false">{group}</button>
+          ))}
+        </div>
+      )}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+        {book.sections.map((section) => (
+          <a
+            href={chapterUrl(book.slug, section.id)}
+            data-section-name={`${section.title} ${section.ancestors.join(' / ')}`}
+            data-section-group={section.ancestors.join(' / ')}
+            class="section-card p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] flex flex-col justify-between transition-colors group"
+          >
+            <div>
+              <h3 class="font-tamil-serif font-bold text-lg [overflow-wrap:anywhere] group-hover:text-[var(--accent-primary)] transition-colors">{section.title}</h3>
+              {section.ancestors.length > 0 && <p class="text-xs text-[var(--text-muted)] mt-1">{section.ancestors.join(' / ')}</p>}
+            </div>
+            <div class="mt-4 pt-3 border-t border-[var(--border-subtle)]/60 flex items-center justify-between text-xs font-tamil-sans">
+              <span class="inline-flex items-center gap-1.5 text-[var(--text-muted)]">
+                <svg class="w-3.5 h-3.5 text-[var(--text-dim)] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>{section.passages.length} {section.passages.length === 1 ? 'பாடல்' : 'பாடல்கள்'}</span>
+              </span>
+              <span class="text-[var(--accent-primary)] font-medium group-hover:translate-x-0.5 transition-transform">வாசிக்க →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  const search = document.querySelector<HTMLInputElement>('#section-filter-input');
+  const cards = document.querySelectorAll<HTMLElement>('.section-card');
+  const filters = document.querySelectorAll<HTMLButtonElement>('.section-filter');
+  let selectedGroup = '';
+  function filterSections() {
+    const query = (search?.value || '').normalize('NFC').toLowerCase().trim();
+    cards.forEach((card) => {
+      const title = (card.dataset.sectionName || '').normalize('NFC').toLowerCase();
+      const group = card.dataset.sectionGroup || '';
+      card.hidden = !title.includes(query) || Boolean(selectedGroup && group !== selectedGroup && !group.startsWith(`${selectedGroup} / `));
+    });
+  }
+  search?.addEventListener('input', filterSections);
+  filters.forEach((button) => button.addEventListener('click', () => {
+    selectedGroup = button.dataset.group || '';
+    filters.forEach((filter) => {
+      const active = filter === button;
+      filter.setAttribute('aria-pressed', String(active));
+      filter.classList.toggle('bg-[var(--accent-primary)]', active);
+      filter.classList.toggle('text-[var(--accent-contrast)]', active);
+      filter.classList.toggle('bg-[var(--bg-surface)]', !active);
+    });
+    filterSections();
+  }));
+</script>

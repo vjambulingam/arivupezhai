@@ -4,17 +4,18 @@ import { getUrl } from '../utils/url.js';
 interface Props {
   book: {
     id: string;
+    slug?: string;
     title_ta: string;
     title_en: string;
     author_ta: string;
     author_en: string;
     genre_ta: string;
     category_ta: string;
-    period_ta: string;
     subsections_label: string;
     featured_quote: string;
     description_ta: string;
     is_available: boolean;
+    reading_minutes?: number;
     stats: {
       subsections: number;
       verses: number;
@@ -24,8 +25,8 @@ interface Props {
 }
 
 const { book } = Astro.props;
-const landingUrl = getUrl(`book/${book.id}`);
-const readerUrl = book.sections?.length ? getUrl(`book/${book.id}/read/${book.sections[0].id}/`) : landingUrl;
+const landingUrl = getUrl(`book/${book.slug ?? book.id}`);
+const readerUrl = book.sections?.length ? getUrl(`book/${book.slug ?? book.id}/read/${book.sections[0].id}/`) : landingUrl;
 ---
 
 <div class="group relative flex flex-col justify-between rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 transition-all duration-200 hover:shadow-xl hover:border-[var(--accent-primary)]/40 hover:-translate-y-1">
@@ -37,17 +38,14 @@ const readerUrl = book.sections?.length ? getUrl(`book/${book.id}/read/${book.se
         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium font-tamil-sans bg-[var(--badge-bg)] text-[var(--badge-text)] border border-[var(--border-subtle)]">
           {book.genre_ta}
         </span>
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium font-tamil-sans bg-[var(--bg-muted)] text-[var(--text-muted)]">
-          {book.period_ta}
-        </span>
+        {book.is_available && book.reading_minutes != null && (
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium font-tamil-sans bg-[var(--bg-muted)] text-[var(--text-muted)]">
+            சுமார் {book.reading_minutes} நிமிட வாசிப்பு
+          </span>
+        )}
       </div>
 
-      {book.is_available ? (
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          முழுப் பதிப்பு
-        </span>
-      ) : (
+      {!book.is_available && (
         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--bg-muted)] text-[var(--text-dim)]">
           விரைவில்
         </span>

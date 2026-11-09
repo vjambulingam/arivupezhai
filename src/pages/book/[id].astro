@@ -1,92 +1,26 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import BookLanding from '../../components/book/BookLanding.astro';
 import { books } from '../../utils/books';
+import LegacyRedirect from '../../components/book/LegacyRedirect.astro';
 import { getUrl } from '../../utils/url.js';
-import { chapterUrl } from '../../utils/reader.js';
 
 export function getStaticPaths() {
-  return books.map((book) => ({ params: { id: book.id }, props: { book } }));
+  const seen = new Set<string>();
+  return books.flatMap((book) => {
+    const paths = [{ params: { id: book.slug }, props: { book, legacy: false } }];
+    seen.add(book.slug);
+    const legacyIds = [book.id, book.catalog_id, ...(book.aliases || [])].filter((val) => typeof val === 'string' && val.trim() && /^[a-zA-Z0-9_-]+$/.test(val));
+    for (const legacyId of legacyIds) {
+      if (!seen.has(legacyId)) {
+        seen.add(legacyId);
+        paths.push({ params: { id: legacyId }, props: { book, legacy: true } });
+      }
+    }
+    return paths;
+  });
 }
-const { book } = Astro.props;
-const groups = [...new Set(book.sections.map((section) => section.group.split(' / ')[0]).filter(Boolean))];
+
+const { book, legacy } = Astro.props;
 ---
 
-<Layout title={`${book.title_ta} • அறிவுப்பேழை`} description={book.description_ta}>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-    <nav class="text-xs font-tamil-sans text-[var(--text-muted)] mb-6">
-      <a href={getUrl('/')} class="hover:underline">முகப்பு</a> / {book.title_ta}
-    </nav>
-    <section class="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-      <div class="flex flex-wrap gap-2 text-xs">
-        <span class="px-3 py-1 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)]">{book.genre_ta}</span>
-        {book.category_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.category_ta}</span>}
-        {book.period_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.period_ta}</span>}
-      </div>
-      <h1 class="mt-4 font-tamil-serif font-bold text-4xl sm:text-5xl [overflow-wrap:anywhere]">{book.title_ta}</h1>
-      <p class="mt-2 text-[var(--text-muted)]">ஆசிரியர்: {book.author_ta}{book.author_en && ` • ${book.author_en}`}</p>
-      <p class="mt-4 tamil-prose max-w-3xl">{book.description_ta}</p>
-      <div class="flex flex-wrap gap-3 mt-6 text-sm">
-        <a href={chapterUrl(book.id, book.sections[0].id)} class="px-4 py-3 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-semibold">வாசிக்கத் தொடங்குக</a>
-        <a href="#athikarams-section" class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">பகுதிகள்</a>
-        {book.pdf && <a href={book.pdf.startsWith('/') ? getUrl(book.pdf) : book.pdf} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">PDF</a>}
-        {book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)]">EPUB</a>}
-      </div>
-    </section>
-
-    <section id="athikarams-section" class="mt-12">
-      <h2 class="font-tamil-serif font-bold text-3xl">நூல் பகுதிகள் ({book.sections.length})</h2>
-      <label class="block mt-4">
-        <span class="sr-only">பகுதியைத் தேடுக</span>
-        <input id="section-filter-input" type="search" placeholder="பகுதியைத் தேடுக..." class="w-full sm:max-w-sm px-4 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-sm" />
-      </label>
-      {groups.length > 0 && (
-        <div class="flex flex-wrap gap-2 mt-4 font-tamil-sans text-xs" aria-label="பகுதி வடிகட்டி">
-          <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--accent-primary)] text-[var(--accent-contrast)]" data-group="" aria-pressed="true">அனைத்தும்</button>
-          {groups.map((group) => (
-            <button type="button" class="section-filter rounded-lg px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)]" data-group={group} aria-pressed="false">{group}</button>
-          ))}
-        </div>
-      )}
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-        {book.sections.map((section) => (
-          <a href={chapterUrl(book.id, section.id)} data-section-name={section.title} data-section-group={section.group.split(' / ')[0]} class="section-card p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)]">
-            <h3 class="font-tamil-serif font-bold text-lg [overflow-wrap:anywhere]">{section.title}</h3>
-            {section.group && <p class="text-xs text-[var(--text-muted)] mt-1">{section.group}</p>}
-            <span class="text-xs text-[var(--accent-primary)]">வாசிக்க →</span>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="mt-12 p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)]">
-      <h2 class="font-tamil-serif font-bold text-2xl">நன்றியுரை</h2>
-      <p class="mt-3 tamil-prose whitespace-pre-line">{book.acknowledgement}</p>
-    </section>
-  </div>
-</Layout>
-
-<script>
-  const search = document.querySelector<HTMLInputElement>('#section-filter-input');
-  const cards = document.querySelectorAll<HTMLElement>('.section-card');
-  const filters = document.querySelectorAll<HTMLButtonElement>('.section-filter');
-  let selectedGroup = '';
-  function filterSections() {
-    const query = (search?.value || '').normalize('NFC').toLowerCase().trim();
-    cards.forEach((card) => {
-      const title = (card.dataset.sectionName || '').normalize('NFC').toLowerCase();
-      card.hidden = !title.includes(query) || Boolean(selectedGroup && card.dataset.sectionGroup !== selectedGroup);
-    });
-  }
-  search?.addEventListener('input', filterSections);
-  filters.forEach((button) => button.addEventListener('click', () => {
-    selectedGroup = button.dataset.group || '';
-    filters.forEach((filter) => {
-      const active = filter === button;
-      filter.setAttribute('aria-pressed', String(active));
-      filter.classList.toggle('bg-[var(--accent-primary)]', active);
-      filter.classList.toggle('text-[var(--accent-contrast)]', active);
-      filter.classList.toggle('bg-[var(--bg-surface)]', !active);
-    });
-    filterSections();
-  }));
-</script>
+{legacy ? <LegacyRedirect target={getUrl(`book/${book.slug}`)} /> : <BookLanding book={book} />}

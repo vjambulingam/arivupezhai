@@ -4,13 +4,13 @@ import BookCard from '../components/BookCard.astro';
 import { catalog as libraryData } from '../utils/books';
 import { getUrl } from '../utils/url.js';
 
-const palettesUrl = getUrl('palettes');
 const logoUrl = getUrl('arivupezhai-logo-transparent.png');
+const availableBooks = libraryData.filter((book) => book.is_available);
 ---
 
 <Layout
   title="அறிவுப்பேழை • செவ்வியல் தமிழ் இணைய நூலகம்"
-  description="செவ்வியல் தமிழ் இலக்கியங்களை கண் சோர்வின்றி வாசிக்க உகந்த நவீன இணைய நூலகம். திருக்குறள் உள்ளிட்ட சங்க இலக்கியக் கருவூலங்கள்."
+  description="செவ்வியல் தமிழ் இலக்கியங்களை வசதியாக வாசிப்பதற்காக வடிவமைக்கப்பட்ட நவீன இணைய நூலகம். திருக்குறள் உள்ளிட்ட சங்க இலக்கியக் கருவூலங்கள்."
 >
   <!-- Hero Section -->
   <section class="relative pt-8 pb-12 sm:pt-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -31,36 +31,8 @@ const logoUrl = getUrl('arivupezhai-logo-transparent.png');
         செவ்வியல் தமிழ் இலக்கியப் பேழை
       </h1>
       <p class="font-tamil-sans text-base sm:text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl mx-auto">
-        பண்டைய தமிழ்ச் சுவடிகளையும் செவ்வியல் காப்பியங்களையும் நவீன திரைகளில் கண் சோர்வின்றி மணிநேரக் கணக்கில் வாசிப்பதற்கென பிரத்யேகமாக வடிக்கப்பட்ட மின்னூலகம்.
+        பண்டைய தமிழ்ச் சுவடிகளையும் செவ்வியல் காப்பியங்களையும் நவீன திரைகளில் வசதியாக வாசிப்பதற்கென வடிவமைக்கப்பட்ட மின்னூலகம்.
       </p>
-    </div>
-
-    <!-- Palette Announcement Callout -->
-    <div class="mt-8 max-w-2xl mx-auto">
-      <a
-        href={palettesUrl}
-        class="group flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--accent-primary)]/30 hover:border-[var(--accent-primary)] shadow-sm hover:shadow-md transition-all"
-      >
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[var(--accent-soft)] flex items-center justify-center text-[var(--accent-primary)] shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-            </svg>
-          </div>
-          <div>
-            <div class="font-tamil-serif font-bold text-sm text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
-              3 தனித்துவமான வாசிப்பு வண்ணத் தீம்கள்
-            </div>
-            <div class="font-tamil-sans text-xs text-[var(--text-muted)]">
-              செப்பேடு (Temple Bronze), இரவுக் கூடம் (Midnight Slate), மற்றும் குறிஞ்சிக் குளிர் (Cool Mist) — உங்கள் கண்களுக்குப் பிடித்ததைத் தேர்ந்தெடுக்கவும்
-            </div>
-          </div>
-        </div>
-        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--accent-primary)] text-[var(--accent-contrast)] text-xs font-semibold whitespace-nowrap shadow-sm group-hover:scale-105 transition-transform">
-          <span>ஒப்பிடுக</span>
-          <span>→</span>
-        </div>
-      </a>
     </div>
 
   </section>
@@ -82,9 +54,9 @@ const logoUrl = getUrl('arivupezhai-logo-transparent.png');
       <!-- Filter buttons (client-side toggle) -->
       <div class="hidden md:flex flex-wrap items-center gap-1.5 font-tamil-sans text-xs">
         <button type="button" class="category-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-category="all">
-          அனைத்தும் ({libraryData.length})
+          அனைத்தும் ({availableBooks.length})
         </button>
-        {[...new Set(libraryData.map((book) => book.category_ta).filter(Boolean))].map((category) => (
+        {[...new Set(availableBooks.map((book) => book.category_ta).filter(Boolean))].map((category) => (
           <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category={category}>{category}</button>
         ))}
       </div>
@@ -92,7 +64,7 @@ const logoUrl = getUrl('arivupezhai-logo-transparent.png');
 
     <!-- Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="books-grid">
-      {libraryData.map((book) => (
+      {availableBooks.map((book) => (
         <div class="book-item" data-category={book.category_ta}>
           <BookCard book={book} />
         </div>

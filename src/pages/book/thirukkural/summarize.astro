@@ -1,0 +1,574 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { books } from '../../../utils/books';
+import { getUrl } from '../../../utils/url.js';
+import { chapterUrl } from '../../../utils/reader.js';
+
+const book = books.find((b) => b.slug === 'thirukkural');
+if (!book) throw new Error('Thirukkural content is missing');
+
+const paalMeta: Record<string, { id: string; num: number; shortName: string }> = {
+  'அறத்துப்பால்': { id: 'aram', num: 1, shortName: 'அறத்துப்பால்' },
+  'பொருட்பால்': { id: 'porul', num: 2, shortName: 'பொருட்பால்' },
+  'காமத்துப்பால்': { id: 'kamam', num: 3, shortName: 'காமத்துப்பால்' },
+};
+
+const iyalIds: Record<string, string> = {
+  'பாயிரவியல்': 'payiraviyal',
+  'இல்லறவியல்': 'illariyaviyal',
+  'துறவறவியல்': 'thuravariyaviyal',
+  'ஊழியல்': 'oozhiyal',
+  'அரசியல்': 'arasiyal',
+  'அங்கவியல்': 'angaviyal',
+  'ஒழிபியல்': 'ozhibiyal',
+  'களவியல்': 'kalaviyal',
+  'கற்பியல்': 'karpiyal',
+};
+
+interface IyalData {
+  id: string;
+  name_ta: string;
+  paal_name: string;
+  paal_id: string;
+  total_verses: number;
+  sections_count: number;
+  range: string;
+  sections: Array<{ id: string; title: string; count: number }>;
+}
+
+interface PaalData {
+  id: string;
+  num: number;
+  name_ta: string;
+  short_name: string;
+  total_verses: number;
+  sections_count: number;
+  range: string;
+  iyals: IyalData[];
+}
+
+// Group by Paal -> Iyal -> Athikaram
+const paalsMap: Record<string, { meta: typeof paalMeta[string]; iyalsMap: Record<string, Array<typeof book.sections[0]>> }> = {
+  'அறத்துப்பால்': { meta: paalMeta['அறத்துப்பால்'], iyalsMap: {} },
+  'பொருட்பால்': { meta: paalMeta['பொருட்பால்'], iyalsMap: {} },
+  'காமத்துப்பால்': { meta: paalMeta['காமத்துப்பால்'], iyalsMap: {} },
+};
+
+for (const section of book.sections) {
+  const paalName = section.ancestors[0] || 'அறத்துப்பால்';
+  const iyalName = section.ancestors[1] || 'பொது';
+  if (!paalsMap[paalName]) {
+    paalsMap[paalName] = {
+      meta: { id: 'other', num: 4, shortName: paalName },
+      iyalsMap: {},
+    };
+  }
+  if (!paalsMap[paalName].iyalsMap[iyalName]) {
+    paalsMap[paalName].iyalsMap[iyalName] = [];
+  }
+  paalsMap[paalName].iyalsMap[iyalName].push(section);
+}
+
+const paals: PaalData[] = Object.entries(paalsMap).map(([paalName, data]) => {
+  let paalVersesTotal = 0;
+  let paalSectionsTotal = 0;
+  const allVerseNums: number[] = [];
+
+  const iyals: IyalData[] = Object.entries(data.iyalsMap).map(([iyalName, sections]) => {
+    const totalVerses = sections.reduce((sum, s) => sum + s.passages.length, 0);
+    paalVersesTotal += totalVerses;
+    paalSectionsTotal += sections.length;
+
+    const verseNumbers = sections.flatMap((s) =>
+      s.passages.map((p) => {
+        const numMatch = p.title?.match(/\d+/) || p.id?.match(/\d+/);
+        return numMatch ? parseInt(numMatch[0], 10) : 0;
+      }).filter((n) => n > 0)
+    );
+    allVerseNums.push(...verseNumbers);
+
+    const minV = verseNumbers.length ? Math.min(...verseNumbers) : 1;
+    const maxV = verseNumbers.length ? Math.max(...verseNumbers) : totalVerses;
+
+    return {
+      id: iyalIds[iyalName] || iyalName,
+      name_ta: iyalName,
+      paal_name: paalName,
+      paal_id: data.meta.id,
+      total_verses: totalVerses,
+      sections_count: sections.length,
+      range: `${minV}–${maxV}`,
+      sections: sections.map((sec) => ({
+        id: sec.id,
+        title: sec.title,
+        count: sec.passages.length,
+      })),
+    };
+  });
+
+  const minPaal = allVerseNums.length ? Math.min(...allVerseNums) : 1;
+  const maxPaal = allVerseNums.length ? Math.max(...allVerseNums) : paalVersesTotal;
+
+  return {
+    id: data.meta.id,
+    num: data.meta.num,
+    name_ta: paalName,
+    short_name: data.meta.shortName,
+    total_verses: paalVersesTotal,
+    sections_count: paalSectionsTotal,
+    range: `${minPaal}–${maxPaal}`,
+    iyals,
+  };
+});
+
+// All 9 iyals sorted descending by verses count for weightage overview
+const allIyals = paals.flatMap((p) => p.iyals);
+const maxIyalCount = Math.max(...allIyals.map((iy) => iy.total_verses), 1);
+const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_verses);
+---
+
+<Layout title="திருக்குறள் — நூல் கண்ணோட்டம் • அறிவுப்பேழை" description="திருக்குறள் நூல் கண்ணோட்டம்: பால்கள், இயல்கள் மற்றும் அதிகாரங்கள் வாரியான பாடல் அளவுப் பகுப்பாய்வு.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-tamil-sans">
+    <!-- வழிகாட்டி இணைப்பு -->
+    <nav class="text-xs text-[var(--text-muted)] mb-6 flex items-center gap-2">
+      <a href={getUrl('/')} class="hover:underline">முகப்பு</a>
+      <span>/</span>
+      <a href={getUrl('book/thirukkural')} class="hover:underline">திருக்குறள்</a>
+      <span>/</span>
+      <span class="text-[var(--text-main)] font-medium">நூல் கண்ணோட்டம்</span>
+    </nav>
+
+    <!-- முதன்மை வழிசெலுத்தல் பொத்தான்கள் (பால்கள்) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-8 no-scrollbar text-xs border-b border-[var(--border-subtle)]">
+      <button
+        type="button"
+        class="paal-tab-btn shrink-0 px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-xs transition-all active:scale-95"
+        data-target="all"
+      >
+        அனைத்துப் பால்கள்
+      </button>
+      {paals.map((p) => (
+        <button
+          type="button"
+          class="paal-tab-btn shrink-0 px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] font-medium transition-all active:scale-95"
+          data-target={p.id}
+        >
+          {p.short_name}
+        </button>
+      ))}
+    </div>
+
+    <!-- பார்வை 1: நூல் கண்ணோட்டம் (பால்கள் & இயல்கள் சுருக்கம்) -->
+    <div id="view-overview" class="view-panel transition-opacity duration-200">
+      <div class="mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold font-tamil-serif text-[var(--text-main)] tracking-tight">
+          திருக்குறள் — நூல் கண்ணோட்டம்
+        </h1>
+        <p class="text-sm text-[var(--text-muted)] mt-2">
+          1,330 குறள்கள் · 3 பால்கள் (9 இயல்கள் · 133 அதிகாரங்கள்)
+        </p>
+      </div>
+
+      <!-- நிலை 1: பால்கள் வாரியான சுருக்கம் -->
+      <div class="mb-10">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-4">
+          பால்கள் வாரியான சுருக்கம் (3 பால்கள்)
+        </h2>
+        <div class="flex flex-col gap-3.5">
+          {paals.map((p) => (
+            <button
+              type="button"
+              class="paal-card text-left p-5 sm:p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:shadow-md cursor-pointer transition-all duration-200 group flex items-center justify-between"
+              data-target={p.id}
+            >
+              <div class="min-w-0 flex-1 mr-4">
+                <div class="flex items-center gap-3">
+                  <h3 class="text-lg sm:text-xl font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                    {p.name_ta}
+                  </h3>
+                  <span class="text-xs px-2.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border-subtle)]">
+                    {p.iyals.length} இயல்கள்
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-[var(--text-muted)] mt-2 flex flex-wrap items-center gap-x-5 gap-y-1">
+                  <span>{p.total_verses} குறள்கள்</span>
+                  <span>குறள்கள் {p.range}</span>
+                  <span>{p.sections_count} அதிகாரங்கள்</span>
+                </p>
+                <!-- இயல்களின் துணுக்குகள் -->
+                <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-[var(--border-subtle)]/60">
+                  {p.iyals.map((iy) => (
+                    <span class="text-[11px] px-2 py-0.5 rounded-md bg-[var(--bg-muted)]/70 text-[var(--text-dim)] group-hover:text-[var(--text-muted)]">
+                      {iy.name_ta} ({iy.sections_count})
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div class="text-[var(--text-dim)] group-hover:text-[var(--accent-primary)] group-hover:translate-x-1 transition-all shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- நிலை 2: இயல்கள் வாரியான பாடல் அளவு -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+            இயல்கள் வாரியான பாடல் அளவு (9 இயல்கள்)
+          </h2>
+          <span class="text-xs text-[var(--text-dim)]">குறள்கள் எண்ணிக்கை வரிசை</span>
+        </div>
+
+        <div class="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-5 sm:p-7 shadow-xs space-y-3.5">
+          {allIyalsByWeight.map((iy) => (
+            <button
+              type="button"
+              class="iyal-jump-btn w-full group flex items-center justify-between py-2 px-3 -mx-3 rounded-xl hover:bg-[var(--bg-muted)]/60 transition-colors text-left text-sm"
+              data-paal={iy.paal_id}
+              data-iyal={iy.id}
+            >
+              <div class="mr-4 flex-1 truncate">
+                <span class="text-xs sm:text-sm font-semibold text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                  {iy.name_ta}
+                </span>
+                <span class="text-[11px] text-[var(--text-dim)] ml-2">
+                  · {iy.paal_name} ({iy.sections_count} அதிகாரங்கள் · குறள்கள் {iy.range})
+                </span>
+              </div>
+              <div class="flex items-center gap-4 shrink-0">
+                <div class="w-28 sm:w-48 md:w-64 bg-[var(--bg-muted)] h-2 sm:h-2.5 rounded-full overflow-hidden">
+                  <div
+                    class="bg-[var(--accent-primary)] h-full rounded-full transition-all duration-500"
+                    style={`width: ${Math.max(4, Math.round((iy.total_verses / maxIyalCount) * 100))}%`}
+                  />
+                </div>
+                <span class="w-8 text-right font-medium text-xs sm:text-sm text-[var(--accent-primary)]">
+                  {iy.total_verses}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- பார்வை 2: பால்கள், இயல்கள் மற்றும் அதிகாரங்கள் விவரம் -->
+    {paals.map((p, pIndex) => {
+      const prevPaal = pIndex > 0 ? paals[pIndex - 1] : null;
+      const nextPaal = pIndex < paals.length - 1 ? paals[pIndex + 1] : null;
+
+      return (
+        <div id={`view-${p.id}`} class="view-panel hidden transition-opacity duration-200">
+          <button
+            type="button"
+            class="back-to-overview-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[var(--accent-primary)] hover:underline mb-4"
+            data-target="all"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>நூல் கண்ணோட்டத்திற்குத் திரும்புக</span>
+          </button>
+
+          <div class="mb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold font-tamil-serif text-[var(--text-main)] tracking-tight">
+              {p.name_ta}
+            </h1>
+            <p class="text-sm text-[var(--text-muted)] mt-1.5">
+              {p.total_verses} குறள்கள் · குறள்கள் {p.range} · {p.iyals.length} இயல்கள் · {p.sections_count} அதிகாரங்கள்
+            </p>
+          </div>
+
+          <!-- நிலை 2: இந்த பாலில் உள்ள இயல்கள் கார்டுகள் -->
+          <div class="mb-8">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-3">
+              இயல்கள் சுருக்கம் ({p.iyals.length} இயல்கள்)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {p.iyals.map((iy) => (
+                <button
+                  type="button"
+                  class="iyal-card text-left p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:shadow-xs transition-all group cursor-pointer"
+                  data-paal={p.id}
+                  data-iyal={iy.id}
+                >
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-sm sm:text-base font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                      {iy.name_ta}
+                    </h3>
+                    <span class="text-xs font-semibold text-[var(--accent-primary)]">
+                      {iy.total_verses} குறள்கள்
+                    </span>
+                  </div>
+                  <p class="text-xs text-[var(--text-muted)] mt-1 flex items-center justify-between">
+                    <span>{iy.sections_count} அதிகாரங்கள்</span>
+                    <span>குறள்கள் {iy.range}</span>
+                  </p>
+                  <!-- சிறிய பாடல் அளவுப் பட்டை -->
+                  <div class="w-full bg-[var(--bg-muted)] h-1.5 rounded-full overflow-hidden mt-2.5">
+                    <div
+                      class="bg-[var(--accent-primary)] h-full rounded-full"
+                      style={`width: ${Math.max(6, Math.round((iy.total_verses / p.total_verses) * 100))}%`}
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- இயல் வடிகட்டி பொத்தான்கள் -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-6 no-scrollbar text-xs">
+            <button
+              type="button"
+              class="iyal-filter-btn shrink-0 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium transition-all"
+              data-paal={p.id}
+              data-iyal="all"
+            >
+              அனைத்து இயல்கள் ({p.iyals.length})
+            </button>
+            {p.iyals.map((iy) => (
+              <button
+                type="button"
+                class="iyal-filter-btn shrink-0 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] font-medium transition-all"
+                data-paal={p.id}
+                data-iyal={iy.id}
+              >
+                {iy.name_ta} ({iy.sections_count})
+              </button>
+            ))}
+          </div>
+
+          <!-- நிலை 3: இயல்கள் வாரியாகத் தொகுக்கப்பட்ட அதிகாரப் பாடல் அளவு -->
+          <div class="space-y-6">
+            {p.iyals.map((iy) => (
+              <div
+                class="iyal-block rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-5 sm:p-7 shadow-xs"
+                data-paal={p.id}
+                data-iyal={iy.id}
+              >
+                <!-- இயல் தலைப்பு மற்றும் விவரம் -->
+                <div class="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-[var(--border-subtle)] gap-2">
+                  <div>
+                    <h3 class="text-base sm:text-lg font-bold font-tamil-serif text-[var(--text-main)]">
+                      {iy.name_ta}
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] mt-0.5">
+                      {iy.sections_count} அதிகாரங்கள் · {iy.total_verses} குறள்கள் · குறள்கள் {iy.range}
+                    </p>
+                  </div>
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-[var(--bg-muted)] text-[var(--accent-primary)] border border-[var(--border-subtle)]">
+                    அதிகாரப் பாடல் அளவு
+                  </span>
+                </div>
+
+                <!-- அதிகாரங்களின் பட்டியல் -->
+                <div class="space-y-2.5">
+                  {iy.sections.map((sec) => (
+                    <a
+                      href={chapterUrl(book.slug, sec.id)}
+                      class="group flex items-center justify-between py-1.5 px-3 -mx-3 rounded-xl hover:bg-[var(--bg-muted)]/60 transition-colors text-sm"
+                      title={`${sec.title} - வாசிக்க`}
+                    >
+                      <span class="text-xs sm:text-sm font-normal text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors truncate mr-4 flex-1">
+                        {sec.title}
+                      </span>
+                      <div class="flex items-center gap-4 shrink-0">
+                        <div class="w-28 sm:w-48 md:w-64 bg-[var(--bg-muted)] h-2 sm:h-2.5 rounded-full overflow-hidden">
+                          <div
+                            class="bg-[var(--accent-primary)] h-full rounded-full transition-all duration-500 w-full"
+                          />
+                        </div>
+                        <span class="w-7 text-right font-medium text-xs sm:text-sm text-[var(--accent-primary)]">
+                          {sec.count}
+                        </span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <!-- பால் பக்க வழிசெலுத்தல் -->
+          <div class="mt-8 pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs sm:text-sm">
+            {prevPaal ? (
+              <button
+                type="button"
+                class="paal-tab-btn px-4 py-2.5 rounded-xl border border-[var(--border-subtle)] hover:bg-[var(--bg-surface)] text-[var(--text-muted)] transition-colors inline-flex items-center gap-1.5"
+                data-target={prevPaal.id}
+              >
+                ← {prevPaal.name_ta}
+              </button>
+            ) : <span />}
+            {nextPaal && (
+              <button
+                type="button"
+                class="paal-tab-btn px-4 py-2.5 rounded-xl border border-[var(--border-subtle)] hover:bg-[var(--bg-surface)] text-[var(--text-muted)] transition-colors inline-flex items-center gap-1.5"
+                data-target={nextPaal.id}
+              >
+                {nextPaal.name_ta} →
+              </button>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</Layout>
+
+<script>
+  function setupKuralViews() {
+    const paalTabs = document.querySelectorAll<HTMLButtonElement>('.paal-tab-btn');
+    const paalCards = document.querySelectorAll<HTMLButtonElement>('.paal-card');
+    const backButtons = document.querySelectorAll<HTMLButtonElement>('.back-to-overview-btn');
+    const panels = document.querySelectorAll<HTMLElement>('.view-panel');
+    const iyalJumpButtons = document.querySelectorAll<HTMLButtonElement>('.iyal-jump-btn');
+    const iyalCards = document.querySelectorAll<HTMLButtonElement>('.iyal-card');
+    const iyalFilterButtons = document.querySelectorAll<HTMLButtonElement>('.iyal-filter-btn');
+
+    function setActivePaal(targetPaalId: string, targetIyalId?: string, pushState = true) {
+      const cleanTarget = targetPaalId.replace(/^#/, '') || 'all';
+
+      // 1. பால்கள் பார்வை மாற்றுதல்
+      panels.forEach((panel) => {
+        const matches = (cleanTarget === 'all' && panel.id === 'view-overview') ||
+                        (panel.id === `view-${cleanTarget}`);
+        panel.classList.toggle('hidden', !matches);
+      });
+
+      // 2. முதன்மைப் பொத்தான் பாணிகளை மாற்றுதல்
+      paalTabs.forEach((btn) => {
+        const isMatch = btn.dataset.target === cleanTarget;
+        btn.classList.toggle('bg-[var(--accent-primary)]', isMatch);
+        btn.classList.toggle('text-[var(--accent-contrast)]', isMatch);
+        btn.classList.toggle('bg-[var(--bg-surface)]', !isMatch);
+        btn.classList.toggle('text-[var(--text-muted)]', !isMatch);
+      });
+
+      // 3. குறிப்பிட்ட இயல் கோரப்பட்டால் அதற்கேற்ப வடிகட்டுதல்
+      if (cleanTarget !== 'all') {
+        filterIyal(cleanTarget, targetIyalId || 'all');
+      }
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (pushState) {
+        let newHash = '';
+        if (cleanTarget !== 'all') {
+          newHash = targetIyalId && targetIyalId !== 'all' ? `#${cleanTarget}/${targetIyalId}` : `#${cleanTarget}`;
+        }
+        if (location.hash !== newHash) {
+          history.pushState(null, '', newHash || location.pathname);
+        }
+      }
+    }
+
+    function filterIyal(paalId: string, iyalId: string) {
+      const paalPanel = document.getElementById(`view-${paalId}`);
+      if (!paalPanel) return;
+
+      const blocks = paalPanel.querySelectorAll<HTMLElement>('.iyal-block');
+      const filterBtns = paalPanel.querySelectorAll<HTMLButtonElement>('.iyal-filter-btn');
+
+      // இயல் தொகுதிகளைக் காட்டுதல்/மறைத்தல்
+      blocks.forEach((block) => {
+        const matches = iyalId === 'all' || block.dataset.iyal === iyalId;
+        block.classList.toggle('hidden', !matches);
+      });
+
+      // இயல் வடிகட்டி பொத்தான் பாணிகள்
+      filterBtns.forEach((btn) => {
+        const matches = btn.dataset.iyal === iyalId;
+        btn.classList.toggle('bg-[var(--accent-primary)]', matches);
+        btn.classList.toggle('text-[var(--accent-contrast)]', matches);
+        btn.classList.toggle('bg-[var(--bg-surface)]', !matches);
+        btn.classList.toggle('text-[var(--text-muted)]', !matches);
+      });
+    }
+
+    // பொத்தான் நிகழ்வுகள்
+    paalTabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setActivePaal(btn.dataset.target || 'all');
+      });
+    });
+
+    paalCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        setActivePaal(card.dataset.target || 'all');
+      });
+    });
+
+    backButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setActivePaal('all');
+      });
+    });
+
+    // முகப்பிலுள்ள இயல்கள் பட்டியலிலிருந்து நேரடியாக இயலுக்குச் செல்லுதல்
+    iyalJumpButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const paal = btn.dataset.paal || 'all';
+        const iyal = btn.dataset.iyal || 'all';
+        setActivePaal(paal, iyal);
+      });
+    });
+
+    // பாலுக்குள் இருக்கும் இயல் அட்டையிலிருந்து வடிகட்டுதல்
+    iyalCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const paal = card.dataset.paal || 'all';
+        const iyal = card.dataset.iyal || 'all';
+        filterIyal(paal, iyal);
+        const block = document.querySelector(`.iyal-block[data-paal="${paal}"][data-iyal="${iyal}"]`);
+        if (block) {
+          block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // இயல் வடிகட்டி பொத்தான்கள்
+    iyalFilterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const paal = btn.dataset.paal || 'all';
+        const iyal = btn.dataset.iyal || 'all';
+        filterIyal(paal, iyal);
+      });
+    });
+
+    // உலாவி முகவரி மாற்றங்களைக் கையாளுதல்
+    function handleHashChange() {
+      const rawHash = location.hash.replace(/^#/, '');
+      if (!rawHash) {
+        setActivePaal('all', undefined, false);
+        return;
+      }
+      const parts = rawHash.split('/');
+      const paal = parts[0] || 'all';
+      const iyal = parts[1] || 'all';
+      setActivePaal(paal, iyal, false);
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    if (location.hash) {
+      handleHashChange();
+    }
+  }
+
+  setupKuralViews();
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

@@ -1,5 +1,7 @@
 ---
 id: example-book
+slug: example-book
+language: ta
 title: எடுத்துக்காட்டு நூல்
 title_en: Example Book
 author: ஆசிரியர் பெயர்
@@ -17,7 +19,7 @@ aliases:
   - Alternative title
 ---
 
-# முதல் தொகுப்பு
+# முதல் தொகுப்பு / உட்பிரிவு
 
 ## முதல் பகுதி {#first}
 

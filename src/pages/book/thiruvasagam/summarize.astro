@@ -1,0 +1,302 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { books } from '../../../utils/books';
+import { getUrl } from '../../../utils/url.js';
+import { chapterUrl } from '../../../utils/reader.js';
+
+const book = books.find((b) => b.slug === 'thiruvasagam');
+if (!book) throw new Error('Thiruvasagam content is missing');
+
+const divConfigs = [
+  { id: 'part-1', name_ta: 'பதிகங்கள் 1–10', shortName: '1–10', subtitle: 'சிவபுராணம் முதல் திருக்கோத்தும்பி வரை', startIdx: 0, endIdx: 10 },
+  { id: 'part-2', name_ta: 'பதிகங்கள் 11–20', shortName: '11–20', subtitle: 'திருத்தெள்ளேணம் முதல் திருப்பள்ளியெழுச்சி வரை', startIdx: 10, endIdx: 20 },
+  { id: 'part-3', name_ta: 'பதிகங்கள் 21–30', shortName: '21–30', subtitle: 'கோயில் மூத்த திருப்பதிகம் முதல் திருக்கழுக்குன்றப் பதிகம் வரை', startIdx: 20, endIdx: 30 },
+  { id: 'part-4', name_ta: 'பதிகங்கள் 31–40', shortName: '31–40', subtitle: 'கண்ட பத்து முதல் குலாப் பத்து வரை', startIdx: 30, endIdx: 40 },
+  { id: 'part-5', name_ta: 'பதிகங்கள் 41–51', shortName: '41–51', subtitle: 'அற்புதப் பத்து முதல் அச்சோப் பதிகம் வரை', startIdx: 40, endIdx: 51 },
+];
+
+const divisions = divConfigs.map((cfg, index) => {
+  const sections = book.sections.slice(cfg.startIdx, cfg.endIdx);
+  const totalVerses = sections.reduce((sum, s) => sum + s.passages.length, 0);
+
+  // Extract verse numbers to find min and max
+  const verseNumbers = sections.flatMap((s) =>
+    s.passages.map((p) => {
+      const numMatch = p.title?.match(/\d+/) || p.id?.match(/\d+/);
+      return numMatch ? parseInt(numMatch[0], 10) : 0;
+    }).filter((n) => n > 0)
+  );
+
+  const minV = verseNumbers.length ? Math.min(...verseNumbers) : 1;
+  const maxV = verseNumbers.length ? Math.max(...verseNumbers) : totalVerses;
+
+  // Sort sections by verse count descending
+  const sortedSections = [...sections].map((sec) => ({
+    id: sec.id,
+    title: sec.title,
+    count: sec.passages.length,
+  })).sort((a, b) => b.count - a.count);
+
+  const maxCount = sortedSections[0]?.count || 1;
+
+  return {
+    id: cfg.id,
+    num: index + 1,
+    name_ta: cfg.name_ta,
+    short_name: cfg.shortName,
+    subtitle: cfg.subtitle,
+    total_verses: totalVerses,
+    range: `${minV}–${maxV}`,
+    sections_count: sections.length,
+    max_count: maxCount,
+    sections: sortedSections,
+  };
+});
+---
+
+<Layout title="திருவாசகம் — நூல் கண்ணோட்டம் • அறிவுப்பேழை" description="திருவாசகம் நூல் கண்ணோட்டம் மற்றும் 51 பதிகங்களின் பாடல் அளவுப் பகுப்பாய்வு.">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-tamil-sans">
+    <!-- வழிகாட்டி இணைப்பு -->
+    <nav class="text-xs text-[var(--text-muted)] mb-6 flex items-center gap-2">
+      <a href={getUrl('/')} class="hover:underline">முகப்பு</a>
+      <span>/</span>
+      <a href={getUrl('book/thiruvasagam')} class="hover:underline">திருவாசகம்</a>
+      <span>/</span>
+      <span class="text-[var(--text-main)] font-medium">நூல் கண்ணோட்டம்</span>
+    </nav>
+
+    <!-- வழிசெலுத்தல் பொத்தான்கள் -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-8 no-scrollbar text-xs border-b border-[var(--border-subtle)]">
+      <button
+        type="button"
+        class="tab-btn shrink-0 px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-xs transition-all active:scale-95"
+        data-target="all"
+      >
+        அனைத்துப் பிரிவுகள்
+      </button>
+      {divisions.map((div) => (
+        <button
+          type="button"
+          class="tab-btn shrink-0 px-3.5 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] font-medium transition-all active:scale-95"
+          data-target={div.id}
+        >
+          {div.name_ta}
+        </button>
+      ))}
+    </div>
+
+    <!-- பார்வை 1: நூல் கண்ணோட்டம் -->
+    <div id="view-overview" class="view-panel transition-opacity duration-200">
+      <div class="mb-6">
+        <h1 class="text-3xl sm:text-4xl font-bold font-tamil-serif text-[var(--text-main)] tracking-tight">
+          திருவாசகம் — நூல் கண்ணோட்டம்
+        </h1>
+        <p class="text-sm text-[var(--text-muted)] mt-2">
+          661 பாடல்கள் · 5 பிரிவுகள் (51 பதிகங்கள்)
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3.5 mt-6">
+        {divisions.map((div) => (
+          <button
+            type="button"
+            class="division-card text-left p-5 sm:p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)] hover:shadow-md cursor-pointer transition-all duration-200 group flex items-center justify-between"
+            data-target={div.id}
+          >
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                {div.name_ta}
+              </h2>
+              <p class="text-xs text-[var(--text-dim)] mt-1">
+                {div.subtitle}
+              </p>
+              <p class="text-xs sm:text-sm text-[var(--text-muted)] mt-2 flex flex-wrap items-center gap-x-5 gap-y-1">
+                <span>{div.total_verses} பாடல்கள்</span>
+                <span>பாடல்கள் {div.range}</span>
+                <span>{div.sections_count} பதிகங்கள்</span>
+              </p>
+            </div>
+            <div class="text-[var(--text-dim)] group-hover:text-[var(--accent-primary)] group-hover:translate-x-1 transition-all shrink-0 ml-4">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- பார்வை 2: பிரிவு விவரம் & பதிகப் பாடல் அளவு -->
+    {divisions.map((div, divIndex) => {
+      const prevDiv = divIndex > 0 ? divisions[divIndex - 1] : null;
+      const nextDiv = divIndex < divisions.length - 1 ? divisions[divIndex + 1] : null;
+
+      return (
+        <div id={`view-${div.id}`} class="view-panel hidden transition-opacity duration-200">
+          <button
+            type="button"
+            class="back-btn inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[var(--accent-primary)] hover:underline mb-4"
+            data-target="all"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            <span>நூல் கண்ணோட்டத்திற்குத் திரும்புக</span>
+          </button>
+
+          <div class="mb-6">
+            <h1 class="text-3xl sm:text-4xl font-bold font-tamil-serif text-[var(--text-main)] tracking-tight">
+              {div.name_ta}
+            </h1>
+            <p class="text-sm text-[var(--text-muted)] mt-1.5">
+              {div.total_verses} பாடல்கள் · பாடல்கள் {div.range} · {div.sections_count} பதிகங்கள்
+            </p>
+            <p class="text-xs text-[var(--text-dim)] mt-1">
+              {div.subtitle}
+            </p>
+          </div>
+
+          <!-- பதிகப் பாடல் அளவு கார்டு -->
+          <div class="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-5 sm:p-8 shadow-xs">
+            <div class="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-5">
+              பதிகப் பாடல் அளவு
+            </div>
+
+            <div class="space-y-3">
+              {div.sections.map((sec) => (
+                <a
+                  href={chapterUrl(book.slug, sec.id)}
+                  class="group flex items-center justify-between py-1.5 px-3 -mx-3 rounded-xl hover:bg-[var(--bg-muted)]/60 transition-colors text-sm"
+                  title={`${sec.title} - வாசிக்க`}
+                >
+                  <span class="text-xs sm:text-sm font-normal text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors truncate mr-4 flex-1">
+                    {sec.title}
+                  </span>
+                  <div class="flex items-center gap-4 shrink-0">
+                    <div class="w-28 sm:w-48 md:w-64 bg-[var(--bg-muted)] h-2 sm:h-2.5 rounded-full overflow-hidden">
+                      <div
+                        class="bg-[var(--accent-primary)] h-full rounded-full transition-all duration-500"
+                        style={`width: ${Math.max(4, Math.round((sec.count / div.max_count) * 100))}%`}
+                      />
+                    </div>
+                    <span class="w-7 text-right font-medium text-xs sm:text-sm text-[var(--accent-primary)]">
+                      {sec.count}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- பக்க வழிசெலுத்தல் -->
+          <div class="mt-8 pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs sm:text-sm">
+            {prevDiv ? (
+              <button
+                type="button"
+                class="tab-btn px-4 py-2.5 rounded-xl border border-[var(--border-subtle)] hover:bg-[var(--bg-surface)] text-[var(--text-muted)] transition-colors inline-flex items-center gap-1.5"
+                data-target={prevDiv.id}
+              >
+                ← {prevDiv.name_ta}
+              </button>
+            ) : <span />}
+            {nextDiv && (
+              <button
+                type="button"
+                class="tab-btn px-4 py-2.5 rounded-xl border border-[var(--border-subtle)] hover:bg-[var(--bg-surface)] text-[var(--text-muted)] transition-colors inline-flex items-center gap-1.5"
+                data-target={nextDiv.id}
+              >
+                {nextDiv.name_ta} →
+              </button>
+            )}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</Layout>
+
+<script>
+  function setupViews() {
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+    const divisionCards = document.querySelectorAll<HTMLButtonElement>('.division-card');
+    const backButtons = document.querySelectorAll<HTMLButtonElement>('.back-btn');
+    const panels = document.querySelectorAll<HTMLElement>('.view-panel');
+
+    function setActiveView(targetId: string, pushState = true) {
+      const cleanTarget = targetId.replace(/^#/, '') || 'all';
+
+      // Show matching panel
+      panels.forEach((panel) => {
+        const matches = (cleanTarget === 'all' && panel.id === 'view-overview') ||
+                        (panel.id === `view-${cleanTarget}`);
+        panel.classList.toggle('hidden', !matches);
+      });
+
+      // Update pill button styles
+      tabButtons.forEach((btn) => {
+        const isMatch = btn.dataset.target === cleanTarget;
+        btn.classList.toggle('bg-[var(--accent-primary)]', isMatch);
+        btn.classList.toggle('text-[var(--accent-contrast)]', isMatch);
+        btn.classList.toggle('bg-[var(--bg-surface)]', !isMatch);
+        btn.classList.toggle('text-[var(--text-muted)]', !isMatch);
+      });
+
+      // Scroll to top of content
+      if (cleanTarget !== 'all') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      if (pushState) {
+        const newHash = cleanTarget === 'all' ? '' : `#${cleanTarget}`;
+        if (location.hash !== newHash) {
+          history.pushState(null, '', newHash || location.pathname);
+        }
+      }
+    }
+
+    // Handle clicks
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.target || 'all';
+        setActiveView(target);
+      });
+    });
+
+    divisionCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const target = card.dataset.target || 'all';
+        setActiveView(target);
+      });
+    });
+
+    backButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        setActiveView('all');
+      });
+    });
+
+    // Handle hash change from browser navigation
+    window.addEventListener('hashchange', () => {
+      const hash = location.hash.replace(/^#/, '');
+      setActiveView(hash || 'all', false);
+    });
+
+    // Initial check from current hash
+    if (location.hash) {
+      setActiveView(location.hash.replace(/^#/, ''), false);
+    }
+  }
+
+  // Run on page load
+  setupViews();
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

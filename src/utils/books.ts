@@ -1,6 +1,7 @@
 import { marked } from 'marked';
 import { parse as parseYaml } from 'yaml';
 import placeholders from '../data/library.json';
+import { readingTimeMinutes } from './reading-time.js';
 
 const sources = import.meta.glob('/src/content/books/*.{md,txt}', {
   eager: true,
@@ -20,12 +21,14 @@ export interface Passage {
 export interface Section {
   id: string;
   title: string;
-  group: string;
+  ancestors: string[];
   passages: Passage[];
 }
 
 export interface Book {
   id: string;
+  slug: string;
+  catalog_id: string;
   title_ta: string;
   title_en: string;
   author_ta: string;
@@ -44,6 +47,7 @@ export interface Book {
 }
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const catalogIdPattern = /^AP[0-9]{3,}$/;
 const headingId = /^(.*?)\s+\{#([a-z0-9]+(?:-[a-z0-9]+)*)\}$/;
 
 function requiredString(data: Record<string, unknown>, key: string, file: string): string {
@@ -74,13 +78,21 @@ function parseBook(source: string, file: string): Book {
   const data = parseYaml(match[1]);
   if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error(`${file}: invalid frontmatter`);
   const id = requiredString(data, 'id', file);
-  if (!slugPattern.test(id)) throw new Error(`${file}: book id must use lowercase letters, digits and hyphens`);
+  if (!slugPattern.test(id) && !catalogIdPattern.test(id)) {
+    throw new Error(`${file}: book id must use lowercase letters, digits and hyphens, or an AP catalog ID`);
+  }
+  const slug = optionalString(data, 'slug', file) || (slugPattern.test(id) ? id : '');
+  if (!slugPattern.test(slug)) throw new Error(`${file}: slug must use lowercase letters, digits and hyphens`);
+  const catalogId = optionalString(data, 'catalog_id', file);
+  if (catalogId && !catalogIdPattern.test(catalogId)) {
+    throw new Error(`${file}: catalog_id must be an AP catalog ID`);
+  }
   const aliases = data.aliases ?? [];
   if (!Array.isArray(aliases) || aliases.some((alias) => typeof alias !== 'string')) throw new Error(`${file}: aliases must be a list of strings`);
   const sections: Section[] = [];
   let section: Section | undefined;
   let passage: { id: string; title: string; markdown: string } | undefined;
-  let group = '';
+  let ancestors: string[] = [];
 
   function finishPassage() {
     if (!section || !passage) return;
@@ -98,7 +110,8 @@ function parseBook(source: string, file: string): Book {
   for (const token of marked.lexer(match[2])) {
     if (token.type === 'heading' && token.depth === 1) {
       finishPassage();
-      group = token.text.trim();
+      ancestors = token.text.split(' / ').map((title) => title.trim());
+      if (ancestors.some((title) => !title)) throw new Error(`${file}: group hierarchy contains an empty title`);
       section = undefined;
     } else if (token.type === 'heading' && token.depth === 2) {
       finishPassage();
@@ -106,7 +119,7 @@ function parseBook(source: string, file: string): Book {
       if (!heading) throw new Error(`${file}: level 2 headings require a stable id, e.g. ## Title {#1}`);
       if (sectionIds.has(heading[2])) throw new Error(`${file}: duplicate section id "${heading[2]}"`);
       sectionIds.add(heading[2]);
-      section = { id: heading[2], title: heading[1].trim(), group, passages: [] };
+      section = { id: heading[2], title: heading[1].trim(), ancestors: [...ancestors], passages: [] };
       sections.push(section);
     } else if (token.type === 'heading' && token.depth === 3 && token.text.match(headingId)) {
       if (!section) throw new Error(`${file}: passage appears before a section`);
@@ -128,6 +141,8 @@ function parseBook(source: string, file: string): Book {
 
   return {
     id,
+    slug,
+    catalog_id: catalogId || id,
     title_ta: requiredString(data, 'title', file),
     title_en: optionalString(data, 'title_en', file),
     author_ta: requiredString(data, 'author', file),
@@ -148,15 +163,26 @@ function parseBook(source: string, file: string): Book {
 
 export const books: Book[] = Object.entries(sources).map(([file, source]) => parseBook(source as string, file));
 const ids = new Set<string>();
+const catalogIds = new Set<string>();
+const routes = new Map<string, string>();
 for (const book of books) {
   if (ids.has(book.id)) throw new Error(`Duplicate book id "${book.id}"`);
+  if (catalogIds.has(book.catalog_id)) throw new Error(`Duplicate catalog id "${book.catalog_id}"`);
   ids.add(book.id);
+  catalogIds.add(book.catalog_id);
+  for (const route of new Set([book.id, book.slug])) {
+    const key = route.toLowerCase();
+    const owner = routes.get(key);
+    if (owner && owner !== book.id) throw new Error(`Duplicate book route "${route}" for "${owner}" and "${book.id}"`);
+    routes.set(key, book.id);
+  }
 }
 
 export const catalog = [
   ...books.map((book) => ({
     ...book,
     is_available: true,
+    reading_minutes: readingTimeMinutes(book.sections),
     subsections_label: `${book.sections.length} பகுதிகள்`,
     stats: { subsections: book.sections.length, verses: book.sections.reduce((sum, section) => sum + section.passages.length, 0) },
   })),

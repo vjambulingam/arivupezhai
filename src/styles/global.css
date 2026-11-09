@@ -2,7 +2,7 @@
 
 /* 
   அறிவுப்பேழை - Classical Tamil Digital Library Theme System
-  Curated specifically for prolonged, eye-strain-free reading.
+  Designed for comfortable reading.
   Themes: 
     1. செப்பேடு (Temple Bronze - Default)
     2. இரவுக் கூடம் (Midnight Slate)
@@ -101,6 +101,10 @@ body {
   padding-bottom: 0.125rem;
   letter-spacing: 0.01em;
   overflow-wrap: anywhere;
+}
+
+.tamil-verse-line > * + * {
+  margin-block-start: 1em;
 }
 
 .tamil-prose {

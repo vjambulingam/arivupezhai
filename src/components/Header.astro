@@ -2,7 +2,7 @@
 import { getUrl } from '../utils/url.js';
 
 const homeUrl = getUrl('/');
-const thirukkuralUrl = getUrl('/book/thirukkural');
+const catalogUrl = getUrl('/catalog');
 const logoUrl = getUrl('arivupezhai-logo-transparent.png');
 const themes = [
   { id: 'bronze', name: 'செப்பேடு' },
@@ -64,10 +64,10 @@ const themes = [
             நூல்கள்
           </a>
           <a
-            href={thirukkuralUrl}
+            href={catalogUrl}
             class="px-3 py-1.5 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)] transition-colors"
           >
-            திருக்குறள்
+            பட்டியல்
           </a>
         </nav>
 
@@ -96,6 +96,8 @@ const themes = [
           id="mobile-menu-btn"
           class="lg:hidden p-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]"
           aria-label="Toggle Menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -111,8 +113,8 @@ const themes = [
     <a href={homeUrl} class="block px-3 py-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)]">
       நூல்கள் (Library)
     </a>
-    <a href={thirukkuralUrl} class="block px-3 py-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)]">
-      திருக்குறள் (Thirukkural)
+    <a href={catalogUrl} class="block px-3 py-2 rounded-lg text-[var(--text-main)] hover:bg-[var(--bg-surface)]">
+      பட்டியல் (Catalog)
     </a>
     <label class="flex items-center justify-between gap-3 px-3 py-2 text-sm text-[var(--text-main)]">
       <span>வாசிப்பு வண்ணம்</span>
@@ -145,6 +147,7 @@ const themes = [
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+      mobileMenuBtn.setAttribute('aria-expanded', String(!mobileMenu.classList.contains('hidden')));
     });
   }
 

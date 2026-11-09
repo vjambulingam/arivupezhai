@@ -1,7 +1,7 @@
 # அறிவுப்பேழை (Arivupezhai)
 ### செவ்வியல் தமிழ் இணைய நூலகம் • Classical Tamil Digital Library
 
-> செவ்வியல் தமிழ் இலக்கியங்களை கணினி மற்றும் மொபைல் திரைகளில் கண் சோர்வின்றி மணிநேரக் கணக்கில் வாசிப்பதற்கென வடிவமைக்கப்பட்ட நவீன, திறந்த டிஜிட்டல் நூலகம்.
+> செவ்வியல் தமிழ் இலக்கியங்களை கணினி மற்றும் மொபைல் திரைகளில் வசதியாக வாசிப்பதற்கென வடிவமைக்கப்பட்ட நவீன, திறந்த டிஜிட்டல் நூலகம்.
 
 ---
 
@@ -10,9 +10,9 @@
 - 📜 **முழுமையான முதல் நூல் - திருக்குறள்**: 
   - திருவள்ளுவரின் **133 அதிகாரங்கள் (1,330 குறட்பாக்கள்)** முழுமையாகப் பகுக்கப்பட்டு குறியிடப்பட்டுள்ளன.
   - முப்பால்கள் (அறத்துப்பால், பொருட்பால், காமத்துப்பால்) மற்றும் 9 இயல்களின் கீழ் முறைப்படுத்தப்பட்டுள்ளது.
-- 🎨 **3 கண்-நல வண்ணத் தீம்கள் (Reading Themes)**:
+- 🎨 **3 வாசிப்பு வண்ணத் தீம்கள் (Reading Themes)**:
   - **செப்பேடு (Temple Bronze - Default)**: சோழர் காலச் செப்பேடுகள் மற்றும் கோயில் மணற்கற்களின் இதமான வண்ணம் (`#F6F2EC` / `#AD5F1D`).
-  - **இரவுக் கூடம் (Midnight Slate)**: இருண்ட சூழலில் கண் கூச்சத்தைத் தவிர்க்கும் மென்மையான சிலேட்டுப் பலகை வண்ணம் (`#17181B` / `#DE7851`).
+  - **இரவுக் கூடம் (Midnight Slate)**: இருண்ட சூழலில் வாசிப்பதற்காகத் தேர்ந்தெடுக்கப்பட்ட மென்மையான சிலேட்டுப் பலகை வண்ணம் (`#17181B` / `#DE7851`).
   - **குறிஞ்சிக் குளிர் (Cool Mountain Mist)**: பனிமூட்டம் போன்ற குளுமையான நீல-சாம்பல் பின்னணியும், கூர்மையான நள்ளிரவு மை எழுத்துக்களும் (`#F0F4F8` / `#27567B`).
   - *எந்தப் பக்கத்திலிருந்தும் ஒரு கிளிக்கில் தீம்களை மாற்றலாம்; வாசகர் தேர்வு `localStorage`-இல் சேமிக்கப்படும்.*
 - 🖋️ **செவ்வியல் தமிழ் எழுத்துருக்கள் (Tamil Typography)**:
@@ -40,6 +40,7 @@
 | பாதை (Route) | விளக்கம் |
 | :--- | :--- |
 | `/` | முதன்மை நூலக அட்டவணை மற்றும் நூல் அட்டைகள் |
+| `/catalog` | வாசிக்கக் கிடைக்கும் நூல்களின் தமிழ் மற்றும் ஆங்கிலப் பட்டியல் |
 | `/palettes` | 3 வண்ணத் தீம்களை ஒப்பிட்டு தேர்வு செய்யும் மாதிரிப் பக்கம் |
 | `/book/thirukkural` | திருக்குறள் நூல் முகப்பு, பால்கள், மற்றும் 133 அதிகாரங்களின் அட்டவணை |
 | `/book/thirukkural/read/N/` | குறிப்பிட்ட அதிகாரத்திற்கான static வாசகர் பக்கம்; `#kural-N` மூலம் ஒரு குறளுக்கு நேரடியாகச் செல்லலாம் |
@@ -52,6 +53,7 @@ Copy [`templates/book-template.md`](templates/book-template.md) to [`src/content
 ```markdown
 ---
 id: example-book
+slug: example-book
 title: எடுத்துக்காட்டு நூல்
 title_en: Example Book
 author: ஆசிரியர் பெயர்
@@ -69,7 +71,7 @@ aliases:
   - Alternative title
 ---
 
-# முதல் தொகுப்பு
+# முதல் தொகுப்பு / உட்பிரிவு
 
 ## முதல் பகுதி {#first}
 
@@ -83,13 +85,27 @@ aliases:
 இங்கு உரை அல்லது Markdown எழுதலாம்.
 ```
 
-- `id`, `title`, `author`, `genre`, `description` and `acknowledgement` are required. Book IDs must be unique and use lowercase ASCII letters, numbers and hyphens.
-- Each `##` heading creates a section page. Its `{#id}` is required, unique within the book and forms part of the URL; keep it stable after publication. A `#` heading groups subsequent sections. Optional `###` headings with `{#id}` create individually linkable passages; passage IDs must be unique within the book. Other Markdown headings and formatting are rendered as content. Plain text belongs under a section heading.
-- `title_en`, `author_en`, `genre_en`, `category`, `period`, `featured_quote`, and `aliases` are optional. Aliases help search alternate names and transliterations.
+- `id`, `title`, `author`, `genre`, `description` and `acknowledgement` are required. Book IDs must be unique and use lowercase ASCII letters, numbers and hyphens, or an uppercase `AP` catalog ID such as `AP002`.
+- Set a unique `slug` based on the book name (lowercase ASCII letters, numbers and hyphens), for example `slug: aathichudi`. It forms `/book/aathichudi` and the reader URLs. A lowercase descriptive `id` can be used as the slug when `slug` is omitted; AP IDs require an explicit slug. Keep IDs and slugs stable after publication. If the ID differs from the slug, older ID-based landing and section URLs provide a redirect that preserves query strings and anchors with JavaScript; without JavaScript they provide a link to the new page.
+- The list displays `id` by default. If a book already has a published URL ID but also has an AP catalog ID, set `catalog_id` to that unique AP ID without changing `id`; for example, திருக்குறள் uses `id: thirukkural` and `catalog_id: AP001`. Catalog IDs must be unique among available books.
+- Each `##` heading creates a section page. Its `{#id}` is required, unique within the book and forms part of the URL; keep it stable after publication. A `#` heading groups subsequent sections; separate as many hierarchy levels as needed with ` / `, for example `# காண்டம் / படலம் / இயல்`. A later `#` replaces the whole group path. Omit group headings for flat books. Group labels appear in section navigation and search, but do not change section URLs. Optional `###` headings with `{#id}` create individually linkable passages; passage IDs must be unique within the book. Other Markdown headings and formatting are rendered as content. Plain text belongs under a section heading.
+- Inside a passage, a newline starts a new line; a blank line starts a new paragraph or stanza with visible spacing. Consecutive blank lines do not add extra spacing.
+- `title_en`, `author_en`, `genre_en`, `category`, `period`, `featured_quote`, and `aliases` are optional. Provide the English fields for the bilingual book list; missing values are left blank. Aliases help search alternate names and transliterations.
 - Leave `pdf` and `epub` as `null` until available. Later use an HTTPS URL or a site-root path such as `/downloads/book.pdf`; put local files under `public/downloads/`. Missing links are not displayed.
 - If an ID matches an existing “coming soon” entry in `src/data/library.json`, the new book replaces that placeholder automatically. Keep the ID unchanged after publishing.
-- [`thirukkural.md`](src/content/books/thirukkural.md) is the authoritative text for திருக்குறள். The older JSON is retained as a migration reference for regression tests; editing it does not change the site. `scripts/migrate_thirukkural.mjs` is a one-time migration tool and overwrites the Markdown file if rerun.
+- [`AP001-thirukkural.md`](src/content/books/AP001-thirukkural.md) is the authoritative text for திருக்குறள். The older JSON is retained as a migration reference for regression tests; editing it does not change the site. `scripts/migrate_thirukkural.mjs` is a one-time migration tool.
 - Search uses Unicode NFC normalization. The index is generated at build time; its entries include every book, section and passage.
+- Book cards show an approximate time for the whole book, calculated from passage text at 150 words per minute and rounded up to at least one minute. Actual reading time varies.
+
+### Project Madurai catalog reference
+
+[`src/data/project-madurai-catalog.json`](src/data/project-madurai-catalog.json) is a snapshot of the titles, authors, genres, work numbers, PDF links and Unicode HTML links in [Project Madurai's list of works](https://projectmadurai.org/pmworks.html). Each row has its own sequential `id` (`AP001`, `AP002`, ...), because a Project Madurai work number can cover multiple titles. Link fields are arrays, empty when the source has no link. Empty authors are recorded as `null`; source metadata is not independently verified.
+
+Keep assigned IDs stable: do not renumber or regenerate them based on source row order when the catalog changes. Assign new entries the next unused number. Use the catalog ID in a new book's frontmatter where appropriate. Books already published with another ID, such as `thirukkural`, should retain it to preserve existing links; don't add them again with a second ID. The book template's `pdf` field accepts one URL, so select the appropriate link from `pdf_links` when adding a book.
+
+AP035 includes verses 1155–1418 from its linked PDF because the linked HTML omits them. It remains `pending` because the PDF transcription contains corrupted characters and needs proofreading; passages with detected Latin characters are flagged, but other errors may remain. AP036 deliberately publishes its two linked HTML sources separately, and AP037 and AP038 deliberately publish overlapping source editions as separate catalog entries.
+
+This reference file is not imported into the website or search index, and does not contain book texts. To publish a book, follow the template instructions above and check the source's terms and attribution requirements.
 
 ---
 
