@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, writeFile, unlink } from 'node:fs/promises';
+import { readFile, writeFile, unlink, readdir } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
 
@@ -134,7 +134,7 @@ test('book list includes available books with bilingual metadata and stable cata
     ['AP003', 'kondrai-vendhan', 'கொன்றை வேந்தன்', 'Kondrai Vendhan', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
     ['AP004', 'nalvazhi', 'நல்வழி', 'Nalvazhi', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
     ['AP005', 'moodhurai', 'மூதுரை', 'Moodhurai', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
-    ['AP006', 'thiruvasagam', 'திருவாசகம்', 'Thiruvasagam', 'மாணிக்க வாசகர்', 'Manikkavacakar', 'சமயம் - சைவம்', 'Saiva Literature'],
+    ['AP006', 'thiruvaasagam', 'திருவாசகம்', 'Thiruvaasagam', 'மாணிக்க வாசகர்', 'Maanikkavasakar', 'சமயம் - சைவம்', 'Saiva Literature'],
   ]) {
     const row = rows.find((value) => value.includes(`>${id}</td>`));
     assert.ok(row, `Missing ${id}`);
@@ -142,24 +142,10 @@ test('book list includes available books with bilingual metadata and stable cata
   }
 });
 
-test('ID-based landing and section URLs retain links to canonical book names', async () => {
-  for (const [id, slug, file] of [
-    ['AP002', 'aathichudi', 'AP002-aathichudi.md'],
-    ['AP003', 'kondrai-vendhan', 'AP003-kondrai-vendhan.md'],
-    ['AP004', 'nalvazhi', 'AP004-nalvazhi.md'],
-    ['AP005', 'moodhurai', 'AP005-moodhurai.md'],
-  ]) {
-    const source = await readFile(`src/content/books/${file}`, 'utf8');
-    const landing = await readFile(`dist/book/${id}/index.html`, 'utf8');
-    assert.ok(landing.includes(`href="/book/${slug}"`));
-    for (const match of source.matchAll(/^## .+ \{#([^}]+)\}$/gm)) {
-      const section = match[1];
-      const redirect = await readFile(`dist/book/${id}/read/${section}/index.html`, 'utf8');
-      assert.ok(redirect.includes(`href="/book/${slug}/read/${section}/"`));
-      assert.ok(redirect.includes('location.search + location.hash'));
-      await readFile(`dist/book/${slug}/read/${section}/index.html`, 'utf8');
-    }
-  }
+test('only valid books exist in dist/book and redirect books are not generated', async () => {
+  const entries = await readdir('dist/book');
+  const validSlugs = new Set(['thirukkural', 'aathichudi', 'kondrai-vendhan', 'nalvazhi', 'moodhurai', 'thiruvaasagam', 'thirumanthiram']);
+  assert.deepEqual(new Set(entries), validSlugs);
 });
 
 test('new Markdown and text books are discovered automatically', async () => {
@@ -245,11 +231,6 @@ ${'தமிழ் '.repeat(150)}
     assert.ok(hierarchicalReader.includes('முதல் தொகுப்பு / உட்பிரிவு / ஆழ்நிலை / முதல் பகுதி'));
     assert.ok(!flatLanding.includes('data-group="முதல் தொகுப்பு"'));
     assert.ok(index.some((item) => item.url === `/book/${slugs[0]}/read/first/` && item.searchable.includes('ஆழ்நிலை')));
-    const oldLanding = await readFile(`dist/book/${ids[0]}/index.html`, 'utf8');
-    const oldReader = await readFile(`dist/book/${ids[0]}/read/first/index.html`, 'utf8');
-    assert.ok(oldLanding.includes(`href="/book/${slugs[0]}"`));
-    assert.ok(oldReader.includes(`href="/book/${slugs[0]}/read/first/"`));
-    assert.ok(oldReader.includes('location.search + location.hash'));
     await writeFile(paths[1], makeBook(ids[0]));
     const invalid = spawnSync('npm', ['run', 'build'], { encoding: 'utf8' });
     assert.notEqual(invalid.status, 0);

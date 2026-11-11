@@ -4,8 +4,8 @@ import { books } from '../../../utils/books';
 import { getUrl } from '../../../utils/url.js';
 import { chapterUrl } from '../../../utils/reader.js';
 
-const book = books.find((b) => b.slug === 'thiruvasagam');
-if (!book) throw new Error('Thiruvasagam content is missing');
+const book = books.find((b) => b.slug === 'thiruvaasagam' || b.id === 'AP006');
+if (!book) throw new Error('Thiruvaasagam content is missing');
 
 const divConfigs = [
   { id: 'part-1', name_ta: 'பதிகங்கள் 1–10', shortName: '1–10', subtitle: 'சிவபுராணம் முதல் திருக்கோத்தும்பி வரை', startIdx: 0, endIdx: 10 },
@@ -60,7 +60,7 @@ const divisions = divConfigs.map((cfg, index) => {
     <nav class="text-xs text-[var(--text-muted)] mb-6 flex items-center gap-2">
       <a href={getUrl('/')} class="hover:underline">முகப்பு</a>
       <span>/</span>
-      <a href={getUrl('book/thiruvasagam')} class="hover:underline">திருவாசகம்</a>
+      <a href={getUrl('book/thiruvaasagam')} class="hover:underline">திருவாசகம்</a>
       <span>/</span>
       <span class="text-[var(--text-main)] font-medium">நூல் கண்ணோட்டம்</span>
     </nav>

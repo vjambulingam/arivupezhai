@@ -1,11 +1,11 @@
 ---
 id: AP006
-slug: thiruvasagam
+slug: thiruvaasagam
 language: ta
 title: திருவாசகம்
-title_en: Thiruvasagam
+title_en: Thiruvaasagam
 author: மாணிக்க வாசகர்
-author_en: Manikkavacakar
+author_en: Maanikkavasakar
 genre: சமயம் - சைவம்
 genre_en: Saiva Literature
 category: பன்னிரு திருமுறைகள் (எட்டாம் திருமுறை)
@@ -15,7 +15,7 @@ featured_quote: நமச்சிவாய வாஅழ்க நாதன் �
 acknowledgement: "Credits to Project Madurai team @ www.projectmadurai.org"
 pdf: null
 epub: null
-aliases: [AP006, AP007, thiruvasagam-1, thiruvasagam-2, திருவாசகம், திருவாசகம் 1, திருவாசகம் 2, Manikkavasagar, Thiruvasakam, Tiruvasakam]
+aliases: [thiruvasagam, Manikkavasagar, Thiruvasakam, Tiruvasakam]
 ---
 
 ## 1. சிவபுராணம் {#sivapuranam}

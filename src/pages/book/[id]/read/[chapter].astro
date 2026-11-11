@@ -1,34 +1,21 @@
 ---
 import BookReader from '../../../../components/book/BookReader.astro';
 import { books } from '../../../../utils/books';
-import LegacyRedirect from '../../../../components/book/LegacyRedirect.astro';
-import { chapterUrl } from '../../../../utils/reader.js';
 
 export function getStaticPaths() {
-  const seen = new Set<string>();
   return books.flatMap((book) =>
-    book.sections.flatMap((section) => {
-      const paths = [{ params: { id: book.slug, chapter: section.id }, props: { book, section, legacy: false } }];
-      seen.add(`${book.slug}/${section.id}`);
-      const legacyIds = [book.id, book.catalog_id, ...(book.slug === 'thiruvasagam' ? ['AP007'] : [])]
-        .filter((val) => typeof val === 'string' && /^AP\d+$/.test(val.trim()));
-      for (const legacyId of legacyIds) {
-        const key = `${legacyId}/${section.id}`;
-        if (!seen.has(key)) {
-          seen.add(key);
-          paths.push({ params: { id: legacyId, chapter: section.id }, props: { book, section, legacy: true } });
-        }
-      }
-      return paths;
-    })
+    book.sections.map((section) => ({
+      params: { id: book.slug, chapter: section.id },
+      props: { book, section },
+    }))
   );
 }
 
-const { book, section, legacy } = Astro.props;
+const { book, section } = Astro.props;
 ---
 
-{legacy ? <LegacyRedirect target={chapterUrl(book.slug, section.id)} /> : <BookReader book={book} section={section} />}
-{!legacy && (book.slug === 'thirukkural' || book.id === 'thirukkural') && (
+<BookReader book={book} section={section} />
+{(book.slug === 'thirukkural' || book.id === 'thirukkural') && (
   <script define:vars={{ chapterId: section.id }}>
     localStorage.setItem('arivupezhai_last_athikaram', chapterId);
   </script>

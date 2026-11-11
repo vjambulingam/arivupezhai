@@ -1,26 +1,15 @@
 ---
 import BookLanding from '../../components/book/BookLanding.astro';
 import { books } from '../../utils/books';
-import LegacyRedirect from '../../components/book/LegacyRedirect.astro';
-import { getUrl } from '../../utils/url.js';
 
 export function getStaticPaths() {
-  const seen = new Set<string>();
-  return books.flatMap((book) => {
-    const paths = [{ params: { id: book.slug }, props: { book, legacy: false } }];
-    seen.add(book.slug);
-    const legacyIds = [book.id, book.catalog_id, ...(book.aliases || [])].filter((val) => typeof val === 'string' && val.trim() && /^[a-zA-Z0-9_-]+$/.test(val));
-    for (const legacyId of legacyIds) {
-      if (!seen.has(legacyId)) {
-        seen.add(legacyId);
-        paths.push({ params: { id: legacyId }, props: { book, legacy: true } });
-      }
-    }
-    return paths;
-  });
+  return books.map((book) => ({
+    params: { id: book.slug },
+    props: { book },
+  }));
 }
 
-const { book, legacy } = Astro.props;
+const { book } = Astro.props;
 ---
 
-{legacy ? <LegacyRedirect target={getUrl(`book/${book.slug}`)} /> : <BookLanding book={book} />}
+<BookLanding book={book} />
