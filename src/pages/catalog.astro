@@ -10,7 +10,17 @@ import { getUrl } from '../utils/url.js';
     <p class="mt-3 font-tamil-sans text-sm text-[var(--text-muted)]">வாசிக்கக் கிடைக்கும் நூல்கள் ({books.length})</p>
 
     {books.length > 0 ? (
-      <div class="mt-8 max-w-full overflow-x-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)]" role="region" aria-label="நூல் பட்டியல் அட்டவணை" tabindex="0">
+      <>
+      <div class="mt-6 flex items-center justify-end gap-3 font-tamil-sans text-sm">
+        <label for="catalog-sort" class="text-[var(--text-muted)]">வரிசைப்படுத்து</label>
+        <select id="catalog-sort" class="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-3 py-2 text-[var(--text-main)]">
+          <option value="">தேர்வு செய்யவும்</option>
+          <option value="author">ஆசிரியர்</option>
+          <option value="title">நூல் பெயர்</option>
+          <option value="genre">வகை</option>
+        </select>
+      </div>
+      <div class="mt-4 max-w-full overflow-x-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)]" role="region" aria-label="நூல் பட்டியல் அட்டவணை" tabindex="0">
         <table class="w-full min-w-[640px] text-left font-tamil-sans text-sm">
           <caption class="sr-only">வாசிக்கக் கிடைக்கும் நூல்கள், ஆசிரியர்கள் மற்றும் வகைகள்</caption>
           <thead class="bg-[var(--bg-muted)] text-[var(--text-main)]">
@@ -21,9 +31,9 @@ import { getUrl } from '../utils/url.js';
               <th scope="col" class="px-4 py-3">வகை<br /><span lang="en" class="text-xs font-normal">Genre</span></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="catalog-rows">
             {books.map((book) => (
-              <tr class="border-t border-[var(--border-subtle)]">
+              <tr class="border-t border-[var(--border-subtle)]" data-title={book.title_ta} data-author={book.author_ta} data-genre={book.genre_ta} data-catalog-id={book.catalog_id}>
                 <td class="px-4 py-4 align-top font-mono">{book.catalog_id}</td>
                 <th scope="row" class="px-4 py-4 align-top font-normal">
                   <a href={getUrl(`book/${book.slug}`)} class="font-semibold text-[var(--accent-primary)] hover:underline [overflow-wrap:anywhere]">{book.title_ta}</a>
@@ -36,8 +46,27 @@ import { getUrl } from '../utils/url.js';
           </tbody>
         </table>
       </div>
+      </>
     ) : (
       <p class="mt-8 font-tamil-sans text-[var(--text-muted)]">நூல்கள் இன்னும் சேர்க்கப்படவில்லை.</p>
     )}
   </div>
 </Layout>
+
+<script>
+  const sortSelect = document.querySelector<HTMLSelectElement>('#catalog-sort');
+  const catalogRows = document.querySelector<HTMLTableSectionElement>('#catalog-rows');
+  const tamilCollator = new Intl.Collator('ta', { numeric: true, sensitivity: 'base' });
+
+  sortSelect?.addEventListener('change', () => {
+    if (!catalogRows || !sortSelect.value) return;
+
+    const sortKey = sortSelect.value;
+    const rows = Array.from(catalogRows.rows);
+    rows.sort((a, b) => {
+      const bySelectedField = tamilCollator.compare(a.dataset[sortKey] ?? '', b.dataset[sortKey] ?? '');
+      return bySelectedField || tamilCollator.compare(a.dataset.catalogId ?? '', b.dataset.catalogId ?? '');
+    });
+    catalogRows.append(...rows);
+  });
+</script>

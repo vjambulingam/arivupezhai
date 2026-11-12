@@ -30,7 +30,7 @@ function formatInfo(text: string): string {
     <section class="p-6 sm:p-10 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-sm">
       <div class="flex flex-wrap gap-2 text-xs">
         <span class="px-3 py-1 rounded-full bg-[var(--badge-bg)] text-[var(--badge-text)]">{book.genre_ta}</span>
-        {book.category_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.category_ta}</span>}
+        {book.tags.map((tag) => <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{tag}</span>)}
         {book.period_ta && <span class="px-3 py-1 rounded-full bg-[var(--bg-muted)]">{book.period_ta}</span>}
       </div>
       <h1 class="mt-4 font-tamil-serif font-bold text-4xl sm:text-5xl [overflow-wrap:anywhere]">{book.title_ta}</h1>
@@ -58,8 +58,8 @@ function formatInfo(text: string): string {
         {book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">EPUB</a>}
       </div>
 
-      <!-- Book Info (Acknowledgement / Attribution / License) -->
-      {book.acknowledgement && (
+      <!-- Book Info (Contributors / Attribution) -->
+      {book.contributors && (
         <div class="mt-8 pt-6 border-t border-[var(--border-subtle)]" id="book-info">
           <div class="flex items-start gap-3 p-4 sm:p-5 rounded-2xl bg-[var(--bg-page)]/70 border border-[var(--border-subtle)]">
             <div class="w-8 h-8 rounded-xl bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] flex items-center justify-center shrink-0 mt-0.5">
@@ -69,10 +69,9 @@ function formatInfo(text: string): string {
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 mb-1.5 font-tamil-sans">
-                <h2 class="font-bold text-sm text-[var(--text-main)]">தகவல் (Info)</h2>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border-subtle)]">பதிப்பு &amp; உரை மூலம்</span>
+                <h2 class="font-bold text-sm text-[var(--text-main)]">பங்களிப்பாளர்கள்</h2>
               </div>
-              <p class="font-tamil-sans text-xs sm:text-sm text-[var(--text-muted)] whitespace-pre-line leading-relaxed" set:html={formatInfo(book.acknowledgement)} />
+              <p class="font-tamil-sans text-xs sm:text-sm text-[var(--text-muted)] whitespace-pre-line leading-relaxed" set:html={formatInfo(book.contributors)} />
             </div>
           </div>
         </div>

@@ -35,10 +35,11 @@ export interface Book {
   author_en: string;
   genre_ta: string;
   genre_en: string;
-  category_ta: string;
+  tags: string[];
   period_ta: string;
   description_ta: string;
   featured_quote: string;
+  contributors: string;
   acknowledgement: string;
   pdf: string | null;
   epub: string | null;
@@ -89,6 +90,12 @@ function parseBook(source: string, file: string): Book {
   }
   const aliases = data.aliases ?? [];
   if (!Array.isArray(aliases) || aliases.some((alias) => typeof alias !== 'string')) throw new Error(`${file}: aliases must be a list of strings`);
+  if (data.category != null) throw new Error(`${file}: replace "category" with a "tags" list`);
+  const tags = data.tags ?? [];
+  if (!Array.isArray(tags) || tags.some((tag) => typeof tag !== 'string' || !tag.trim())) {
+    throw new Error(`${file}: tags must be a list of non-empty strings`);
+  }
+  const normalizedTags = [...new Set(tags.map((tag: string) => tag.trim().normalize('NFC')))];
   const sections: Section[] = [];
   let section: Section | undefined;
   let passage: { id: string; title: string; markdown: string } | undefined;
@@ -149,11 +156,16 @@ function parseBook(source: string, file: string): Book {
     author_en: optionalString(data, 'author_en', file),
     genre_ta: requiredString(data, 'genre', file),
     genre_en: optionalString(data, 'genre_en', file),
-    category_ta: optionalString(data, 'category', file),
+    tags: normalizedTags,
     period_ta: optionalString(data, 'period', file),
     description_ta: requiredString(data, 'description', file),
     featured_quote: optionalString(data, 'featured_quote', file),
-    acknowledgement: requiredString(data, 'acknowledgement', file),
+    contributors: (() => {
+      const val = optionalString(data, 'contributors', file) || optionalString(data, 'acknowledgement', file);
+      if (!val) throw new Error(`${file}: "contributors" is required`);
+      return val;
+    })(),
+    acknowledgement: optionalString(data, 'contributors', file) || optionalString(data, 'acknowledgement', file) || '',
     pdf: downloadUrl(data, 'pdf', file),
     epub: downloadUrl(data, 'epub', file),
     aliases,

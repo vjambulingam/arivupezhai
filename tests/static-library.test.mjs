@@ -3,8 +3,34 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile, unlink, readdir } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
+import { parse as parseYaml } from 'yaml';
 
 const readJson = async (path) => JSON.parse(await readFile(path, 'utf8'));
+
+test('search quick filters show the six most-used available book tags', async () => {
+  const [html, index, files] = await Promise.all([
+    readFile('dist/index.html', 'utf8'),
+    readJson('dist/search-index.json'),
+    readdir('src/content/books'),
+  ]);
+  const tagCounts = new Map();
+  for (const file of files.filter((name) => /\.(md|txt)$/.test(name))) {
+    const source = await readFile(`src/content/books/${file}`, 'utf8');
+    const frontmatter = source.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---/);
+    assert.ok(frontmatter, `Missing frontmatter in ${file}`);
+    const book = parseYaml(frontmatter[1]);
+    const tags = [...new Set((book.tags ?? []).map((tag) => tag.trim().normalize('NFC')))];
+    for (const tag of tags) {
+      tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+      assert.ok(index.some((item) => item.type === 'book' && item.url && item.title === book.title && item.tags.includes(tag) && item.searchable.includes(tag)), `Tag not searchable: ${file}`);
+    }
+  }
+  const expected = [...tagCounts].sort(([a, aCount], [b, bCount]) =>
+    bCount - aCount || a.localeCompare(b, 'ta')
+  ).slice(0, 6).map(([tag]) => tag);
+  const filters = [...html.matchAll(/class="search-filter-chip[^"]*" data-filter="([^"]*)"/g)].map((match) => match[1]);
+  assert.deepEqual(filters, expected);
+});
 
 test('build includes searchable metadata and every static chapter and verse', async () => {
   const [book, catalog, index] = await Promise.all([
@@ -46,7 +72,7 @@ test('AP002 publishes all sections and verses with attribution and search', asyn
   ]);
   assert.ok(home.includes('/book/aathichudi'));
   assert.ok(landing.includes('ஒளவையார்'));
-  assert.ok(landing.includes('Credits to Project Madurai team @ www.projectmadurai.org'));
+  assert.ok(landing.includes('href="https://www.projectmadurai.org"'));
   assert.ok(index.some((item) => item.type === 'book' && item.url === '/book/aathichudi' && item.searchable.includes('ஆத்திச்சூடி')));
   const sections = [...source.matchAll(/^## .+ \{#([^}]+)\}$/gm)].map((match) => match[1]);
   assert.equal(sections.length, 10);
@@ -88,7 +114,7 @@ test('AP003 to AP005 publish the source sections and searchable verses', async (
     assert.ok(home.includes(`/book/${book.slug}`));
     assert.ok(landing.includes(book.title));
     assert.ok(landing.includes('ஒளவையார்'));
-    assert.ok(landing.includes('Credits to Project Madurai team @ www.projectmadurai.org'));
+    assert.ok(landing.includes('href="https://www.projectmadurai.org"'));
     assert.ok(index.some((item) => item.type === 'book' && item.url === `/book/${book.slug}` && item.searchable.includes(book.title)));
     assert.ok(source.includes(book.first));
     assert.ok(source.includes(book.last));
@@ -126,7 +152,9 @@ test('book list includes available books with bilingual metadata and stable cata
   assert.ok(html.includes('<table'));
   assert.ok(html.includes('scope="col"'));
   assert.ok(html.includes('scope="row"'));
-  const rows = [...html.matchAll(/<tr class="border-t[^"]*">([\s\S]*?)<\/tr>/g)].map((match) => match[1]);
+  assert.ok(html.includes('<select id="catalog-sort"'));
+  for (const sortKey of ['author', 'title', 'genre']) assert.ok(html.includes(`value="${sortKey}"`));
+  const rows = [...html.matchAll(/<tr class="border-t[^"]*"[^>]*>([\s\S]*?)<\/tr>/g)].map((match) => match[1]);
   assert.equal(rows.length, index.filter((item) => item.type === 'book' && item.url).length);
   for (const [id, route, title, titleEn, author, authorEn, genre, genreEn] of [
     ['AP001', 'thirukkural', 'திருக்குறள்', 'Thirukkural', 'திருவள்ளுவர்', 'Thiruvalluvar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
@@ -144,7 +172,15 @@ test('book list includes available books with bilingual metadata and stable cata
 
 test('only valid books exist in dist/book and redirect books are not generated', async () => {
   const entries = await readdir('dist/book');
-  const validSlugs = new Set(['thirukkural', 'aathichudi', 'kondrai-vendhan', 'nalvazhi', 'moodhurai', 'thiruvaasagam', 'thirumanthiram']);
+  const validSlugs = new Set([
+    'thirukkural', 'aathichudi', 'kondrai-vendhan', 'nalvazhi', 'moodhurai', 'thiruvaasagam', 'thirumanthiram',
+    'thiruppallaandu', 'thirumozhi', 'thiruppaavai', 'naachiyaar-thirumozhi', 'perumaal-thirumozhi',
+    'thiruchandha-virutham', 'thiruppalliyeluchi', 'amalanaadhipiraan', 'kanni-nootraimbadhu', 'thirumaalai',
+    'periya-thirumozhi', 'siriya-thirumurai', 'thirukkurunthaandagam', 'thirunedunthaandagam',
+    'thiruvandhadhi-1', 'thiruvandhadhi-2', 'thiruvandhadhi-3', 'thiruvaasiriyam', 'thiruvirutham',
+    'thiruvezhukootrirukkai', 'naanmukan-thiruvandhadhi', 'periya-thirumadal', 'periya-thiruvandhadhi',
+    'raamaanuja-nootrandhadhi', 'thiruvaaimozhi', 'ndp-4', 'ponniyin-selvan'
+  ]);
   assert.deepEqual(new Set(entries), validSlugs);
 });
 
@@ -159,9 +195,10 @@ slug: ${slug}
 title: சோதனை நூல்
 author: சோதனை ஆசிரியர்
 genre: சோதனை வகை
+tags: [முதல் குறிச்சொல், இரண்டாம் குறிச்சொல், முதல் குறிச்சொல்]
 description: மாதிரி விளக்கம்
 period: சோதனைக் காலம்
-acknowledgement: மாதிரி நன்றியுரை
+contributors: மாதிரி நன்றியுரை
 pdf: /downloads/sample.pdf
 epub: https://example.com/book.epub
 aliases: [Sample Test Alias]
@@ -211,6 +248,12 @@ ${'தமிழ் '.repeat(150)}
       const landing = await readFile(`dist/book/${slug}/index.html`, 'utf8');
       assert.ok(landing.includes('மாதிரி நன்றியுரை'));
       assert.ok(landing.includes('சோதனைக் காலம்'));
+      assert.ok(landing.includes('முதல் குறிச்சொல்'));
+      assert.ok(landing.includes('இரண்டாம் குறிச்சொல்'));
+      const bookEntry = index.find((item) => item.url === `/book/${slug}`);
+      assert.deepEqual(bookEntry.tags, ['முதல் குறிச்சொல்', 'இரண்டாம் குறிச்சொல்']);
+      assert.ok(bookEntry.searchable.includes('முதல் குறிச்சொல்'));
+      assert.ok(bookEntry.searchable.includes('இரண்டாம் குறிச்சொல்'));
       assert.ok(landing.includes('/downloads/sample.pdf'));
       assert.ok(landing.includes('https://example.com/book.epub'));
       const reader = await readFile(`dist/book/${slug}/read/first/index.html`, 'utf8');
@@ -247,6 +290,10 @@ ${'தமிழ் '.repeat(150)}
     const legacyCollision = spawnSync('npm', ['run', 'build'], { encoding: 'utf8' });
     assert.notEqual(legacyCollision.status, 0);
     assert.match(legacyCollision.stdout + legacyCollision.stderr, /Duplicate book route/);
+    await writeFile(paths[1], makeBook(ids[1]).replace('tags: [முதல் குறிச்சொல், இரண்டாம் குறிச்சொல், முதல் குறிச்சொல்]', 'tags: invalid'));
+    const invalidTags = spawnSync('npm', ['run', 'build'], { encoding: 'utf8' });
+    assert.notEqual(invalidTags.status, 0);
+    assert.match(invalidTags.stdout + invalidTags.stderr, /tags must be a list of non-empty strings/);
   } finally {
     for (const path of created) await unlink(path);
     build();

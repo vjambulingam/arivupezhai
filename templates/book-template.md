@@ -8,11 +8,11 @@ author: ஆசிரியர் பெயர்
 author_en: Author Name
 genre: இலக்கிய வகை
 genre_en: Literature
-category: தொகுப்பு
+tags: [தொகுப்பு, மற்றொரு குறிச்சொல்]
 period: காலம்
 description: நூல் பற்றிய சிறு விளக்கம்.
 featured_quote: ஒரு சிறிய மேற்கோள்.
-acknowledgement: உரையின் மூலம், பதிப்பு, நன்றி மற்றும் உரிமத் தகவல்.
+contributors: உரையின் மூலம், பதிப்பு, நன்றி மற்றும் உரிமத் தகவல்.
 pdf: null
 epub: null
 aliases:

@@ -44,7 +44,7 @@ const availableBooks = libraryData.filter((book) => book.is_available);
     <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4 mb-8">
       <div>
         <h2 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
-          நூல் அட்டவணை (Library Catalog)
+          நூலகம் (Library)
         </h2>
         <p class="font-tamil-sans text-xs text-[var(--text-muted)] mt-1">
           செவ்வியல் நூல்களைத் தேர்ந்தெடுத்து வாசிக்கவும்.
@@ -53,11 +53,11 @@ const availableBooks = libraryData.filter((book) => book.is_available);
       
       <!-- Filter buttons (client-side toggle) -->
       <div class="hidden md:flex flex-wrap items-center gap-1.5 font-tamil-sans text-xs">
-        <button type="button" class="category-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-category="all">
+        <button type="button" class="genre-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-genre="all">
           அனைத்தும் ({availableBooks.length})
         </button>
-        {[...new Set(availableBooks.map((book) => book.category_ta).filter(Boolean))].map((category) => (
-          <button type="button" class="category-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-category={category}>{category}</button>
+        {[...new Set(availableBooks.map((book) => book.genre_ta).filter(Boolean))].map((genre) => (
+          <button type="button" class="genre-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-genre={genre}>{genre}</button>
         ))}
       </div>
     </div>
@@ -65,7 +65,7 @@ const availableBooks = libraryData.filter((book) => book.is_available);
     <!-- Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="books-grid">
       {availableBooks.map((book) => (
-        <div class="book-item" data-category={book.category_ta}>
+        <div class="book-item min-w-0" data-genre={book.genre_ta}>
           <BookCard book={book} />
         </div>
       ))}
@@ -75,22 +75,22 @@ const availableBooks = libraryData.filter((book) => book.is_available);
 </Layout>
 
 <script>
-  // Category tabs filtering
-  const categoryBtns = document.querySelectorAll('.category-btn');
+  // Genre tabs filtering
+  const genreBtns = document.querySelectorAll('.genre-btn');
   const bookItems = document.querySelectorAll('.book-item');
 
-  categoryBtns.forEach((btn) => {
+  genreBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      categoryBtns.forEach((b) => {
+      genreBtns.forEach((b) => {
         b.classList.remove('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
         b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
       });
       btn.classList.add('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
       btn.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
 
-      const target = btn.getAttribute('data-category');
+      const target = btn.getAttribute('data-genre');
       bookItems.forEach((item) => {
-        if (target === 'all' || item.getAttribute('data-category')?.includes(target || '')) {
+        if (target === 'all' || item.getAttribute('data-genre') === target) {
           (item as HTMLElement).style.display = 'block';
         } else {
           (item as HTMLElement).style.display = 'none';

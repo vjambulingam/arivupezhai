@@ -8,14 +8,14 @@ author: திருமூலர்
 author_en: Thirumoolar
 genre: சமயம் - சைவம்
 genre_en: Saiva Literature
-category: பன்னிரு திருமுறைகள் (பத்தாம் திருமுறை)
+tags: ["பன்னிரு திருமுறைகள்", "பத்தாம் திருமுறை"]
 period: கி.பி. 5 - 6 ஆம் நூற்றாண்டு
 description: பன்னிரு திருமுறைகளில் பத்தாம் திருமுறையாக விளங்கும் திருமந்திரம், திருமூலர் அருளிச்செய்த ஒப்பற்ற சைவ சித்தாந்த ஞான நூலாகும். 'ஒன்றே குலம் ஒருவனே தேவன்', 'அன்பே சிவம்' முதலான அழியாப் பேருண்மைகளை விளக்கும் ஒன்பது தந்திரங்களைக் கொண்ட அரிய கருவூலம்.
 featured_quote: அன்பும் சிவமும் இரண்டென்பர் அறிவிலார் அன்பே சிவமாவ தாரும் அறிகிலார்.
-acknowledgement: "Credits to Project Madurai team @ www.projectmadurai.org"
+contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Proof-reading by Mr. G. Venugopalan, Dubai \n Project Madurai team - https://www.projectmadurai.org"
 pdf: null
 epub: null
-aliases: [AP008, AP035, AP036, AP037, AP038, thirumandiram, thirumandiram-1, thirumandiram-2, thirumandiram-3, thirumandiram-3-4, thirumandiram-7-9]
+aliases: [thirumandiram, thirumandhiram, thirumular, tirumadiram]
 ---
 
 # பாயிரம்
@@ -22447,4 +22447,3 @@ Yமூவயின் முச்சொரூப முத்திமுப�
 
 
 திருச்சிற்றம்பலம்
-

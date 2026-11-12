@@ -10,7 +10,6 @@ interface Props {
     author_ta: string;
     author_en: string;
     genre_ta: string;
-    category_ta: string;
     subsections_label: string;
     featured_quote: string;
     description_ta: string;
@@ -29,7 +28,7 @@ const landingUrl = getUrl(`book/${book.slug ?? book.id}`);
 const readerUrl = book.sections?.length ? getUrl(`book/${book.slug ?? book.id}/read/${book.sections[0].id}/`) : landingUrl;
 ---
 
-<div class="group relative flex flex-col justify-between rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 transition-all duration-200 hover:shadow-xl hover:border-[var(--accent-primary)]/40 hover:-translate-y-1">
+<div class="group relative flex min-w-0 flex-col justify-between rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 transition-all duration-200 hover:shadow-xl hover:border-[var(--accent-primary)]/40 hover:-translate-y-1">
   
   <div>
     <!-- Top Metadata Badges -->
@@ -54,7 +53,7 @@ const readerUrl = book.sections?.length ? getUrl(`book/${book.slug ?? book.id}/r
 
     <!-- Book Title & Author -->
     <a href={book.is_available ? landingUrl : undefined} class="block focus:outline-none">
-      <h2 class="font-tamil-serif font-bold text-2xl sm:text-3xl text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors leading-tight">
+      <h2 class="font-tamil-serif font-bold text-2xl sm:text-3xl text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors leading-tight [overflow-wrap:anywhere]">
         {book.title_ta}
       </h2>
       <div class="flex items-center gap-2 mt-2 text-sm text-[var(--text-muted)] font-tamil-sans">

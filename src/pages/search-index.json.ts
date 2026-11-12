@@ -9,7 +9,8 @@ export const GET: APIRoute = () => {
     title: book.title_ta,
     author: book.author_ta,
     snippet: book.description_ta,
-    searchable: [book.title_ta, book.title_en, book.author_ta, book.author_en, book.genre_ta, book.genre_en, book.category_ta, ...('aliases' in book ? book.aliases : [])].filter(Boolean),
+    tags: book.tags,
+    searchable: [book.title_ta, book.title_en, book.author_ta, book.author_en, book.genre_ta, book.genre_en, ...book.tags, ...('aliases' in book ? book.aliases : [])].filter(Boolean),
     url: book.is_available && 'slug' in book ? getUrl(`book/${book.slug}`) : null,
   }));
   const chapters = books.flatMap((book) => book.sections.map((section) => ({

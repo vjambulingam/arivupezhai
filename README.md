@@ -60,11 +60,11 @@ author: ஆசிரியர் பெயர்
 author_en: Author Name
 genre: இலக்கிய வகை
 genre_en: Literature
-category: தொகுப்பு
+tags: [தொகுப்பு, மற்றொரு குறிச்சொல்]
 period: காலம்
 description: நூல் பற்றிய சிறு விளக்கம்.
 featured_quote: ஒரு சிறிய மேற்கோள்.
-acknowledgement: உரையின் மூலம், பதிப்பு, நன்றி மற்றும் உரிமத் தகவல்.
+contributors: உரையின் மூலம், பதிப்பு, நன்றி மற்றும் உரிமத் தகவல்.
 pdf: null
 epub: null
 aliases:
@@ -85,12 +85,12 @@ aliases:
 இங்கு உரை அல்லது Markdown எழுதலாம்.
 ```
 
-- `id`, `title`, `author`, `genre`, `description` and `acknowledgement` are required. Book IDs must be unique and use lowercase ASCII letters, numbers and hyphens, or an uppercase `AP` catalog ID such as `AP002`.
+- `id`, `title`, `author`, `genre`, `description` and `contributors` are required. Book IDs must be unique and use lowercase ASCII letters, numbers and hyphens, or an uppercase `AP` catalog ID such as `AP002`.
 - Set a unique `slug` based on the book name (lowercase ASCII letters, numbers and hyphens), for example `slug: aathichudi`. It forms `/book/aathichudi` and the reader URLs. A lowercase descriptive `id` can be used as the slug when `slug` is omitted; AP IDs require an explicit slug. Keep IDs and slugs stable after publication. If the ID differs from the slug, older ID-based landing and section URLs provide a redirect that preserves query strings and anchors with JavaScript; without JavaScript they provide a link to the new page.
 - The list displays `id` by default. If a book already has a published URL ID but also has an AP catalog ID, set `catalog_id` to that unique AP ID without changing `id`; for example, திருக்குறள் uses `id: thirukkural` and `catalog_id: AP001`. Catalog IDs must be unique among available books.
 - Each `##` heading creates a section page. Its `{#id}` is required, unique within the book and forms part of the URL; keep it stable after publication. A `#` heading groups subsequent sections; separate as many hierarchy levels as needed with ` / `, for example `# காண்டம் / படலம் / இயல்`. A later `#` replaces the whole group path. Omit group headings for flat books. Group labels appear in section navigation and search, but do not change section URLs. Optional `###` headings with `{#id}` create individually linkable passages; passage IDs must be unique within the book. Other Markdown headings and formatting are rendered as content. Plain text belongs under a section heading.
 - Inside a passage, a newline starts a new line; a blank line starts a new paragraph or stanza with visible spacing. Consecutive blank lines do not add extra spacing.
-- `title_en`, `author_en`, `genre_en`, `category`, `period`, `featured_quote`, and `aliases` are optional. Provide the English fields for the bilingual book list; missing values are left blank. Aliases help search alternate names and transliterations.
+- `title_en`, `author_en`, `genre_en`, `tags`, `period`, `featured_quote`, and `aliases` are optional. `tags` is a YAML list of non-empty strings; each tag appears on the book page and is searchable. The search quick filters show up to six tags used by the most available books, with ties sorted in Tamil alphabetical order. Provide the English fields for the bilingual book list; missing values are left blank. Aliases help search alternate names and transliterations.
 - Leave `pdf` and `epub` as `null` until available. Later use an HTTPS URL or a site-root path such as `/downloads/book.pdf`; put local files under `public/downloads/`. Missing links are not displayed.
 - If an ID matches an existing “coming soon” entry in `src/data/library.json`, the new book replaces that placeholder automatically. Keep the ID unchanged after publishing.
 - [`AP001-thirukkural.md`](src/content/books/AP001-thirukkural.md) is the authoritative text for திருக்குறள். The older JSON is retained as a migration reference for regression tests; editing it does not change the site. `scripts/migrate_thirukkural.mjs` is a one-time migration tool.

@@ -7,10 +7,10 @@ import { chapterUrl } from '../../../utils/reader.js';
 const book = books.find((b) => b.slug === 'thirukkural');
 if (!book) throw new Error('Thirukkural content is missing');
 
-const paalMeta: Record<string, { id: string; num: number; shortName: string }> = {
-  'அறத்துப்பால்': { id: 'aram', num: 1, shortName: 'அறத்துப்பால்' },
-  'பொருட்பால்': { id: 'porul', num: 2, shortName: 'பொருட்பால்' },
-  'காமத்துப்பால்': { id: 'kamam', num: 3, shortName: 'காமத்துப்பால்' },
+const paalMeta: Record<string, { id: string; num: number; shortName: string; name_en: string }> = {
+  'அறத்துப்பால்': { id: 'aram', num: 1, shortName: 'அறத்துப்பால்', name_en: 'Virtue' },
+  'பொருட்பால்': { id: 'porul', num: 2, shortName: 'பொருட்பால்', name_en: 'Wealth' },
+  'காமத்துப்பால்': { id: 'kamam', num: 3, shortName: 'காமத்துப்பால்', name_en: 'Nature of Love' },
 };
 
 const iyalIds: Record<string, string> = {
@@ -25,9 +25,17 @@ const iyalIds: Record<string, string> = {
   'கற்பியல்': 'karpiyal',
 };
 
+const parseBilingual = (str: string = '') => {
+  const parts = str.split(/\s*-\s*/);
+  const ta = parts[0]?.trim() || '';
+  const en = parts.slice(1).join(' - ').trim();
+  return { ta, en };
+};
+
 interface IyalData {
   id: string;
   name_ta: string;
+  name_en: string;
   paal_name: string;
   paal_id: string;
   total_verses: number;
@@ -40,6 +48,7 @@ interface PaalData {
   id: string;
   num: number;
   name_ta: string;
+  name_en: string;
   short_name: string;
   total_verses: number;
   sections_count: number;
@@ -48,33 +57,45 @@ interface PaalData {
 }
 
 // Group by Paal -> Iyal -> Athikaram
-const paalsMap: Record<string, { meta: typeof paalMeta[string]; iyalsMap: Record<string, Array<typeof book.sections[0]>> }> = {
+const paalsMap: Record<string, { meta: (typeof paalMeta)[string]; iyalsMap: Record<string, { name_ta: string; name_en: string; sections: Array<typeof book.sections[0]> }> }> = {
   'அறத்துப்பால்': { meta: paalMeta['அறத்துப்பால்'], iyalsMap: {} },
   'பொருட்பால்': { meta: paalMeta['பொருட்பால்'], iyalsMap: {} },
   'காமத்துப்பால்': { meta: paalMeta['காமத்துப்பால்'], iyalsMap: {} },
 };
 
 for (const section of book.sections) {
-  const paalName = section.ancestors[0] || 'அறத்துப்பால்';
-  const iyalName = section.ancestors[1] || 'பொது';
-  if (!paalsMap[paalName]) {
-    paalsMap[paalName] = {
-      meta: { id: 'other', num: 4, shortName: paalName },
+  const rawPaal = section.ancestors[0] || 'அறத்துப்பால்';
+  const rawIyal = section.ancestors[1] || 'பொது';
+
+  const paalInfo = parseBilingual(rawPaal);
+  const iyalInfo = parseBilingual(rawIyal);
+
+  const paalKey = paalInfo.ta || 'அறத்துப்பால்';
+  const iyalKey = iyalInfo.ta || 'பொது';
+
+  if (!paalsMap[paalKey]) {
+    paalsMap[paalKey] = {
+      meta: { id: 'other', num: 4, shortName: paalKey, name_en: paalInfo.en },
       iyalsMap: {},
     };
   }
-  if (!paalsMap[paalName].iyalsMap[iyalName]) {
-    paalsMap[paalName].iyalsMap[iyalName] = [];
+  if (!paalsMap[paalKey].iyalsMap[iyalKey]) {
+    paalsMap[paalKey].iyalsMap[iyalKey] = {
+      name_ta: iyalKey,
+      name_en: iyalInfo.en,
+      sections: [],
+    };
   }
-  paalsMap[paalName].iyalsMap[iyalName].push(section);
+  paalsMap[paalKey].iyalsMap[iyalKey].sections.push(section);
 }
 
-const paals: PaalData[] = Object.entries(paalsMap).map(([paalName, data]) => {
+const paals: PaalData[] = Object.entries(paalsMap).map(([paalKey, data]) => {
   let paalVersesTotal = 0;
   let paalSectionsTotal = 0;
   const allVerseNums: number[] = [];
 
-  const iyals: IyalData[] = Object.entries(data.iyalsMap).map(([iyalName, sections]) => {
+  const iyals: IyalData[] = Object.entries(data.iyalsMap).map(([iyalKey, iyalEntry]) => {
+    const sections = iyalEntry.sections;
     const totalVerses = sections.reduce((sum, s) => sum + s.passages.length, 0);
     paalVersesTotal += totalVerses;
     paalSectionsTotal += sections.length;
@@ -91,9 +112,10 @@ const paals: PaalData[] = Object.entries(paalsMap).map(([paalName, data]) => {
     const maxV = verseNumbers.length ? Math.max(...verseNumbers) : totalVerses;
 
     return {
-      id: iyalIds[iyalName] || iyalName,
-      name_ta: iyalName,
-      paal_name: paalName,
+      id: iyalIds[iyalKey] || iyalKey,
+      name_ta: iyalEntry.name_ta,
+      name_en: iyalEntry.name_en,
+      paal_name: paalKey,
       paal_id: data.meta.id,
       total_verses: totalVerses,
       sections_count: sections.length,
@@ -112,7 +134,8 @@ const paals: PaalData[] = Object.entries(paalsMap).map(([paalName, data]) => {
   return {
     id: data.meta.id,
     num: data.meta.num,
-    name_ta: paalName,
+    name_ta: paalKey,
+    name_en: data.meta.name_en || '',
     short_name: data.meta.shortName,
     total_verses: paalVersesTotal,
     sections_count: paalSectionsTotal,
@@ -184,7 +207,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
               <div class="min-w-0 flex-1 mr-4">
                 <div class="flex items-center gap-3">
                   <h3 class="text-lg sm:text-xl font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
-                    {p.name_ta}
+                    {p.name_ta} {p.name_en && <span class="font-normal text-base text-[var(--text-muted)] font-sans">· {p.name_en}</span>}
                   </h3>
                   <span class="text-xs px-2.5 py-0.5 rounded-full bg-[var(--bg-muted)] text-[var(--text-muted)] border border-[var(--border-subtle)]">
                     {p.iyals.length} இயல்கள்
@@ -199,7 +222,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
                 <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-[var(--border-subtle)]/60">
                   {p.iyals.map((iy) => (
                     <span class="text-[11px] px-2 py-0.5 rounded-md bg-[var(--bg-muted)]/70 text-[var(--text-dim)] group-hover:text-[var(--text-muted)]">
-                      {iy.name_ta} ({iy.sections_count})
+                      {iy.name_ta} {iy.name_en ? `· ${iy.name_en}` : ''} ({iy.sections_count})
                     </span>
                   ))}
                 </div>
@@ -233,7 +256,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
             >
               <div class="mr-4 flex-1 truncate">
                 <span class="text-xs sm:text-sm font-semibold text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
-                  {iy.name_ta}
+                  {iy.name_ta} {iy.name_en && <span class="font-normal text-xs text-[var(--text-muted)] font-sans">· {iy.name_en}</span>}
                 </span>
                 <span class="text-[11px] text-[var(--text-dim)] ml-2">
                   · {iy.paal_name} ({iy.sections_count} அதிகாரங்கள் · குறள்கள் {iy.range})
@@ -276,7 +299,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
 
           <div class="mb-6">
             <h1 class="text-3xl sm:text-4xl font-bold font-tamil-serif text-[var(--text-main)] tracking-tight">
-              {p.name_ta}
+              {p.name_ta} {p.name_en && <span class="text-xl sm:text-2xl font-normal text-[var(--text-muted)] font-sans">· {p.name_en}</span>}
             </h1>
             <p class="text-sm text-[var(--text-muted)] mt-1.5">
               {p.total_verses} குறள்கள் · குறள்கள் {p.range} · {p.iyals.length} இயல்கள் · {p.sections_count} அதிகாரங்கள்
@@ -296,15 +319,20 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
                   data-paal={p.id}
                   data-iyal={iy.id}
                 >
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-sm sm:text-base font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
-                      {iy.name_ta}
-                    </h3>
-                    <span class="text-xs font-semibold text-[var(--accent-primary)]">
+                  <div class="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 class="text-sm sm:text-base font-bold font-tamil-serif text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors">
+                        {iy.name_ta}
+                      </h3>
+                      {iy.name_en && (
+                        <p class="text-xs text-[var(--text-muted)] font-sans mt-0.5">{iy.name_en}</p>
+                      )}
+                    </div>
+                    <span class="text-xs font-semibold text-[var(--accent-primary)] shrink-0">
                       {iy.total_verses} குறள்கள்
                     </span>
                   </div>
-                  <p class="text-xs text-[var(--text-muted)] mt-1 flex items-center justify-between">
+                  <p class="text-xs text-[var(--text-muted)] mt-2 flex items-center justify-between">
                     <span>{iy.sections_count} அதிகாரங்கள்</span>
                     <span>குறள்கள் {iy.range}</span>
                   </p>
@@ -337,7 +365,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
                 data-paal={p.id}
                 data-iyal={iy.id}
               >
-                {iy.name_ta} ({iy.sections_count})
+                {iy.name_ta} {iy.name_en ? `· ${iy.name_en}` : ''} ({iy.sections_count})
               </button>
             ))}
           </div>
@@ -354,7 +382,7 @@ const allIyalsByWeight = [...allIyals].sort((a, b) => b.total_verses - a.total_v
                 <div class="flex flex-wrap items-center justify-between pb-4 mb-4 border-b border-[var(--border-subtle)] gap-2">
                   <div>
                     <h3 class="text-base sm:text-lg font-bold font-tamil-serif text-[var(--text-main)]">
-                      {iy.name_ta}
+                      {iy.name_ta} {iy.name_en && <span class="text-sm font-normal text-[var(--text-muted)] font-sans">· {iy.name_en}</span>}
                     </h3>
                     <p class="text-xs text-[var(--text-muted)] mt-0.5">
                       {iy.sections_count} அதிகாரங்கள் · {iy.total_verses} குறள்கள் · குறள்கள் {iy.range}

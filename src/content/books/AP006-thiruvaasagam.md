@@ -8,11 +8,11 @@ author: மாணிக்க வாசகர்
 author_en: Maanikkavasakar
 genre: சமயம் - சைவம்
 genre_en: Saiva Literature
-category: பன்னிரு திருமுறைகள் (எட்டாம் திருமுறை)
+tags: ["பன்னிரு திருமுறைகள்", "எட்டாம் திருமுறை"]
 period: கி.பி. 9-ஆம் நூற்றாண்டு
 description: மாணிக்கவாசகர் அருளிச்செய்த திருவாசகம், சைவத் திருமுறைகளில் எட்டாம் திருமுறையாக விளங்கும் ஒப்பற்ற பக்தி ஞானப் பெருநூல். 'திருவாசகத்துக்கு உருகார் ஒரு வாசகத்துக்கும் உருகார்' என்பது முதுமொழி. சிவபுராணம் முதல் அச்சோப் பதிகம் வரை 51 பதிகங்களையும் 661 பாடல்களையும் கொண்டது.
 featured_quote: நமச்சிவாய வாஅழ்க நாதன் தாள் வாழ்க இமைப்பொழுதும் என் நெஞ்சில் நீங்காதான் தாள் வாழ்க.
-acknowledgement: "Credits to Project Madurai team @ www.projectmadurai.org"
+contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
 pdf: null
 epub: null
 aliases: [thiruvasagam, Manikkavasagar, Thiruvasakam, Tiruvasakam]

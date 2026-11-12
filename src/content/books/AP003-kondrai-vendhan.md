@@ -10,7 +10,7 @@ genre: நீதிநெறி நூல்கள்
 genre_en: Ethical Literature
 description: ஒளவையார் அருளிய கொன்றை வேந்தன், அறநெறிகளையும் வாழ்வியல் கருத்துகளையும் எடுத்துரைக்கும் நீதிநூல்.
 featured_quote: "அன்னையும் பிதாவும் முன்னறி தெய்வம்."
-acknowledgement: "Credits to Project Madurai team @ www.projectmadurai.org"
+contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
 pdf: null
 epub: null
 aliases: [ஔவையார்]

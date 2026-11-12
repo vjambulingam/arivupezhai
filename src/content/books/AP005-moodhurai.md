@@ -10,7 +10,7 @@ genre: நீதிநெறி நூல்கள்
 genre_en: Ethical Literature
 description: ஒளவையார் அருளிய மூதுரை, அறநெறிகளையும் வாழ்வியல் கருத்துகளையும் எடுத்துரைக்கும் நீதிநூல்.
 featured_quote: "நன்றி ஒருவர்க்குச் செய்தக்கால் அந்நன்றி"
-acknowledgement: "Credits to Project Madurai team @ www.projectmadurai.org"
+contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
 pdf: null
 epub: null
 aliases: [ஔவையார்]
