@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thirumaalai"
 author: "தொண்டரடிப்பொடி ஆழ்வார்"
 author_en: "Thondaradippodi Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "தொண்டரடிப்பொடி ஆழ்வார் அரங்கனது திருநாமப் பெருமையையும் அவனருளின் சீரையும் போற்றிப் பாடிய 45 பாசுரங்களைக் கொண்ட திருமாலை."
 featured_quote: "காவல் ஒன்று இலை அரசு ஒன்று இலை ஆவன ஒன்று இலை அடியேன் நின் பாதம் சேவித்து உய்ந்தொழிந்தேன் திருவரங்கத்தம்மான்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirumaalai.pdf
+epub: /downloads/thirumaalai.epub
 aliases: ["AP018", "திருமாலை", "Thirumalai", "Thondaradippodi Alvar"]
 ---
 

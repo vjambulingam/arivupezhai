@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ப�
 title_en: "Perumaal Thirumozhi"
 author: "குலசேகரப் பெருமாள்"
 author_en: "Kulasekara Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "சேர மன்னர் குலசேகர ஆழ்வார் அரங்கன் மற்றும் திருமலை அப்பன் மீது கொண்ட பக்திப் பெருக்கால் பாடியருளிய 105 பாசுரங்களைக் கொண்ட திருநூல்."
 featured_quote: "இருளிரியச் சுடர்மணிகள் இமைக்கும் நெற்றி இனத்துத்தி அணிபணம்ஆ யிரங்க ளார்ந்த அரவரசப் பெருஞ்சோதி அனந்த னென்னும் அணிவிளங்கு உயர்வெள்ளை அணையைக் மேவி."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/perumaal-thirumozhi.pdf
+epub: /downloads/perumaal-thirumozhi.epub
 aliases: ["AP013", "பெருமாள் திருமொழி", "Perumal Thirumozhi", "Kulasekara Alvar"]
 ---
 

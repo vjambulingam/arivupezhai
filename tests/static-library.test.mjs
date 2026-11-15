@@ -162,7 +162,7 @@ test('book list includes available books with bilingual metadata and stable cata
     ['AP003', 'kondrai-vendhan', 'கொன்றை வேந்தன்', 'Kondrai Vendhan', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
     ['AP004', 'nalvazhi', 'நல்வழி', 'Nalvazhi', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
     ['AP005', 'moodhurai', 'மூதுரை', 'Moodhurai', 'ஒளவையார்', 'Avvaiyar', 'நீதிநெறி நூல்கள்', 'Ethical Literature'],
-    ['AP006', 'thiruvaasagam', 'திருவாசகம்', 'Thiruvaasagam', 'மாணிக்க வாசகர்', 'Maanikkavasakar', 'சமயம் - சைவம்', 'Saiva Literature'],
+    ['AP006', 'thiruvaasagam', 'திருவாசகம்', 'Thiruvaasagam', 'மாணிக்க வாசகர்', 'Maanikkavasakar', 'சமய நூல்கள்', 'Saiva Literature'],
   ]) {
     const row = rows.find((value) => value.includes(`>${id}</td>`));
     assert.ok(row, `Missing ${id}`);
@@ -179,7 +179,23 @@ test('only valid books exist in dist/book and redirect books are not generated',
     'periya-thirumozhi', 'siriya-thirumurai', 'thirukkurunthaandagam', 'thirunedunthaandagam',
     'thiruvandhadhi-1', 'thiruvandhadhi-2', 'thiruvandhadhi-3', 'thiruvaasiriyam', 'thiruvirutham',
     'thiruvezhukootrirukkai', 'naanmukan-thiruvandhadhi', 'periya-thirumadal', 'periya-thiruvandhadhi',
-    'raamaanuja-nootrandhadhi', 'thiruvaaimozhi', 'ndp-4', 'ponniyin-selvan'
+    'raamaanuja-nootrandhadhi', 'thiruvaaimozhi', 'ndp-4', 'ponniyin-selvan', 'thanneer-desam',
+    'sivagamiyin-sabatham', 'alai-osai', 'parthiban-kanavu', 'solaimalai-ilavarasi',
+    'thyaga-bhoomi', 'poiman-karadu', 'mantharukkul-oru-deivam', 'arumbu-ambugal',
+    'kalkiyin-sirukathaigal-thoguppu', 'desiya-geethangal', 'deiva-paadalkal',
+    'bhagavad-gita-thamizhaakkam', 'bharathiyar-suyasarithai', 'gnana-paadalkal',
+    'palvakai-paadalkal', 'kannan-paattu', 'kuyil-paattu', 'paanjaali-sabatham',
+    'chandrikaiyin-kathai', 'bharathiyar-katturaigal', 'navathanthira-kathaigal',
+    'chinnach-sankaran-kathai', 'gnanaratham', 'kandar-alangaaram', 'kandar-anubhoothi',
+    'vel-mayil-seval-virutham', 'thiruppugazh', 'raamaayanam',
+    'saraswathi-anthadhi', 'sadagopar-anthadhi', 'erezhupadhu', 'thirukkai-vazhakkam',
+    'azhagin-sirippu', 'thamizh-iyakkam', 'irunda-veedu', 'kudumba-vilakku',
+    'kaadhal-ninaivugal', 'isai-amudhu', 'paandiyan-parisu', 'ilainjar-ilakkiyam',
+    'edhirpaaraadha-mutham', 'bharathidasan-kavithaigal-1', 'puratchik-kavithaigal',
+    'thamizhachiyin-katthi', 'kurinji-thittu', 'thenaruvi', 'mullaikkaadu',
+    'kannagi-puratchik-kaappiyam', 'manimekalai-venba', 'kaadhal-paadalkal',
+    'karkandu-naadagangal', 'sathimutha-pulavar', 'vengaiye-ezhuga', 'bharathidasan-pudhinangal',
+    'viviliyam-pazhaiya-erpaadu', 'viviliyam-pudhiya-erpaadu', 'seerapuranam'
   ]);
   assert.deepEqual(new Set(entries), validSlugs);
 });

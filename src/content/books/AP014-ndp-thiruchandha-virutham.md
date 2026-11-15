@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruchandha Virutham"
 author: "திருமழிசைபிரான்"
 author_en: "Thirumalisai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 7-ஆம் நூற்றாண்டு"
 description: "திருமழிசை ஆழ்வார் அருளிச்செய்த திருச்சந்த விருத்தம், சந்த நயமும் தத்துவக் கருத்துக்களும் செறிந்த 120 பாசுரங்களைக் கொண்ட தத்துவப் பனுவல்."
 featured_quote: "பூநிலாய ஐந்துமாய்ப் புனற்கண் நின்ற நான்குமாய் தீநிலாய மூன்றுமாய்ச் சிறந்தகால் இரண்டுமாய் மீநிலாய தொன்றுமாகி வேறுவேறு தன்மையாய் நீநிலாய வண்ணநின்னை யார்நினைக்க வல்லரே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruchandha-virutham.pdf
+epub: /downloads/thiruchandha-virutham.epub
 aliases: ["AP014", "திருச்சந்த விருத்தம்", "Thiruchantha Virutham", "Thirumalisai Alvar"]
 ---
 

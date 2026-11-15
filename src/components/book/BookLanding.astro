@@ -1,4 +1,6 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import Layout from '../../layouts/Layout.astro';
 import type { Book } from '../../utils/books';
 import { getUrl } from '../../utils/url.js';
@@ -6,6 +8,21 @@ import { chapterUrl } from '../../utils/reader.js';
 
 interface Props { book: Book }
 const { book } = Astro.props;
+
+function fileExists(link: string | null): boolean {
+  if (!link) return false;
+  if (/^https?:\/\//i.test(link)) return true;
+  const cleanLink = link.split('?')[0].split('#')[0];
+  const localRel = decodeURIComponent(cleanLink.replace(/^\/+/, ''));
+  const pathFromCwd = path.join(process.cwd(), 'public', localRel);
+  if (fs.existsSync(pathFromCwd)) return true;
+  const pathFromMeta = new URL(`../../../public/${localRel}`, import.meta.url).pathname;
+  return fs.existsSync(pathFromMeta);
+}
+
+const showPdf = fileExists(book.pdf);
+const showEpub = fileExists(book.epub);
+
 const groups = [...new Set(book.sections.flatMap((section) =>
   section.ancestors.map((_, index) => section.ancestors.slice(0, index + 1).join(' / '))
 ))];
@@ -54,8 +71,8 @@ function formatInfo(text: string): string {
             <span>நூல் கண்ணோட்டம்</span>
           </a>
         )}
-        {book.pdf && <a href={book.pdf.startsWith('/') ? getUrl(book.pdf) : book.pdf} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">PDF</a>}
-        {book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">EPUB</a>}
+        {showPdf && book.pdf && <a href={book.pdf.startsWith('/') ? getUrl(book.pdf) : book.pdf} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">PDF</a>}
+        {showEpub && book.epub && <a href={book.epub.startsWith('/') ? getUrl(book.epub) : book.epub} class="px-4 py-3 rounded-xl bg-[var(--bg-muted)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-main)] font-medium border border-[var(--border-subtle)] transition-colors">EPUB</a>}
       </div>
 
       <!-- Book Info (Contributors / Attribution) -->

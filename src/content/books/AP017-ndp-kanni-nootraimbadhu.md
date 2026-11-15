@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - க�
 title_en: "Kanni Nootraimbadhu (Kanni Nun Siruthambu)"
 author: "மதுர கவிராயர்"
 author_en: "Madhurakavi Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "மதுரகவி ஆழ்வார் தம் ஆசார்யரான நம்மாழ்வாரையே தெய்வமாகக் கொண்டு பாடியருளிய ஆசார்ய பக்திப் பனுவல் (11 பாசுரங்கள்)."
 featured_quote: "கண்ணிநுண் சிறுத்தாம்பினால் கட்டுண்ணப் பண்ணிய பெருமாயன் என் உரப்பனில் நண்ணித் தென்குருகூர் நம்பி என்றக்கால் அண்ணிக்கும் அமுதூறும் என் நாவுக்கே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/kanni-nootraimbadhu.pdf
+epub: /downloads/kanni-nootraimbadhu.epub
 aliases: ["AP017", "கண்ணி நூற்றைம்பது", "கண்ணிநுண் சிறுத்தாம்பு", "Kanni Nun Siruthambu", "Madhurakavi Alvar"]
 ---
 

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Periyazhvar Thirumozhi"
 author: "பெரியாழ்வார்"
 author_en: "Periyalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "பெரியாழ்வார் அருளிச்செய்த திருமொழி, கண்ணன் திருவவதாரம் முதல் பல்வேறு லீலைகளை யசோதை முதலானோரின் தாய்மை உணர்வோடு பாடிப் பரவும் 461 பாசுரங்களைக் கொண்ட முதலாயிரப் பெருநூல்."
 featured_quote: "வண்ணமாடங்கள் சூழ் திருக்கோட்டியூர் கண்ணன் கேசவன் நம்பி பிறந்தினில் எண்ணெய் சுண்ணம் எதிரெதிர்தூவிடக் கண்ணன் முற்றம் கலந்து அளராயிற்றே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirumozhi.pdf
+epub: /downloads/thirumozhi.epub
 aliases: ["AP010", "பெரியாழ்வார் திருமொழி", "Periyazhvar Thirumozhi", "Thirumozhi", "Periyalvar"]
 ---
 

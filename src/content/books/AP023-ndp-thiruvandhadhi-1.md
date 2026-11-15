@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Mudhal Thiruvandhadhi"
 author: "பொய்கையாழ்வார்"
 author_en: "Poigai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 7-ஆம் நூற்றாண்டு"
 description: "முதலாழ்வார்களில் ஒருவரான பொய்கையாழ்வார் திருக்கோவலூரில் உலகையே அகலாகவும் கடலையே நெய்யாகவும் கதிரவனையே விளக்காகவும் ஏற்றிப் பாடிய 100 அந்தாதிப் பாசுரங்கள்."
 featured_quote: "வையந் தகளியா வார்கடலே நெய்யாக வெய்ய கதிரோன் விளக்காகச் செய்ய சுடராழி யானடிக்கே சூட்டினேன் சொல்மாலை இடராழி நீங்குகவே யென்று."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvandhadhi-1.pdf
+epub: /downloads/thiruvandhadhi-1.epub
 aliases: ["AP023", "முதற்றிருவந்தாதி", "முதல் திருவந்தாதி", "Mudhal Thiruvandhadhi", "Poigai Alvar"]
 ---
 

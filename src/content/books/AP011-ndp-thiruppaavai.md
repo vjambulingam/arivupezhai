@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruppaavai"
 author: "ஆண்டாள்"
 author_en: "Andal"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "சூடிக்கொடுத்த சுடர்க்கொடி ஆண்டாள் நாச்சியார் மார்கழி நோன்பிருந்து கண்ணனை ஆராதித்து அருளிச்செய்த 30 பாசுரங்களைக் கொண்ட பக்திப் பனுவல்."
 featured_quote: "மார்கழித் திங்கள் மதிநிறைந்த நன்னாளால் நீராடப் போதுவீர் போதுமினோ நேரிழையீர் சீர்மல்கும் ஆய்ப்பாடிச் செல்வச் சிறுமீர்காள் கூர்வேல் கொடுந்தொழிலன் நந்தகோபன் குமரன்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruppaavai.pdf
+epub: /downloads/thiruppaavai.epub
 aliases: ["AP011", "திருப்பாவை", "Thiruppavai", "Tiruppavai", "Andal", "ஆண்டாள்"]
 ---
 

@@ -3,7 +3,7 @@ import { getUrl } from '../utils/url.js';
 
 const homeUrl = getUrl('/');
 const catalogUrl = getUrl('/catalog');
-const logoUrl = getUrl('arivupezhai-logo-transparent.png');
+const logoUrl = getUrl('arivupezhai-logo.png');
 const themes = [
   { id: 'bronze', name: 'செப்பேடு' },
   { id: 'night', name: 'இரவுக் கூடம்' },
@@ -17,11 +17,11 @@ const themes = [
       
       <!-- Brand Logo & Title -->
       <a href={homeUrl} class="group flex items-center space-x-3 max-[359px]:space-x-2 transition-opacity hover:opacity-90">
-        <div class="h-10 max-[359px]:h-8 sm:h-11 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+        <div class="h-12 max-[359px]:h-9 sm:h-14 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
           <img
             src={logoUrl}
             alt="அறிவுப்பேழை"
-            class="h-10 max-[359px]:h-8 sm:h-11 w-auto max-w-[120px] object-contain"
+            class="h-12 max-[359px]:h-9 sm:h-14 w-auto max-w-[140px] object-contain"
             loading="eager"
           />
         </div>
@@ -30,7 +30,7 @@ const themes = [
             அறிவுப்பேழை
           </span>
           <span class="text-xs text-[var(--text-muted)] font-tamil-sans hidden sm:block">
-            செவ்வியல் தமிழ் இணைய நூலகம்
+            தமிழ் இணைய நூலகம்
           </span>
         </div>
       </a>

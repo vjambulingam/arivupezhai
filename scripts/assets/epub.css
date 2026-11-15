@@ -1,0 +1,217 @@
+@charset "UTF-8";
+
+/* Embedded Tamil Fonts */
+@font-face {
+  font-family: "Noto Serif Tamil";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/NotoSerifTamil-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Noto Serif Tamil";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/NotoSerifTamil-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Noto Sans Tamil";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/NotoSansTamil-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Noto Sans Tamil";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/NotoSansTamil-Bold.ttf");
+}
+
+/* Global Typography */
+body {
+  font-family: "Noto Serif Tamil", "Tiro Tamil", "Tamil Sangam MN", Georgia, serif;
+  font-size: 1em;
+  line-height: 1.75;
+  margin: 5%;
+  text-align: left;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Noto Sans Tamil", "Tamil Sangam MN", sans-serif;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-top: 1.8em;
+  margin-bottom: 0.6em;
+  text-align: left;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h1 {
+  font-size: 1.75em;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.35em;
+}
+
+h3 {
+  font-size: 1.15em;
+}
+
+h4 {
+  font-size: 1.05em;
+}
+
+/* Paragraphs & Verses */
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Quotes & Epigraphs */
+blockquote {
+  margin: 1.2em 1.5em;
+  padding: 0.6em 1em;
+  border-left: 3px solid #888;
+  font-style: italic;
+  color: #555;
+}
+
+/* Title Page */
+section.titlepage {
+  text-align: center;
+  padding: 2em 1em;
+}
+
+.brand-header {
+  text-align: center;
+  margin: 0.5em auto 2.2em auto;
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.brand-logo {
+  display: block;
+  margin: 0 auto;
+  width: 180px;
+  max-width: 55%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (prefers-color-scheme: dark) {
+  .brand-header {
+    border-bottom-color: #334155;
+  }
+}
+
+section.titlepage h1.title {
+  font-size: 2.2em;
+  border: none;
+  margin-bottom: 0.4em;
+}
+
+section.titlepage p.author {
+  font-size: 1.3em;
+  font-style: italic;
+  margin-top: 0.2em;
+  color: #333;
+}
+
+/* Contributors on Title Page */
+.contributors {
+  margin: 2.5em auto 1em auto;
+  max-width: 85%;
+  padding: 1em 1.2em;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.contributors-title {
+  font-family: "Noto Sans Tamil", "Tamil Sangam MN", sans-serif;
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4em;
+  color: #666;
+}
+
+.contributors-body {
+  font-size: 0.85em;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Table of Contents */
+nav#toc {
+  margin: 2em 0;
+}
+
+nav#toc h1#toc-title {
+  text-align: center;
+  font-size: 1.6em;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.4em;
+}
+
+nav#toc ol {
+  list-style-type: none;
+  padding-left: 1em;
+}
+
+nav#toc li {
+  margin: 0.4em 0;
+  line-height: 1.5;
+}
+
+nav#toc a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1a1a1a;
+    color: #e6e6e6;
+  }
+
+  h1 {
+    border-bottom-color: #444;
+  }
+
+  blockquote {
+    border-left-color: #aaa;
+    color: #bbb;
+  }
+
+  section.titlepage p.author {
+    color: #ccc;
+  }
+
+  .contributors {
+    border-top-color: #444;
+    border-bottom-color: #444;
+  }
+
+  .contributors-title {
+    color: #aaa;
+  }
+
+  .contributors-body {
+    color: #bbb;
+  }
+
+  nav#toc h1#toc-title {
+    border-bottom-color: #ccc;
+  }
+}

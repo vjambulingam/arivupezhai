@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ந�
 title_en: "Naachiyaar Thirumozhi"
 author: "ஆண்டாள்"
 author_en: "Andal"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "ஆண்டாள் நாச்சியார் அரங்கனை மணாளனாக அடைய விழைந்து உள்ளமுருகிப் பாடிய 143 பாசுரங்களைக் கொண்ட காதல் பக்திப் பெருநூல். வாரணமாயிரம் முதலான புகழ்மிக்க பதிகங்களை உள்ளடக்கியது."
 featured_quote: "தையொரு திங்களும் தரைவிளக்கித் தண்மண்டலமிட்டு மாசிமுன்னாள் ஐயநுண் மணற்கொண்டு தெருவணிந்து அழகினுக் கலங்கரித் தனங்கதேவா."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/naachiyaar-thirumozhi.pdf
+epub: /downloads/naachiyaar-thirumozhi.epub
 aliases: ["AP012", "நாச்சியார் திருமொழி", "Nachiyar Thirumozhi", "Andal", "ஆண்டாள்"]
 ---
 

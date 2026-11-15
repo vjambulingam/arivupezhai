@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ப�
 title_en: "Periya Thirumozhi"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கை ஆழ்வார் 86 திவ்ய தேசங்களையும் மங்களாசாசனம் செய்து அருளிய 1084 பாசுரங்களைக் கொண்ட மாபெரும் பக்திப் பெருநூல்."
 featured_quote: "வாடினேன் வாடி வருந்தினேன் மனத்தால் பெருந்துயர் இடும்பையில் பிறந்து கூடினேன் கூடி இளையவர்த்தம்மோடு அவர்தரும் கலவியே கருதி நாடினேன் நாடி நான் கண்டுகொண்டேன் நாராயணா என்னும் நாமம்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/periya-thirumozhi.pdf
+epub: /downloads/periya-thirumozhi.epub
 aliases: ["AP019", "பெரிய திருமொழி", "Periya Thirumozhi", "Thirumangai Alvar"]
 ---
 

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thirukkurunthaandagam"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கையாழ்வார் தாண்டக யாப்பில் அருளிச்செய்த 20 பாசுரங்களைக் கொண்ட செறிவான பக்தி நூல்."
 featured_quote: "நிதிபொழியும் முகில்என்று நீசர்தம் வாசல்பற்றித் துதிகற்றுலகில் துவள்கின்றிலேன் இனித் தூய்நெறிசேர்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirukkurunthaandagam.pdf
+epub: /downloads/thirukkurunthaandagam.epub
 aliases: ["AP021", "திருக்குறுந்தாண்டகம்", "Thirukkurunthandakam", "Thirumangai Alvar"]
 ---
 

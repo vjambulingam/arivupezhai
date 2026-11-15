@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thirunedunthaandagam"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இரண்டாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கையாழ்வார் நெடும் தாண்டக யாப்பில் எம்பெருமானின் பரத்துவத்தையும் சௌலப்யத்தையும் அருளிய 30 பாசுரங்கள்."
 featured_quote: "மின்னுருவாய் முன்னுருவில் வேதம் நான்காய் விளங்குஒளியாய் முளைத்தெழுந்த திங்கள் தானாய் பின்னுருவாய் முன்னுருவில் பிணிமூப் பில்லாப் பிறப்பிலியாய் இறப்பதற்கே எண்ணா தானாய்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirunedunthaandagam.pdf
+epub: /downloads/thirunedunthaandagam.epub
 aliases: ["AP022", "திருநெடுந்தாண்டகம்", "Thirunedunthandakam", "Thirumangai Alvar"]
 ---
 

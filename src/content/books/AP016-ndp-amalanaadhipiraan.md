@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - அ�
 title_en: "Amalanaadhipiraan"
 author: "திருப்பாணாழ்வார்"
 author_en: "Thiruppan Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருப்பாணாழ்வார் அரங்கனின் திருவடி முதல் திருமுடி வரை திருப்பாதாதி கேசமாக அனுபவித்துப் பாடியருளிய 10 திவ்ய பாசுரங்கள்."
 featured_quote: "அமலனாதிபிரான் அடியார்க்கு என்னை ஆட்படுத்த விமலன் விண்னவர் கோன் விரையார்பொழில் வேங்கடவன் நிமலன் நின்மலன் நீதி வானவன் நீள்மதில் அரங்கத்தம்மான் திருக்கமல பாதம்வந்து என் கண்ணினுள்ளன ஒக்கின்றதே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/amalanaadhipiraan.pdf
+epub: /downloads/amalanaadhipiraan.epub
 aliases: ["AP016", "அமலனாதிபிரான்", "Amalanathipiran", "Thiruppan Alvar"]
 ---
 

@@ -11,8 +11,8 @@ genre_en: Ethical Literature
 description: ஒளவையார் அருளிய கொன்றை வேந்தன், அறநெறிகளையும் வாழ்வியல் கருத்துகளையும் எடுத்துரைக்கும் நீதிநூல்.
 featured_quote: "அன்னையும் பிதாவும் முன்னறி தெய்வம்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/kondrai-vendhan.pdf
+epub: /downloads/kondrai-vendhan.epub
 aliases: [ஔவையார்]
 ---
 

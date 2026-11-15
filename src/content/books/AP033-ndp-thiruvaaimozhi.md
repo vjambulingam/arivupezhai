@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruvaaimozhi"
 author: "நம்மாழ்வார்"
 author_en: "Nammalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "நம்மாழ்வார் அருளிச்செய்த தமிழ் மறையாகிய திருவாய்மொழி, சாம வேத சாரமாகப் போற்றப்படும் 1102 திவ்ய பாசுரங்களைக் கொண்ட வைணவத் தத்துவப் பெருநூல்."
 featured_quote: "உயர்வற உயர்நலம் உடையவன் யவனவன் மயர்வற மதிநலம் அருளினன் யவனவன் அயர்வறும் அமரர்கள் அதிபதி யவனவன் துயரறு சுடரடி தொழுதெழென் மனனே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvaaimozhi.pdf
+epub: /downloads/thiruvaaimozhi.epub
 aliases: ["AP033", "திருவாய்மொழி", "Tiruvaimozhi", "Thiruvaimozhi", "Nammalvar"]
 ---
 

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ப�
 title_en: "Periya Thirumadal"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கை ஆழ்வார் பரகால நாயகியாக நின்று எம்பெருமானின் திருவருளைப் பெற மடலூர்வதாக அருளிச்செய்த நெடிய பக்திப் பாடல்."
 featured_quote: "பொன்னிவர் மேனி மரகதத்தின் பொங்கிளஞ்சோதி யகலத்துப் பூவார்ந்த கொங்கை மடவாளைக் கொண்டணைந்து."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/periya-thirumadal.pdf
+epub: /downloads/periya-thirumadal.epub
 aliases: ["AP030", "பெரிய திருமடல்", "Periya Thirumadal", "Thirumangai Alvar"]
 ---
 

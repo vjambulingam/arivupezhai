@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruvaasiriyam"
 author: "நம்மாழ்வார்"
 author_en: "Nammalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "நம்மாழ்வார் ஆசிரியப்பாவில் அருளிச்செய்த யஜுர் வேத சாரமாகப் போற்றப்படும் 7 பாசுரங்கள்."
 featured_quote: "செக்கர் மாமுகில் உடுத்துக் கொண்டு அணிதிகழ் சோதி ஆடை மல்கப் பூண்டு."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvaasiriyam.pdf
+epub: /downloads/thiruvaasiriyam.epub
 aliases: ["AP026", "திருவாசிரியம்", "Thiruvasiriyam", "Nammalvar"]
 ---
 

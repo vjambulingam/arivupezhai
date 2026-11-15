@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruvirutham"
 author: "நம்மாழ்வார்"
 author_en: "Nammalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "நம்மாழ்வார் அருளிச்செய்த இருக்கு வேத சாரமாகப் போற்றப்படும் 100 கட்டளைக் கலித்துறைப் பாசுரங்கள்."
 featured_quote: "பொய்ந்நின்ற ஞானமும் பொல்லா ஒழுக்கும் அழுக்குடம்பும் இந்நின்ற நீர்மை இனியாம் உறாமை உயிர்அளிப்பான் எந்நின்ற யோனியுமாய்ப் பிறந்தாய் இமையோர் தலைவா மன்ற நின்ற எங்கள் விண்ணப்பம் கேட்பாயே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvirutham.pdf
+epub: /downloads/thiruvirutham.epub
 aliases: ["AP027", "திருவிருத்தம்", "Thiruvirutham", "Nammalvar"]
 ---
 

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் -4"
 title_en: "Naalayira Divya Prabandham - Part 4"
 author: "பல ஆசிரியர்கள்"
 author_en: "Various Authors"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8 - 11 ஆம் நூற்றாண்டு"
 description: "நாலாயிர திவ்வியப் பிரபந்தத்தின் நான்காம் தொகுப்பாகிய திருவாய்மொழி மற்றும் இராமானுஜ நூற்றந்தாதி அடங்கிய புனிதத் தொகுப்பு."
 featured_quote: "உயர்வற உயர்நலம் உடையவன் யவனவன் துயரறு சுடரடி தொழுதெழென் மனனே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/ndp-4.pdf
+epub: /downloads/ndp-4.epub
 aliases: ["AP034", "நாலாயிர திவ்ய பிரபந்தம் - 4", "Naalayira Divya Prabandham 4"]
 ---
 

@@ -11,8 +11,8 @@ genre_en: Ethical Literature
 description: ஒளவையார் அருளிய ஆத்திசூடி, அகர வரிசையில் அறநெறிகளை எடுத்துரைக்கும் நீதிநூல்.
 featured_quote: அறம் செய விரும்பு.
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/aathichudi.pdf
+epub: /downloads/aathichudi.epub
 aliases: [ஆத்திச்சூடி, ஔவையார், Athichudi, AticuTi]
 ---
 

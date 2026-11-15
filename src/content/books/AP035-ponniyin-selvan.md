@@ -1,21 +1,21 @@
 ---
-id: AP007
+id: AP035
 slug: ponniyin-selvan
 language: ta
 title: பொன்னியின் செல்வன்
 title_en: Ponniyin Selvan
 author: கல்கி கிருஷ்ணமூர்த்தி
 author_en: Kalki Krishnamurthy
-genre: நாவல் / புதினம்
+genre: நாவல் - புதினம்
 genre_en: Historical Fiction
-tags: ["புதினம்"]
+tags: ["புதினம்", "நாவல்"]
 period: 1950–1954
 description: அமரர் கல்கி கிருஷ்ணமூர்த்தி இயற்றிய உலகப் புகழ்பெற்ற வரலாற்றுப் புதினம் பொன்னியின் செல்வன். சோழப் பேரரசின் மாமன்னன் அருள்மொழிவர்மனின் (முதலாம் இராசராச சோழன்) இளமைக் கால வரலாற்றையும், சோழ அரியணையைக் காக்க வந்தியத்தேவன் உள்ளிட்டோர் மேற்கொண்ட வீரசாகசங்களையும் விவரிக்கும் 5 பாகங்கள் கொண்ட பெருங்காவிய நாவல்.
 featured_quote: ஆதி அந்தமில்லாத கால வெள்ளத்தில் கற்பனை ஓடத்தில் ஏறி நம்முடன் சிறிது நேரம் பிரயாணம் செய்யுமாறு நேயர்களை அழைக்கிறோம்.
 contributors: "Etext preparation : AU-KBC Research Center (Mr. Baskaran), Anna University, Chennai,India \n Proof-reading: Mr. S. Anbumani, Mr. N.D. Logasundaram,Mr. Narayanan Govindarajan, Ms. Pavithra Srinivasan, Mr. Ramachandran Mahadevan, Ms. Sathya, Mr. Sreeram Krishnamoorthy, Dr. Sridhar Rathinam, Mrs. Srilatha Rajagopal, Mr. VinothJagannathan \n Web version: Mr. S. Anbumani, Blacksburg, Virginia, USA \n Project Madurai team at https://www.projectmadurai.org"
-pdf: null
-epub: null
-aliases: [AP007, "பொன்னியின் செல்வன்", "Ponniyin Selvan", "கல்கி", "Kalki", "கல்கி கிருஷ்ணமூர்த்தி", "Kalki Krishnamurthy"]
+pdf: /downloads/ponniyin-selvan.pdf
+epub: /downloads/ponniyin-selvan.epub
+aliases: [AP035, "பொன்னியின் செல்வன்", "Ponniyin Selvan", "கல்கி", "Kalki", "கல்கி கிருஷ்ணமூர்த்தி", "Kalki Krishnamurthy"]
 ---
 
 # முதலாவது பாகம் - புது வெள்ளம்

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ப�
 title_en: "Periya Thiruvandhadhi"
 author: "நம்மாழ்வார்"
 author_en: "Nammalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "நம்மாழ்வார் அதர்வண வேத சாரமாக அருளிச்செய்த 87 அந்தாதி வெண்பாக்கள்."
 featured_quote: "முயன்று தொழும்அடியீர் முன்னைவினை தீர நயந்தெழுந்த நெஞ்சினார் நாடுவார் என்றும் தயங்குசுடர் ஆழி சங்குடையான் தாளே உயங்குவார் உள்ளத்து உளது."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/periya-thiruvandhadhi.pdf
+epub: /downloads/periya-thiruvandhadhi.epub
 aliases: ["AP031", "பெரிய திருவந்தாதி", "Periya Thiruvandhadhi", "Nammalvar"]
 ---
 

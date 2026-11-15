@@ -11,8 +11,8 @@ genre_en: Ethical Literature
 description: ஒளவையார் அருளிய நல்வழி, அறநெறிகளையும் வாழ்வியல் கருத்துகளையும் எடுத்துரைக்கும் நீதிநூல்.
 featured_quote: "புண்ணியம்ஆம் பாவம்போல் போனநாள் செய்தஅவை"
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/nalvazhi.pdf
+epub: /downloads/nalvazhi.epub
 aliases: [ஔவையார்]
 ---
 

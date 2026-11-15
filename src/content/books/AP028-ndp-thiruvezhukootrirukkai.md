@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Thiruvezhukootrirukkai"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கையாழ்வார் குடந்தை ஆராவமுதப் பெருமானைப் போற்றி எண் அலங்கார சித்திரக் கவியாக அருளிச்செய்த அற்புத ரதபந்தப் பனுவல் (1 பாசுரம்)."
 featured_quote: "ஒருபே ருந்தி இருமலர் தவிசில் ஒருமுறை யயனை யீன்றனை ஒருகால் இருநிலம் அதனொடு பெருவளங் குலுங்க."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvezhukootrirukkai.pdf
+epub: /downloads/thiruvezhukootrirukkai.epub
 aliases: ["AP028", "திருவெழுகூற்றிருக்கை", "Thiruvezhukootrirukkai", "Thirumangai Alvar"]
 ---
 

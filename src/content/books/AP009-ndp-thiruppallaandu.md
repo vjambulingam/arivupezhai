@@ -6,15 +6,15 @@ title: நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: Thiruppallaandu
 author: பெரியாழ்வார்
 author_en: Periyalvar
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "முதலாயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: கி.பி. 8-ஆம் நூற்றாண்டு
 description: பெரியாழ்வார் அருளிச்செய்த திருப்பல்லாண்டு, நாலாயிர திவ்வியப் பிரபந்தத்தின் முதலாயிரத்தில் தொடக்கப் பனுவலாக அமைந்த மங்களாசாசனப் பெருநூல். இறைவனின் நித்திய மங்கலத்துக்காகப் பல்லாண்டு பாடும் 12 பாசுரங்களைக் கொண்டது.
 featured_quote: பல்லாண்டு பல்லாண்டு பல்லாயிரத்தாண்டு பலகோடி நூறாயிரம் மல்லாண்ட திண்தோள் மணிவண்ணா உன் செவ்வடி செவ்விதிருக்காப்பு.
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruppallaandu.pdf
+epub: /downloads/thiruppallaandu.epub
 aliases: [AP009, திருப்பல்லாண்டு, Thiruppallaandu, Tiruppallandu, Periyalvar, பெரியாழ்வார்]
 ---
 

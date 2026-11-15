@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ந�
 title_en: "Naanmukan Thiruvandhadhi"
 author: "திருமழிசை ஆழ்வார்"
 author_en: "Thirumalisai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 7-ஆம் நூற்றாண்டு"
 description: "திருமழிசை ஆழ்வார் நாராயணனே முழுமுதற்கடவுள் என்று அறுதியிட்டு அருளிச்செய்த 96 அந்தாதிப் பாசுரங்கள்."
 featured_quote: "நான்முகனை நாராயணன் படைத்தான் நான்முகனும் தான்முகமாய் சங்கரனைத் தான்படைத்தான் யான்முகமாய் அந்தாதி மேலிட்டு அறிவித்தேன் ஆழிவண்ணன் சிந்தையினுள்ளே உருவென்று சென்று."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/naanmukan-thiruvandhadhi.pdf
+epub: /downloads/naanmukan-thiruvandhadhi.epub
 aliases: ["AP029", "நான்முகன் திருவந்தாதி", "Nanmukan Thiruvandhadhi", "Thirumalisai Alvar"]
 ---
 

@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - ச�
 title_en: "Siriya Thirumurai (Siriya Thirumadal)"
 author: "திருமங்கை ஆழ்வார்"
 author_en: "Thirumangai Alvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 8-ஆம் நூற்றாண்டு"
 description: "திருமங்கை ஆழ்வார் தலைவி நிலையில் நின்று எம்பெருமான் மீது மடல் ஊர்வதாகப் பாடியருளிய பக்தி இலக்கியப் படைப்பு."
 featured_quote: "வையம் மலிபுகழ் சூடினும் சூடுக வான்பொருள்கள் எய்திய வெம்பொருளென்று இகழினும் இகழ்க."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/siriya-thirumurai.pdf
+epub: /downloads/siriya-thirumurai.epub
 aliases: ["AP020", "சிறிய திருமுறை", "சிறிய திருமடல்", "Siriya Thirumadal", "Thirumangai Alvar"]
 ---
 

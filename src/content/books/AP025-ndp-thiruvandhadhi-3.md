@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Moondram Thiruvandhadhi"
 author: "பேயாழ்வார்"
 author_en: "Peyalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 7-ஆம் நூற்றாண்டு"
 description: "பேயாழ்வார் திருக்கோவலூர் இடைகழியில் பிராட்டியோடு எம்பெருமானைக் கண்ட பேரானந்தத்தில் 'திருக்கண்டேன்' என்று பாடியருளிய 100 பாசுரங்கள்."
 featured_quote: "திருக்கண்டேன் பொன்மேனி கண்டேன் திகழும் அருக்கன் அணிநிறமும் கண்டேன் செருக்கிளரும் பொன்னாழி கண்டேன் புரிசங்கம் கைக்கண்டேன் என்னாழி வண்ணன்பால் இன்று."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvandhadhi-3.pdf
+epub: /downloads/thiruvandhadhi-3.epub
 aliases: ["AP025", "மூன்றாம் திருவந்தாதி", "Moondram Thiruvandhadhi", "Peyalvar"]
 ---
 

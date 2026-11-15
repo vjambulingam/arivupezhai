@@ -6,15 +6,15 @@ title: "இராமானுஜ நூற்றந்தாதி"
 title_en: "Ramanuja Nootrandhadhi"
 author: "திருவரங்கத்து அமுதனார்"
 author_en: "Thiruvarangathu Amudhanar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "நான்காயிரம்", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 11-ஆம் நூற்றாண்டு"
 description: "திருவரங்கத்து அமுதனார் ஸ்ரீராமானுஜரின் திருக்குணங்களையும் ஆசார்ய வைபவத்தையும் போற்றி அருளிச்செய்த 108 பிரபன்ன காயத்ரி பாசுரங்கள்."
 featured_quote: "பூமன்னு மாது பொருந்திய மார்பன் புகழ்மலிந்த பாமன்னு மாறன் அடிபணிந்து உய்ந்தவன் பல்கலையோர் தாம்மன்ன வந்த விராமானுசன் சரணாரவிந்தம் நாம் மன்னி வாழ நெஞ்சே சொல்லுவோம் அவன் நாமங்களே."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/raamaanuja-nootrandhadhi.pdf
+epub: /downloads/raamaanuja-nootrandhadhi.epub
 aliases: ["AP032", "இராமானுஜ நூற்றந்தாதி", "இராமாநுச நூற்றந்தாதி", "Ramanuja Nootrandhadhi", "Thiruvarangathu Amudhanar"]
 ---
 

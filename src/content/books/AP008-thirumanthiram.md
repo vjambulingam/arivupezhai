@@ -6,15 +6,15 @@ title: திருமந்திரம்
 title_en: Thirumandiram
 author: திருமூலர்
 author_en: Thirumoolar
-genre: சமயம் - சைவம்
+genre: சமய நூல்கள்
 genre_en: Saiva Literature
-tags: ["பன்னிரு திருமுறைகள்", "பத்தாம் திருமுறை"]
+tags: ["பன்னிரு திருமுறைகள்", "பத்தாம் திருமுறை", "சமய நூல்கள்", "சைவம்"]
 period: கி.பி. 5 - 6 ஆம் நூற்றாண்டு
 description: பன்னிரு திருமுறைகளில் பத்தாம் திருமுறையாக விளங்கும் திருமந்திரம், திருமூலர் அருளிச்செய்த ஒப்பற்ற சைவ சித்தாந்த ஞான நூலாகும். 'ஒன்றே குலம் ஒருவனே தேவன்', 'அன்பே சிவம்' முதலான அழியாப் பேருண்மைகளை விளக்கும் ஒன்பது தந்திரங்களைக் கொண்ட அரிய கருவூலம்.
 featured_quote: அன்பும் சிவமும் இரண்டென்பர் அறிவிலார் அன்பே சிவமாவ தாரும் அறிகிலார்.
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Proof-reading by Mr. G. Venugopalan, Dubai \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirumanthiram.pdf
+epub: /downloads/thirumanthiram.epub
 aliases: [thirumandiram, thirumandhiram, thirumular, tirumadiram]
 ---
 
@@ -4215,8 +4215,6 @@ aliases: [thirumandiram, thirumandhiram, thirumular, tirumadiram]
 
   Feel free to send the corrections by email to the webmaster
   "pmadurai@gmail.com".
-pdf: https://projectmadurai.org/pm_etexts/pdf/pm0009.pdf
-epub: null
 aliases:
   - திருமந்திரம்
   - திருமூலர்
@@ -12809,8 +12807,6 @@ aliases:
 
   You are welcome to freely distribute this file, provided this header page is
   kept intact.
-pdf: https://projectmadurai.org/pm_etexts/pdf/pm0010.pdf
-epub: null
 aliases:
   - திருமந்திரம்
   - திருமூலர்

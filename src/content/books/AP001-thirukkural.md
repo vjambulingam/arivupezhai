@@ -13,8 +13,8 @@ period: சங்க மருவிய காலம்
 description: உலகப் பொதுமறை எனப் போற்றப்படும் திருக்குறள், திருவள்ளுவரால் அருளப்பட்ட உலகளாவிய வாழ்வியல் அறநூல். அறம், பொருள், இன்பம் என்ற முப்பால்களையும் 133 அதிகாரங்களில் 1,330 குறட்பாக்களாகத் திகழ்கிறது.
 featured_quote: அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு.
 contributors: "Our Sincere thanks go to the following for their assistance in the preparation of this work. \n Gratitude to the Shuddhananda Yogi Samaj, Sivaganga, India and its President Mr. R. Venkatakrishnan (Copyright holders for the works of Maharishi Suddhananda Bharatiar) for their kind permission to publish this Etext Version under the auspices of Project Madurai. \n Tamil EText input: Mr. K. Kalyanasundaram, Lausanne, Switzerland \n Proof-reading: Mr. Kandaiah Ramanitharan, Milwaukee, WI, USA \n English Translation EText Input: Mr. A.Arasu, Kalpakkam, India \n Proof-reading: Mr. J.V.M.Joseph, Kalpakkam, India \n  https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thirukkural.pdf
+epub: /downloads/thirukkural.epub
 aliases: [AP001, "Shuddhananda Bharati", "சுத்தானந்த பாரதியார்"]
 ---
 
@@ -1190,7 +1190,7 @@ Who haunts around his neighbour's door.
 
 ### குறள் 143 {#kural-143}
 
-விளிந்தா஡஢ன் வேறல்லர் மன்ற தெளிந்தாரில்
+விளிந்தாரின் வேறல்லர் மன்ற தெளிந்தாரில்
 தீமை புரிந்து ஒழுகு வார்.
 
 The vile are dead who evil aim
@@ -3950,7 +3950,7 @@ No matter how small income is.
 
 ### குறள் 479 {#kural-479}
 
-அளவற஧ந்து  வாழாதான் வாழ்க்கை உளபோல
+அளவறிந்து  வாழாதான் வாழ்க்கை உளபோல
 இல்லாகித் தோன்றாக் கெடும்.
 
 Who does not know to live in bounds
@@ -4935,7 +4935,7 @@ Heartless persons cannot boast
 ### குறள் 599 {#kural-599}
 
 பரியது கூர்ங்கோட்டது ஆயினும் யானை
-஦வ்ருஉம் புலிதாக் குறின்.
+வெரூஉம் புலிதாக் குறின்.
 
 Huge elephant sharp in tusk quails
 When tiger, less in form, assails.

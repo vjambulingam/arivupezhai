@@ -6,15 +6,15 @@ title: "நாலாயிர திவ்ய பிரபந்தம் - த�
 title_en: "Irandam Thiruvandhadhi"
 author: "பூதத்தாழ்வார்"
 author_en: "Boothathalvar"
-genre: சமயம் - வைணவம்
+genre: சமய நூல்கள்
 genre_en: Vaishnava Literature
-tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா"]
+tags: ["நாலாயிர திவ்ய பிரபந்தம்", "இயற்பா", "சமய நூல்கள்", "வைணவம்"]
 period: "கி.பி. 7-ஆம் நூற்றாண்டு"
 description: "பூதத்தாழ்வார் அன்பையே தகளியாகவும் ஆர்வத்தையே நெய்யாகவும் சிந்தை திரியாகவும் ஞான விளக்காக ஏற்றிப் பாடிய 100 பாசுரங்கள்."
 featured_quote: "அன்பே தகளியா ஆர்வமே நெய்யாக இன்புருகு சிந்தை இடுதிரியா நன்புருகி ஞானச் சுடர்விளக்கு ஏற்றினேன் நாரணற்கு ஞானத் தமிழ் புரிந்த நான்."
 contributors: "Etext Preparation: Dr. K. Kalyanasundaram, Lausanne, Switzerland \n Project Madurai team - https://www.projectmadurai.org"
-pdf: null
-epub: null
+pdf: /downloads/thiruvandhadhi-2.pdf
+epub: /downloads/thiruvandhadhi-2.epub
 aliases: ["AP024", "இரண்டாம் திருவந்தாதி", "Irandam Thiruvandhadhi", "Boothathalvar"]
 ---
 

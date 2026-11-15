@@ -26,47 +26,55 @@ interface Props {
 const { book } = Astro.props;
 const landingUrl = getUrl(`book/${book.slug ?? book.id}`);
 const readerUrl = book.sections?.length ? getUrl(`book/${book.slug ?? book.id}/read/${book.sections[0].id}/`) : landingUrl;
+
+// Initial responsive font size class based on title length
+const titleLen = book.title_ta.length;
+const titleSizeClass = titleLen > 35
+  ? 'text-[17px] sm:text-[19px]'
+  : titleLen > 22
+  ? 'text-[19px] sm:text-[22px]'
+  : 'text-[22px] sm:text-[26px]';
 ---
 
-<div class="group relative flex min-w-0 flex-col justify-between rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 transition-all duration-200 hover:shadow-xl hover:border-[var(--accent-primary)]/40 hover:-translate-y-1">
+<div class="group relative flex min-w-0 flex-col justify-between h-full rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-6 transition-all duration-200 hover:shadow-xl hover:border-[var(--accent-primary)]/40 hover:-translate-y-1">
   
-  <div>
+  <div class="flex flex-col flex-1">
     <!-- Top Metadata Badges -->
-    <div class="flex items-center justify-between gap-2 mb-4">
-      <div class="flex flex-wrap items-center gap-1.5">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium font-tamil-sans bg-[var(--badge-bg)] text-[var(--badge-text)] border border-[var(--border-subtle)]">
+    <div class="flex items-center justify-between gap-2 mb-4 min-h-[1.75rem]">
+      <div class="flex items-center gap-1.5 flex-nowrap min-w-0">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium font-tamil-sans bg-[var(--badge-bg)] text-[var(--badge-text)] border border-[var(--border-subtle)] shrink-0">
           {book.genre_ta}
         </span>
         {book.is_available && book.reading_minutes != null && (
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium font-tamil-sans bg-[var(--bg-muted)] text-[var(--text-muted)]">
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium font-tamil-sans bg-[var(--bg-muted)] text-[var(--text-muted)] truncate shrink-0">
             சுமார் {book.reading_minutes} நிமிட வாசிப்பு
           </span>
         )}
       </div>
 
       {!book.is_available && (
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--bg-muted)] text-[var(--text-dim)]">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[var(--bg-muted)] text-[var(--text-dim)] shrink-0">
           விரைவில்
         </span>
       )}
     </div>
 
     <!-- Book Title & Author -->
-    <a href={book.is_available ? landingUrl : undefined} class="block focus:outline-none">
-      <h2 class="font-tamil-serif font-bold text-2xl sm:text-3xl text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors leading-tight [overflow-wrap:anywhere]">
+    <a href={book.is_available ? landingUrl : undefined} class="block focus:outline-none min-h-[5rem] sm:min-h-[6.125rem] flex flex-col justify-start">
+      <h2 class:list={["book-title font-tamil-serif font-bold text-[var(--text-main)] group-hover:text-[var(--accent-primary)] transition-colors leading-snug [overflow-wrap:anywhere] line-clamp-2", titleSizeClass]}>
         {book.title_ta}
       </h2>
-      <div class="flex items-center gap-2 mt-2 text-sm text-[var(--text-muted)] font-tamil-sans">
+      <div class="flex items-center gap-2 mt-1.5 text-sm text-[var(--text-muted)] font-tamil-sans">
         <svg class="w-4 h-4 text-[var(--accent-primary)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
         </svg>
-        <span class="font-medium">{book.author_ta}</span>
-        <span class="text-xs text-[var(--text-dim)]">({book.title_en})</span>
+        <span class="font-medium shrink-0">{book.author_ta}</span>
+        <span class="text-xs text-[var(--text-dim)] truncate">({book.title_en})</span>
       </div>
     </a>
 
     <!-- Classical Quote / Snippet -->
-    <div class="mt-4 p-3.5 rounded-xl bg-[var(--bg-page)]/70 border border-[var(--border-subtle)]/70">
+    <div class="mt-4 p-3.5 rounded-xl bg-[var(--bg-page)]/70 border border-[var(--border-subtle)]/70 min-h-[4.75rem] flex items-center">
       <p class="font-tamil-serif italic text-sm text-[var(--text-main)] leading-relaxed line-clamp-2">
         "{book.featured_quote}"
       </p>
