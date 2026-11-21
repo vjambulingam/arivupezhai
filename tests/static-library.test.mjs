@@ -205,6 +205,7 @@ test('new Markdown and text books are discovered automatically', async () => {
   const ids = [`AP${BigInt(`0x${suffix}`).toString().padStart(3, '0')}`, `test-text-${suffix}`];
   const slugs = [`test-markdown-${suffix}`, ids[1]];
   const paths = ids.map((id, i) => `src/content/books/${id}.${i ? 'txt' : 'md'}`);
+  const downloadPath = `public/downloads/test-${suffix}.pdf`;
   const makeBook = (id, hierarchical = false, slug = id === ids[0] ? slugs[0] : slugs[1]) => `---
 id: ${id}
 slug: ${slug}
@@ -215,7 +216,7 @@ tags: [முதல் குறிச்சொல், இரண்டாம் 
 description: மாதிரி விளக்கம்
 period: சோதனைக் காலம்
 contributors: மாதிரி நன்றியுரை
-pdf: /downloads/sample.pdf
+pdf: /downloads/test-${suffix}.pdf
 epub: https://example.com/book.epub
 aliases: [Sample Test Alias]
 ---
@@ -244,6 +245,7 @@ ${'தமிழ் '.repeat(150)}
     assert.equal(result.status, 0, result.stderr || result.stdout);
   }
   try {
+    await writeFile(downloadPath, '%PDF-1.4\n%%EOF\n', { flag: 'wx' });
     for (let i = 0; i < paths.length; i++) {
       await writeFile(paths[i], makeBook(ids[i], i === 0), { flag: 'wx' });
       created.push(paths[i]);
@@ -270,7 +272,7 @@ ${'தமிழ் '.repeat(150)}
       assert.deepEqual(bookEntry.tags, ['முதல் குறிச்சொல்', 'இரண்டாம் குறிச்சொல்']);
       assert.ok(bookEntry.searchable.includes('முதல் குறிச்சொல்'));
       assert.ok(bookEntry.searchable.includes('இரண்டாம் குறிச்சொல்'));
-      assert.ok(landing.includes('/downloads/sample.pdf'));
+      assert.ok(landing.includes(`/downloads/test-${suffix}.pdf`));
       assert.ok(landing.includes('https://example.com/book.epub'));
       const reader = await readFile(`dist/book/${slug}/read/first/index.html`, 'utf8');
       assert.ok(reader.includes('<strong>சிறப்பான</strong>'));
@@ -312,6 +314,7 @@ ${'தமிழ் '.repeat(150)}
     assert.match(invalidTags.stdout + invalidTags.stderr, /tags must be a list of non-empty strings/);
   } finally {
     for (const path of created) await unlink(path);
+    await unlink(downloadPath);
     build();
   }
 });
