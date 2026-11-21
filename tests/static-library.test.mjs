@@ -327,10 +327,9 @@ test('production output uses the custom domain and root-relative assets', async 
     readFile('dist/index.html', 'utf8'),
     readJson('dist/manifest.json'),
   ]);
-  assert.ok(html.includes('content="https://arivupezhai.com/icon-512.png"'));
   assert.ok(html.includes('href="/manifest.json"'));
   assert.ok(!html.includes('/arivupezhai/'));
   assert.equal(manifest.start_url, '/');
   assert.equal(manifest.scope, '/');
-  assert.deepEqual(manifest.icons.map((icon) => icon.src), ['/icon-192.png', '/icon-512.png']);
+  assert.equal(manifest.icons, undefined);
 });

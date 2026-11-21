@@ -17,7 +17,9 @@ Examples:
 """
 
 import argparse
+import base64
 import glob
+import html
 import os
 import re
 import shutil
@@ -179,12 +181,71 @@ def determine_toc_depth(body: str, override_depth: Optional[int] = None) -> int:
     return 2
 
 
+def generate_cover_image(
+    title: str,
+    author: str,
+    logo_path: str,
+    fonts_dir: str,
+    output_file: str,
+) -> bool:
+    """Creates a self-contained SVG cover with the site logo and book metadata."""
+    if not os.path.exists(logo_path):
+        print(f"Warning: Cover logo not found: {logo_path}", file=sys.stderr)
+        return False
+
+    def data_uri(path: str, media_type: str) -> str:
+        with open(path, "rb") as fp:
+            encoded = base64.b64encode(fp.read()).decode("ascii")
+        return f"data:{media_type};base64,{encoded}"
+
+    regular_font = os.path.join(fonts_dir, "NotoSerifTamil-Regular.ttf")
+    bold_font = os.path.join(fonts_dir, "NotoSerifTamil-Bold.ttf")
+    font_css = ""
+    if os.path.exists(regular_font):
+        font_css += (
+            "@font-face{font-family:'Cover Tamil';font-style:normal;font-weight:400;"
+            f"src:url('{data_uri(regular_font, 'font/ttf')}') format('truetype');}}"
+        )
+    if os.path.exists(bold_font):
+        font_css += (
+            "@font-face{font-family:'Cover Tamil';font-style:normal;font-weight:700;"
+            f"src:url('{data_uri(bold_font, 'font/ttf')}') format('truetype');}}"
+        )
+
+    logo_uri = data_uri(logo_path, "image/png")
+    safe_title = html.escape(title)
+    safe_author = html.escape(author)
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2560" viewBox="0 0 1600 2560" role="img" aria-label="{safe_title}">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f9f5ed"/>
+      <stop offset="1" stop-color="#e8f3f0"/>
+    </linearGradient>
+    <style>{font_css}</style>
+  </defs>
+  <rect width="1600" height="2560" fill="url(#background)"/>
+  <rect x="70" y="70" width="1460" height="2420" rx="36" fill="none" stroke="#003b70" stroke-width="14"/>
+  <rect x="94" y="94" width="1412" height="2372" rx="28" fill="none" stroke="#008c87" stroke-width="5"/>
+  <image href="{logo_uri}" x="250" y="210" width="1100" height="1100" preserveAspectRatio="xMidYMid meet"/>
+  <line x1="300" y1="1440" x2="1300" y2="1440" stroke="#e7a900" stroke-width="8"/>
+  <text x="800" y="1700" text-anchor="middle" fill="#003b70" font-family="'Cover Tamil',serif" font-size="126" font-weight="700">{safe_title}</text>
+  <text x="800" y="1910" text-anchor="middle" fill="#008c87" font-family="'Cover Tamil',serif" font-size="76" font-weight="400">{safe_author}</text>
+  <circle cx="800" cy="2215" r="14" fill="#e7a900"/>
+  <line x1="600" y1="2215" x2="760" y2="2215" stroke="#003b70" stroke-width="5"/>
+  <line x1="840" y1="2215" x2="1000" y2="2215" stroke="#003b70" stroke-width="5"/>
+</svg>'''
+    with open(output_file, "w", encoding="utf-8") as fp:
+        fp.write(svg)
+    return True
+
+
 def build_epub(
     input_file: str,
     output_file: str,
     toc_depth: int,
     fonts_dir: str,
     epub_css: str,
+    cover_image: Optional[str] = None,
     contributors: str = "",
     verbose: bool = False
 ) -> bool:
@@ -213,6 +274,9 @@ def build_epub(
     if os.path.exists(epub_template):
         cmd.append(f"--template={epub_template}")
 
+    if cover_image and os.path.exists(cover_image):
+        cmd.append(f"--epub-cover-image={cover_image}")
+
     meta_yaml_path = None
     try:
         meta_dict = {}
@@ -227,7 +291,6 @@ def build_epub(
                 logo_path = alt_path
 
         if os.path.exists(logo_path):
-            import base64
             with open(logo_path, "rb") as fp:
                 logo_b64 = base64.b64encode(fp.read()).decode("ascii")
             meta_dict["logo_data_uri"] = f"data:image/png;base64,{logo_b64}"
@@ -273,6 +336,7 @@ def build_pdf(
     toc_depth: int,
     fonts_dir: str,
     temp_dir: str,
+    cover_logo_path: Optional[str] = None,
     contributors: str = "",
     verbose: bool = False
 ) -> bool:
@@ -361,8 +425,8 @@ def build_pdf(
         if os.path.exists(alt_path):
             logo_path = alt_path
 
-    if os.path.exists(logo_path):
-        meta_dict["logo_path"] = logo_path
+    if cover_logo_path and os.path.exists(cover_logo_path):
+        meta_dict["cover_logo_path"] = cover_logo_path
 
     if meta_dict:
         meta_yaml_path = os.path.join(temp_dir, "meta_pdf.yaml")
@@ -444,6 +508,17 @@ def process_book(
     results = {"epub": None, "pdf": None}
 
     with tempfile.TemporaryDirectory() as temp_dir:
+        repo_root = os.path.dirname(SCRIPT_DIR)
+        logo_path = os.path.join(repo_root, "public", "arivupezhai-logo.png")
+        cover_image = os.path.join(temp_dir, f"{base_name}-cover.svg")
+        has_cover = generate_cover_image(
+            title=title,
+            author=author,
+            logo_path=logo_path,
+            fonts_dir=fonts_dir,
+            output_file=cover_image,
+        )
+
         # Generate EPUB
         if target_format in ("all", "epub"):
             print("→ Generating EPUB...")
@@ -453,6 +528,7 @@ def process_book(
                 toc_depth=toc_depth,
                 fonts_dir=fonts_dir,
                 epub_css=epub_css,
+                cover_image=cover_image if has_cover else None,
                 contributors=contributors,
                 verbose=verbose
             )
@@ -470,6 +546,7 @@ def process_book(
                 toc_depth=toc_depth,
                 fonts_dir=fonts_dir,
                 temp_dir=temp_dir,
+                cover_logo_path=logo_path if has_cover else None,
                 contributors=contributors,
                 verbose=verbose
             )

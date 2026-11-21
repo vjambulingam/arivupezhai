@@ -30,6 +30,10 @@ Script to generate high-quality **EPUB3** and **PDF** files from book markdown (
    - Uses **Pandoc** for structured EPUB3 generation with clean CSS and dark-mode support.
    - Uses **Tectonic** (modern self-contained XeTeX engine) for PDF generation with perfect Tamil OpenType ligature shaping and clean A4 margins.
 
+6. **Book-Specific Covers**:
+   - Generates a cover for each book using the site logo, the book title, and the author name from frontmatter.
+   - Registers the cover in EPUB metadata for e-reader library views and renders the matching composition as the first page of the PDF.
+
 ---
 
 ## Prerequisites

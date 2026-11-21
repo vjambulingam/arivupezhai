@@ -60,15 +60,7 @@ $if(pdf-trailer-id)$
 $endif$
 
 $if(title)$
-\title{%
-$if(logo_path)$
-\centering
-\includegraphics[width=4.5cm]{$logo_path$}\par
-\vspace{1.0em}
-{\color{gray!40}\rule{0.35\textwidth}{0.4pt}}\par
-\vspace{1.8em}
-$endif$
-$title$$if(thanks)$\thanks{$thanks$}$endif$}
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
 $endif$
 $if(subtitle)$
 \usepackage{etoolbox}
@@ -85,6 +77,23 @@ $endif$
 \begin{document}
 $if(has-frontmatter)$
 \frontmatter
+$endif$
+$if(cover_logo_path)$
+\begin{titlepage}
+  \centering
+  \vspace*{1.0cm}
+  {\color[HTML]{003B70}\rule{\textwidth}{2pt}}\par
+  \vspace{1.2cm}
+  \includegraphics[width=0.68\textwidth,height=0.47\textheight,keepaspectratio]{$cover_logo_path$}\par
+  \vspace{1.0cm}
+  {\color[HTML]{E7A900}\rule{0.72\textwidth}{1.4pt}}\par
+  \vspace{1.2cm}
+  {\color[HTML]{003B70}\Huge\bfseries $title$\par}
+  \vspace{0.8cm}
+  {\color[HTML]{008C87}\Large $for(author)$$author$$sep$ \and $endfor$\par}
+  \vfill
+  {\color[HTML]{003B70}\rule{\textwidth}{2pt}}\par
+\end{titlepage}
 $endif$
 $if(title)$
 \maketitle

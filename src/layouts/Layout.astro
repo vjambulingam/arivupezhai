@@ -18,7 +18,6 @@ const {
 const faviconUrl = getUrl('favicon.svg');
 const appleTouchIconUrl = getUrl('apple-touch-icon.png');
 const manifestUrl = getUrl('manifest.json');
-const ogImageUrl = new URL(getUrl('icon-512.png'), Astro.site).href;
 ---
 
 <!doctype html>
@@ -26,7 +25,6 @@ const ogImageUrl = new URL(getUrl('icon-512.png'), Astro.site).href;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" sizes="32x32" href={getUrl('favicon-32x32.png')} />
     <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <link rel="apple-touch-icon" href={appleTouchIconUrl} />
     <link rel="manifest" href={manifestUrl} />
@@ -41,11 +39,9 @@ const ogImageUrl = new URL(getUrl('icon-512.png'), Astro.site).href;
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImageUrl} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Google Web Fonts: Noto Serif Tamil, Noto Sans Tamil, Mukta Malar -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
