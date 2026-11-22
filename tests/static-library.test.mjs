@@ -64,13 +64,13 @@ test('build includes searchable metadata and every static chapter and verse', as
 });
 
 test('AP002 publishes all sections and verses with attribution and search', async () => {
-  const [source, landing, home, index] = await Promise.all([
+  const [source, landing, library, index] = await Promise.all([
     readFile('src/content/books/AP002-aathichudi.md', 'utf8'),
     readFile('dist/book/aathichudi/index.html', 'utf8'),
-    readFile('dist/index.html', 'utf8'),
+    readFile('dist/library/index.html', 'utf8'),
     readJson('dist/search-index.json'),
   ]);
-  assert.ok(home.includes('/book/aathichudi'));
+  assert.ok(library.includes('/book/aathichudi'));
   assert.ok(landing.includes('ஒளவையார்'));
   assert.ok(landing.includes('href="https://www.projectmadurai.org"'));
   assert.ok(index.some((item) => item.type === 'book' && item.url === '/book/aathichudi' && item.searchable.includes('ஆத்திச்சூடி')));
@@ -97,8 +97,8 @@ test('AP002 publishes all sections and verses with attribution and search', asyn
 });
 
 test('AP003 to AP005 publish the source sections and searchable verses', async () => {
-  const [home, index] = await Promise.all([
-    readFile('dist/index.html', 'utf8'),
+  const [library, index] = await Promise.all([
+    readFile('dist/library/index.html', 'utf8'),
     readJson('dist/search-index.json'),
   ]);
   const cases = [
@@ -111,7 +111,7 @@ test('AP003 to AP005 publish the source sections and searchable verses', async (
       readFile(`src/content/books/${book.file}`, 'utf8'),
       readFile(`dist/book/${book.slug}/index.html`, 'utf8'),
     ]);
-    assert.ok(home.includes(`/book/${book.slug}`));
+    assert.ok(library.includes(`/book/${book.slug}`));
     assert.ok(landing.includes(book.title));
     assert.ok(landing.includes('ஒளவையார்'));
     assert.ok(landing.includes('href="https://www.projectmadurai.org"'));
@@ -195,7 +195,9 @@ test('only valid books exist in dist/book and redirect books are not generated',
     'thamizhachiyin-katthi', 'kurinji-thittu', 'thenaruvi', 'mullaikkaadu',
     'kannagi-puratchik-kaappiyam', 'manimekalai-venba', 'kaadhal-paadalkal',
     'karkandu-naadagangal', 'sathimutha-pulavar', 'vengaiye-ezhuga', 'bharathidasan-pudhinangal',
-    'viviliyam-pazhaiya-erpaadu', 'viviliyam-pudhiya-erpaadu', 'seerapuranam'
+    'viviliyam-pazhaiya-erpaadu', 'viviliyam-pudhiya-erpaadu', 'seerapuranam', 'periyapuranam',
+    'kandhapuranam', 'kanchippuranam', 'prabandhathirattu', 'kandadevi-puranam', 'mayurappuranam',
+    'thiruvarutpa', 'abirami-anthadhi'
   ]);
   assert.deepEqual(new Set(entries), validSlugs);
 });
@@ -252,15 +254,19 @@ ${'தமிழ் '.repeat(150)}
     }
     build();
     const index = await readJson('dist/search-index.json');
-    const home = await readFile('dist/index.html', 'utf8');
+    const library = await readFile('dist/library/index.html', 'utf8');
+    const bookshelf = await readFile('dist/bookshelf/index.html', 'utf8');
     const catalogPage = await readFile('dist/catalog/index.html', 'utf8');
-    assert.ok(!home.includes('முழுப் பதிப்பு'));
+    assert.ok(!library.includes('முழுப் பதிப்பு'));
     for (const [i, id] of ids.entries()) {
       const slug = slugs[i];
-      assert.ok(home.includes(`/book/${slug}`));
+      assert.ok(library.includes(`/book/${slug}`));
+      assert.ok(bookshelf.includes(`href="/book/${slug}"`));
+      assert.ok(bookshelf.includes(`<title id="cover-pattern-${id.toLowerCase()}-title">சோதனை நூல்</title>`));
+      assert.ok(bookshelf.includes('சோதனை ஆசிரியர்'));
       assert.ok(catalogPage.includes(`>${id}</td>`));
       assert.ok(catalogPage.includes(`href="/book/${slug}"`));
-      const card = home.split(`<a href="/book/${slug}"`)[0].split('<!-- Top Metadata Badges -->').at(-1);
+      const card = library.split(`<a href="/book/${slug}"`)[0].split('<!-- Top Metadata Badges -->').at(-1);
       assert.match(card, /<span class="[^"]*rounded-full[^"]*">\s*சுமார் 2 நிமிட வாசிப்பு\s*<\/span>/);
       assert.ok(!card.includes('சோதனைக் காலம்'));
       const landing = await readFile(`dist/book/${slug}/index.html`, 'utf8');

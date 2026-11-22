@@ -1,0 +1,287 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { books } from '../utils/books';
+import { getUrl } from '../utils/url.js';
+
+const sortedBooks = [...books].sort((a, b) => a.catalog_id.localeCompare(b.catalog_id, 'en', { numeric: true }));
+const genres = [...new Set(sortedBooks.map((book) => book.genre_ta))].sort((a, b) => a.localeCompare(b, 'ta'));
+const genreCounts = new Map(genres.map((genre) => [genre, sortedBooks.filter((book) => book.genre_ta === genre).length]));
+const logoUrl = getUrl('arivupezhai-logo.png');
+const coverPalettes = [
+  { base: '#713B27', deep: '#3C211A', ink: '#FFF4DC', accent: '#DCA85C' },
+  { base: '#274B58', deep: '#172D36', ink: '#F4EEDC', accent: '#D5A94C' },
+  { base: '#5A315E', deep: '#341E38', ink: '#FFF0DC', accent: '#D89A62' },
+  { base: '#3E5737', deep: '#263723', ink: '#FFF4DA', accent: '#D7B65B' },
+  { base: '#7A4E25', deep: '#422B18', ink: '#FFF5DF', accent: '#E2B768' },
+  { base: '#33436D', deep: '#202A46', ink: '#FFF1DA', accent: '#D79C58' },
+];
+
+function hash(value: string) {
+  return Array.from(value).reduce((total, char) => ((total * 31) + (char.codePointAt(0) ?? 0)) >>> 0, 0);
+}
+
+const tamilSegmenter = new Intl.Segmenter('ta', { granularity: 'grapheme' });
+
+function textUnits(value: string) {
+  return Array.from(tamilSegmenter.segment(value.normalize('NFC')), ({ segment }) => segment);
+}
+
+function titleLines(value: string) {
+  let remaining = textUnits(value.trim());
+  const visibleUnits = remaining.filter((unit) => !/^\s+$/.test(unit)).length;
+  const singleLineWidth = visibleUnits * 24 * 0.9;
+  const lineCount = singleLineWidth <= 164 ? 1 : visibleUnits <= 20 ? 2 : 3;
+  const lines: string[] = [];
+
+  for (let lineIndex = 0; lineIndex < lineCount - 1; lineIndex++) {
+    const linesLeft = lineCount - lineIndex;
+    const target = Math.ceil(remaining.length / linesLeft);
+    let breakAt = -1;
+    for (let distance = 0; distance <= 5 && breakAt < 0; distance++) {
+      for (const candidate of [target - distance, target + distance]) {
+        if (candidate > 0 && candidate < remaining.length && /^\s+$/.test(remaining[candidate])) {
+          breakAt = candidate;
+          break;
+        }
+      }
+    }
+    if (breakAt < 0) breakAt = target;
+    lines.push(remaining.slice(0, breakAt).join('').trim());
+    remaining = remaining.slice(breakAt + (/^\s+$/.test(remaining[breakAt] ?? '') ? 1 : 0));
+  }
+  lines.push(remaining.join('').trim());
+  return lines.filter(Boolean);
+}
+
+function fittedTitleSize(lines: string[]) {
+  const longest = Math.max(...lines.map((line) => textUnits(line).length), 1);
+  const lineBase = lines.length === 3 ? 19 : lines.length === 2 ? 22 : 24;
+  const widthSize = Math.floor(164 / (longest * 0.95));
+  const heightSize = Math.floor(108 / (lines.length * 1.5));
+  return Math.max(10, Math.min(lineBase, widthSize, heightSize));
+}
+
+function fittedAuthorSize(value: string) {
+  return Math.max(8, Math.min(13, Math.floor(164 / (Math.max(textUnits(value).length, 1) * 0.95))));
+}
+
+function fittedTextLength(value: string, size: number, factor = 0.95, maximum = 164) {
+  return Math.max(24, Math.min(maximum, Math.round(textUnits(value).length * size * factor)));
+}
+---
+
+<Layout title="நூல் அலமாரி • அறிவுப்பேழை" description="அறிவுப்பேழையின் தமிழ் நூல்களை அட்டைப்பட அலமாரியாக ஆராயுங்கள்.">
+  <div class="bookshelf-page mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+    <header class="max-w-3xl">
+      <p class="font-tamil-sans text-sm font-semibold text-[var(--accent-primary)]">அறிவுப்பேழைத் தொகுப்பு</p>
+      <h1 class="mt-2 font-tamil-serif text-3xl font-bold text-[var(--text-main)] sm:text-5xl">நூல் அலமாரி</h1>
+      <p class="mt-4 font-tamil-sans text-base leading-8 text-[var(--text-muted)]">
+        அட்டைப்படத்தைத் தேர்ந்தெடுத்து நூலின் விபரங்களையும் வாசிப்புப் பகுதிகளையும் திறக்கலாம்.
+      </p>
+    </header>
+
+    <div class="mt-8 flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4 sm:flex-row sm:items-center">
+      <label class="relative min-w-0 flex-1">
+        <span class="sr-only">நூல் அல்லது ஆசிரியரைத் தேடுக</span>
+        <svg class="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--text-dim)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.35-6.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+        </svg>
+        <input id="shelf-search" type="search" placeholder="நூல் அல்லது ஆசிரியரைத் தேடுக..." class="min-h-12 w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] py-3 pl-11 pr-4 font-tamil-sans text-[var(--text-main)] outline-none transition focus:border-[var(--accent-primary)]" />
+      </label>
+      <label class="flex min-w-0 items-center gap-3 font-tamil-sans text-sm text-[var(--text-muted)]">
+        <span class="shrink-0">நூல் வகை</span>
+        <select id="shelf-genre" class="min-h-12 min-w-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] px-3 py-2 text-[var(--text-main)] outline-none focus:border-[var(--accent-primary)] sm:w-52">
+          <option value="">அனைத்து வகைகளும்</option>
+          {genres.map((genre) => <option value={genre}>{genre}</option>)}
+        </select>
+      </label>
+    </div>
+
+    <div class="mt-5" aria-labelledby="genre-filter-heading">
+      <h2 id="genre-filter-heading" class="font-tamil-sans text-sm font-semibold text-[var(--text-main)]">நூல் வகைப்படி</h2>
+      <div class="mt-3 flex flex-wrap gap-2" role="group" aria-label="நூல் வகையைத் தேர்ந்தெடுக்கவும்">
+        <button type="button" class="genre-filter is-active" data-shelf-genre="" aria-pressed="true">அனைத்தும் <span>{sortedBooks.length}</span></button>
+        {genres.map((genreName) => (
+          <button type="button" class="genre-filter" data-shelf-genre={genreName} aria-pressed="false">{genreName} <span>{genreCounts.get(genreName)}</span></button>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-5 flex items-center justify-between gap-4 font-tamil-sans text-sm text-[var(--text-muted)]">
+      <p id="shelf-count">{sortedBooks.length} நூல்கள்</p>
+      <button id="shelf-clear" type="button" class="hidden font-semibold text-[var(--accent-primary)] hover:underline">வடிகட்டலை நீக்குக</button>
+    </div>
+
+    <div id="bookshelf-grid" class="bookshelf-grid mt-7 grid grid-cols-2 gap-x-4 gap-y-9 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-5 xl:grid-cols-6">
+      {sortedBooks.map((book) => {
+        const palette = coverPalettes[hash(book.genre_ta) % coverPalettes.length];
+        const lines = titleLines(book.title_ta);
+        const titleSize = fittedTitleSize(lines);
+        const titleLeading = Math.max(22, Math.round(titleSize * 1.5));
+        const titleStart = 140 - ((lines.length - 1) * titleLeading / 2) + (titleSize * 0.35);
+        const authorSize = fittedAuthorSize(book.author_ta);
+        const patternId = `cover-pattern-${book.catalog_id.toLowerCase()}`;
+        return (
+          <article class="shelf-book min-w-0" data-title={`${book.title_ta} ${book.title_en}`.normalize('NFC').toLowerCase()} data-author={`${book.author_ta} ${book.author_en}`.normalize('NFC').toLowerCase()} data-genre={book.genre_ta}>
+            <a href={getUrl(`book/${book.slug}`)} class="book-cover-link group block rounded-r-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--accent-primary)]" aria-label={`${book.title_ta} — ${book.author_ta}`}>
+              <svg class="book-cover block h-auto w-full overflow-hidden rounded-r-xl" viewBox="0 0 240 360" role="img" aria-labelledby={`${patternId}-title ${patternId}-desc`}>
+                <title id={`${patternId}-title`}>{book.title_ta}</title>
+                <desc id={`${patternId}-desc`}>{book.author_ta} எழுதிய {book.genre_ta} நூல்</desc>
+                <defs>
+                  <linearGradient id={`${patternId}-shade`} x1="0" x2="1">
+                    <stop offset="0" stop-color={palette.deep} />
+                    <stop offset="0.09" stop-color={palette.base} />
+                    <stop offset="1" stop-color={palette.base} />
+                  </linearGradient>
+                </defs>
+                <rect width="240" height="360" rx="10" fill={`url(#${patternId}-shade)`} />
+                <rect x="16" y="16" width="208" height="328" rx="5" fill="none" stroke={palette.accent} stroke-opacity="0.65" />
+                <path d="M34 66h172M34 294h172" stroke={palette.accent} stroke-width="2" />
+                <path d="M42 76h156M42 284h156" stroke={palette.accent} stroke-opacity="0.45" />
+                <text x="120" y="43" text-anchor="middle" fill={palette.accent} font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="1">{book.catalog_id}</text>
+                <g fill={palette.ink} font-family="'Noto Serif Tamil', serif" font-size={titleSize} font-weight="700" text-anchor="middle">
+                  {lines.map((line, index) => <text x="120" y={titleStart + (index * titleLeading)} textLength={fittedTextLength(line, titleSize)} lengthAdjust="spacingAndGlyphs">{line}</text>)}
+                </g>
+                <rect x="84" y="212" width="72" height="72" rx="14" fill="#ECECEA" stroke="#D2D2CE" stroke-width="1.5" />
+                <image href={logoUrl} x="88" y="216" width="64" height="64" opacity="0.98" />
+                <text x="120" y="319" text-anchor="middle" fill={palette.ink} font-family="'Noto Sans Tamil', sans-serif" font-size={authorSize} font-weight="600" textLength={fittedTextLength(book.author_ta, authorSize, 0.95)} lengthAdjust="spacingAndGlyphs">{book.author_ta}</text>
+              </svg>
+            </a>
+            <div class="mt-3 min-w-0 font-tamil-sans">
+              <h2 class="truncate font-semibold text-[var(--text-main)]"><a href={getUrl(`book/${book.slug}`)} class="hover:text-[var(--accent-primary)]">{book.title_ta}</a></h2>
+              <p class="mt-1 truncate text-sm text-[var(--text-muted)]">{book.author_ta}</p>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <p id="shelf-empty" class="mt-12 hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-8 text-center font-tamil-sans text-[var(--text-muted)]">பொருந்தும் நூல்கள் கிடைக்கவில்லை.</p>
+  </div>
+</Layout>
+
+<script>
+  const search = document.querySelector<HTMLInputElement>('#shelf-search');
+  const genre = document.querySelector<HTMLSelectElement>('#shelf-genre');
+  const count = document.querySelector<HTMLElement>('#shelf-count');
+  const clear = document.querySelector<HTMLButtonElement>('#shelf-clear');
+  const empty = document.querySelector<HTMLElement>('#shelf-empty');
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.shelf-book'));
+  const genreFilters = Array.from(document.querySelectorAll<HTMLButtonElement>('.genre-filter'));
+
+  function filterShelf() {
+    const query = (search?.value ?? '').normalize('NFC').trim().toLowerCase();
+    const selectedGenre = genre?.value ?? '';
+    let visible = 0;
+    items.forEach((item) => {
+      const matchesText = !query || item.dataset.title?.includes(query) || item.dataset.author?.includes(query);
+      const matchesGenre = !selectedGenre || item.dataset.genre === selectedGenre;
+      const show = Boolean(matchesText && matchesGenre);
+      item.hidden = !show;
+      if (show) visible++;
+    });
+    if (count) count.textContent = `${visible} நூல்கள்`;
+    clear?.classList.toggle('hidden', !query && !selectedGenre);
+    empty?.classList.toggle('hidden', visible !== 0);
+    genreFilters.forEach((button) => {
+      const active = (button.dataset.shelfGenre ?? '') === selectedGenre;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  search?.addEventListener('input', filterShelf);
+  genre?.addEventListener('change', filterShelf);
+  genreFilters.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (genre) genre.value = button.dataset.shelfGenre ?? '';
+      filterShelf();
+    });
+  });
+  clear?.addEventListener('click', () => {
+    if (search) search.value = '';
+    if (genre) genre.value = '';
+    filterShelf();
+    search?.focus();
+  });
+</script>
+
+<style>
+  .book-cover {
+    aspect-ratio: 2 / 3;
+    filter: drop-shadow(0.45rem 0.65rem 0.45rem rgb(20 15 10 / 0.18));
+    transform-origin: left center;
+    transition: transform 220ms ease, filter 220ms ease;
+  }
+
+  .genre-filter {
+    display: inline-flex;
+    min-height: 2.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+  }
+
+  .genre-filter span {
+    min-width: 1.5rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 999px;
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 0.75rem;
+  }
+
+  .genre-filter:hover {
+    border-color: var(--accent-primary);
+    color: var(--text-main);
+  }
+
+  .genre-filter.is-active {
+    border-color: var(--accent-primary);
+    background: var(--accent-primary);
+    color: var(--accent-contrast);
+  }
+
+  .genre-filter.is-active span {
+    background: color-mix(in srgb, var(--accent-contrast) 18%, transparent);
+    color: var(--accent-contrast);
+  }
+
+  .book-cover-link:hover .book-cover {
+    filter: drop-shadow(0.75rem 0.9rem 0.65rem rgb(20 15 10 / 0.25));
+    transform: perspective(55rem) rotateY(-7deg) translateY(-0.25rem);
+  }
+
+  .shelf-book {
+    position: relative;
+  }
+
+  .shelf-book::after {
+    position: absolute;
+    z-index: -1;
+    right: -0.35rem;
+    bottom: 3.7rem;
+    left: 0.45rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    background: rgb(20 15 10 / 0.14);
+    content: '';
+    filter: blur(0.35rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .book-cover,
+    .genre-filter { transition: none; }
+    .book-cover-link:hover .book-cover { transform: none; }
+  }
+</style>

@@ -1,8 +1,8 @@
 ---
 import { getUrl } from '../utils/url.js';
 
-const homeUrl = getUrl('/');
-const thirukkuralUrl = getUrl('/book/thirukkural');
+const libraryUrl = getUrl('/library');
+const bookshelfUrl = getUrl('/bookshelf');
 const palettesUrl = getUrl('/palettes');
 const logoUrl = getUrl('arivupezhai-logo.png');
 ---
@@ -31,8 +31,13 @@ const logoUrl = getUrl('arivupezhai-logo.png');
         </h3>
         <ul class="space-y-2 text-sm text-[var(--text-muted)]">
           <li>
-            <a href={homeUrl} class="hover:text-[var(--accent-primary)] transition-colors">
+            <a href={libraryUrl} class="hover:text-[var(--accent-primary)] transition-colors">
               நூலகம் (Library)
+            </a>
+          </li>
+          <li>
+            <a href={bookshelfUrl} class="hover:text-[var(--accent-primary)] transition-colors">
+              நூல் அலமாரி (Bookshelf)
             </a>
           </li>
           <li>

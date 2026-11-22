@@ -1,123 +1,584 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import BookCard from '../components/BookCard.astro';
-import { catalog as libraryData } from '../utils/books';
+import { books } from '../utils/books';
 import { getUrl } from '../utils/url.js';
 
-const logoUrl = getUrl('arivupezhai-logo.png');
-const availableBooks = libraryData.filter((book) => book.is_available);
+const featuredBooks = Array.from(
+  [...books]
+    .sort((a, b) => a.catalog_id.localeCompare(b.catalog_id, 'en', { numeric: true }))
+    .reduce((byGenre, book) => {
+      if (!byGenre.has(book.genre_ta)) byGenre.set(book.genre_ta, book);
+      return byGenre;
+    }, new Map<string, (typeof books)[number]>())
+    .values(),
+);
+
+const genreCounts = Object.entries(
+  books.reduce<Record<string, number>>((counts, book) => {
+    counts[book.genre_ta] = (counts[book.genre_ta] ?? 0) + 1;
+    return counts;
+  }, {}),
+).sort((a, b) => b[1] - a[1]);
+
+const authorCounts = Object.entries(
+  books.reduce<Record<string, number>>((counts, book) => {
+    counts[book.author_ta] = (counts[book.author_ta] ?? 0) + 1;
+    return counts;
+  }, {}),
+).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+const catalogUrl = getUrl('/catalog');
 ---
 
 <Layout
   title="அறிவுப்பேழை • தமிழ் இணைய நூலகம்"
-  description="தமிழ் இலக்கியங்களை வசதியாக வாசிப்பதற்காக வடிவமைக்கப்பட்ட நவீன இணைய நூலகம். திருக்குறள் உள்ளிட்ட சங்க இலக்கியக் கருவூலங்கள்."
+  description="தமிழ் இலக்கியச் செல்வங்களைத் தேடி, தேர்ந்து, தடையின்றி வாசிக்க உதவும் நவீன தமிழ் இணைய நூலகம்."
 >
-  <!-- Hero Section -->
-  <section class="relative pt-8 pb-12 sm:pt-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-
-    <!-- Main Title -->
-    <div class="text-center max-w-3xl mx-auto space-y-4">
-      <h1 class="font-tamil-serif font-bold text-4xl sm:text-5xl md:text-6xl text-[var(--text-main)] tracking-tight leading-tight">
-        அறிவுப்பேழை
-      </h1>
-      <p class="font-tamil-sans text-base sm:text-lg text-[var(--text-muted)] leading-relaxed max-w-2xl mx-auto">
-        பண்டைய தமிழ்ப் படைப்புகளை நவீன திரைகளில் வசதியாக வாசிப்பதற்கென வடிவமைக்கப்பட்ட மின்னூலகம்.
-      </p>
-    </div>
-
-  </section>
-
-  <!-- Books Catalog Grid Section -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-    
-    <!-- Filter Tabs -->
-    <div class="flex items-center justify-between border-b border-[var(--border-subtle)] pb-4 mb-8">
-      <div>
-        <h2 class="font-tamil-serif font-bold text-2xl text-[var(--text-main)]">
-          நூல் வகை
-        </h2>
-      </div>
-      
-      <!-- Filter buttons (client-side toggle) -->
-      <div class="hidden md:flex flex-wrap items-center gap-1.5 font-tamil-sans text-xs">
-        <button type="button" class="genre-btn active px-3 py-1.5 rounded-lg bg-[var(--accent-primary)] text-[var(--accent-contrast)] font-medium shadow-sm" data-genre="all">
-          அனைத்தும் ({availableBooks.length})
-        </button>
-        {[...new Set(availableBooks.map((book) => book.genre_ta).filter(Boolean))].map((genre) => (
-          <button type="button" class="genre-btn px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-hover)] text-[var(--text-muted)] border border-[var(--border-subtle)]" data-genre={genre}>{genre}</button>
-        ))}
-      </div>
-    </div>
-
-    <!-- Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="books-grid">
-      {availableBooks.map((book) => (
-        <div class="book-item min-w-0 h-full flex flex-col" data-genre={book.genre_ta}>
-          <BookCard book={book} />
+  <div class="preview-home">
+    <section class="hero mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-6 sm:pb-14 sm:pt-12 lg:px-8">
+      <div class="hero-panel relative grid items-center gap-8 overflow-hidden rounded-[2rem] border border-[var(--border-subtle)] px-6 py-8 sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-10 lg:px-10">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="relative max-w-xl">
+          <p class="mb-3 font-tamil-sans text-sm font-semibold tracking-wide text-[var(--accent-primary)]">
+            தமிழ் இணைய நூலகம் · {books.length} நூல்கள்
+          </p>
+          <h1 class="font-tamil-serif text-3xl font-bold leading-snug text-[var(--text-main)] sm:text-4xl sm:leading-snug">
+            காலம் கடந்த தமிழ் நூல்கள்,<br class="hidden sm:block" /> இன்றைய வாசிப்புக்கு.
+          </h1>
+          <p class="mt-4 max-w-2xl font-tamil-sans text-base leading-8 text-[var(--text-muted)] sm:text-lg">
+            அறம், கவிதை, காப்பியம், புதினம் எனத் தமிழ் இலக்கியச் செல்வங்களைத் தேடி, தேர்ந்து, தடையின்றி வாசியுங்கள்.
+          </p>
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col">
+            <button
+              id="preview-search-btn"
+              type="button"
+              class="inline-flex min-h-12 items-center justify-center gap-3 rounded-xl bg-[var(--accent-primary)] px-5 py-3 font-tamil-sans font-semibold text-[var(--accent-contrast)] shadow-sm transition hover:bg-[var(--accent-hover)]"
+            >
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35m1.35-6.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+              </svg>
+              நூல் அல்லது ஆசிரியரைத் தேடுக
+            </button>
+            <a href={catalogUrl} class="inline-flex min-h-12 items-center justify-center rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] px-5 py-3 font-tamil-sans font-semibold text-[var(--text-main)] transition hover:bg-[var(--bg-surface-hover)]">
+              முழு நூல் பட்டியல்
+            </a>
+          </div>
         </div>
-      ))}
-    </div>
 
-  </section>
+        <aside id="featured-widget" class="featured-widget relative" role="region" aria-roledescription="carousel" aria-labelledby="featured-heading" aria-live="polite">
+        <div class="featured-widget__header">
+          <div>
+            <p class="featured-widget__eyebrow"><span class="featured-widget__pulse" aria-hidden="true"></span> ஒவ்வொரு வகையிலிருந்தும் ஒரு நூல்</p>
+            <h2 id="featured-heading" class="font-tamil-serif text-2xl font-bold text-[var(--text-main)] sm:text-3xl">Featured Books</h2>
+          </div>
+          <span id="featured-position" class="featured-widget__count">1 / {featuredBooks.length}</span>
+        </div>
+
+        <div class="featured-widget__stage">
+          {featuredBooks.map((book, index) => (
+            <article class:list={["featured-slide", { "is-active": index === 0 }]} data-slide-index={index} aria-hidden={index === 0 ? 'false' : 'true'}>
+              <a href={getUrl(`book/${book.slug}`)} class="featured-slide__book">
+                <div class="featured-slide__identity">
+                  <span class="featured-slide__catalog">{book.catalog_id}</span>
+                  <strong class="featured-slide__title">{book.title_ta}</strong>
+                  {book.title_en && <small class="featured-slide__english" lang="en">{book.title_en}</small>}
+                </div>
+                <span class="featured-slide__divider" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3.5 5.5c2.8-.7 5.7.1 8.5 2.2v11c-2.8-2.1-5.7-2.9-8.5-2.2v-11Z" />
+                    <path d="M20.5 5.5c-2.8-.7-5.7.1-8.5 2.2v11c2.8-2.1 5.7-2.9 8.5-2.2v-11Z" />
+                  </svg>
+                </span>
+                <div class="featured-slide__details">
+                  <span class="featured-slide__genre">{book.genre_ta}</span>
+                  <strong class="featured-slide__author">{book.author_ta}</strong>
+                  <small class="featured-slide__sections">{book.sections.length} பகுதிகள்</small>
+                </div>
+              </a>
+              <div class="featured-slide__quote">
+                <span>நூலிலிருந்து</span>
+                <p>“{book.featured_quote || book.description_ta}”</p>
+              </div>
+              <div class="featured-slide__actions">
+                <a href={getUrl(`book/${book.slug}/read/${book.sections[0].id}/`)} class="featured-slide__read">வாசிக்கத் தொடங்குக</a>
+                <a href={getUrl(`book/${book.slug}`)} class="featured-slide__info">நூல் விபரம்</a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="featured-widget__footer">
+          <div class="featured-widget__progress" aria-hidden="true"><span id="featured-progress"></span></div>
+          <div class="featured-widget__dots" role="tablist" aria-label="Featured Books">
+            {featuredBooks.map((book, index) => (
+              <button type="button" class:list={["featured-widget__dot", { "is-active": index === 0 }]} data-featured-dot={index} role="tab" aria-selected={index === 0 ? 'true' : 'false'} aria-label={`${book.title_ta} — ${book.genre_ta}`}></button>
+            ))}
+          </div>
+        </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8" aria-labelledby="genres-heading">
+      <div class="rounded-[2rem] bg-[var(--bg-surface)] p-6 sm:p-8 lg:p-10">
+        <div class="max-w-2xl">
+          <p class="font-tamil-sans text-sm font-semibold text-[var(--accent-primary)]">விருப்பத்திற்கேற்ப</p>
+          <h2 id="genres-heading" class="mt-1 font-tamil-serif text-2xl font-bold text-[var(--text-main)] sm:text-3xl">நூல் வகையைத் தேர்ந்தெடுக்கவும்</h2>
+        </div>
+        <div class="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {genreCounts.slice(0, 8).map(([genre, count]) => (
+            <a href={catalogUrl} class="genre-tile flex items-center justify-between gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] px-4 py-4 transition hover:border-[var(--accent-primary)] hover:bg-[var(--bg-surface-hover)]">
+              <span class="font-tamil-sans font-semibold text-[var(--text-main)]">{genre}</span>
+              <span class="min-w-8 rounded-full bg-[var(--accent-soft)] px-2 py-1 text-center font-tamil-sans text-sm font-semibold text-[var(--accent-primary)]">{count}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8" aria-labelledby="authors-heading">
+      <div class="rounded-[2rem] bg-[var(--bg-surface)] p-6 sm:p-8 lg:p-10">
+        <div>
+          <p class="font-tamil-sans text-sm font-semibold text-[var(--accent-primary)]">படைப்பாளர்கள்</p>
+          <h2 id="authors-heading" class="mt-1 font-tamil-serif text-2xl font-bold text-[var(--text-main)] sm:text-3xl">ஆசிரியர் வழியாகத் தேடுங்கள்</h2>
+          <p class="mt-3 font-tamil-sans leading-8 text-[var(--text-muted)] sm:whitespace-nowrap">ஒரு படைப்பிலிருந்து இன்னொன்றுக்குச் செல்ல, ஆசிரியர் வழியாக நூலகத்தை ஆராயுங்கள்.</p>
+        </div>
+        <div class="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {authorCounts.map(([author, count]) => (
+            <button type="button" class="author-search flex items-center justify-between gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-page)] px-4 py-4 text-left transition hover:border-[var(--accent-primary)] hover:bg-[var(--bg-surface-hover)]" data-author={author}>
+              <span class="font-tamil-sans font-semibold text-[var(--text-main)]">{author}</span>
+              <span class="min-w-8 rounded-full bg-[var(--accent-soft)] px-2 py-1 text-center font-tamil-sans text-sm font-semibold text-[var(--accent-primary)]">{count}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 sm:pb-20 lg:px-8">
+      <div class="catalog-callout flex flex-col items-start justify-between gap-6 rounded-2xl border border-[var(--border-subtle)] px-6 py-7 sm:flex-row sm:items-center sm:px-8">
+        <div>
+          <h2 class="font-tamil-serif text-xl font-bold text-[var(--text-main)] sm:text-2xl">நூலகத்தின் முழுத் தொகுப்பையும் பாருங்கள்</h2>
+          <p class="mt-2 font-tamil-sans text-[var(--text-muted)]">{books.length} நூல்கள் · {genreCounts.length} வகைகள் · ஒரே பட்டியலில்</p>
+        </div>
+        <a href={catalogUrl} class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-primary)] px-5 py-3 font-tamil-sans font-semibold text-[var(--accent-contrast)] transition hover:bg-[var(--accent-hover)]">நூல் பட்டியலைத் திறக்க</a>
+      </div>
+    </section>
+  </div>
 </Layout>
 
 <script>
-  // Genre tabs filtering
-  const genreBtns = document.querySelectorAll('.genre-btn');
-  const bookItems = document.querySelectorAll('.book-item');
+  document.querySelector('#preview-search-btn')?.addEventListener('click', () => {
+    window.dispatchEvent(new CustomEvent('open-search'));
+  });
 
-  // Dynamically reduce book name font size if it exceeds two lines within the book card
-  function fitBookTitles() {
-    const titles = document.querySelectorAll<HTMLElement>('#books-grid .book-title');
-    titles.forEach((title) => {
-      // Clear previous inline font size override so it can re-evaluate on resize
-      title.style.fontSize = '';
-
-      const computed = window.getComputedStyle(title);
-      let fontSize = parseFloat(computed.fontSize);
-      let lineHeight = parseFloat(computed.lineHeight) || (fontSize * 1.3);
-      // Height threshold for two lines (plus slight subpixel tolerance)
-      let maxTwoLinesHeight = lineHeight * 2 + 2;
-
-      while (title.scrollHeight > maxTwoLinesHeight && fontSize > 13) {
-        fontSize -= 0.5;
-        title.style.fontSize = `${fontSize}px`;
-        const updated = window.getComputedStyle(title);
-        lineHeight = parseFloat(updated.lineHeight) || (fontSize * 1.3);
-        maxTwoLinesHeight = lineHeight * 2 + 2;
+  document.querySelectorAll<HTMLButtonElement>('.author-search').forEach((button) => {
+    button.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('open-search'));
+      const input = document.querySelector<HTMLInputElement>('#search-input');
+      if (input && button.dataset.author) {
+        input.value = button.dataset.author;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
       }
     });
-  }
-
-  // Run immediately, when web fonts finish rendering, and on window resize
-  fitBookTitles();
-  if ('fonts' in document) {
-    document.fonts.ready.then(fitBookTitles);
-  }
-  let resizeTimer: number | undefined;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(fitBookTitles, 100);
   });
 
-  genreBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      genreBtns.forEach((b) => {
-        b.classList.remove('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
-        b.classList.add('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
-      });
-      btn.classList.add('active', 'bg-[var(--accent-primary)]', 'text-[var(--accent-contrast)]');
-      btn.classList.remove('bg-[var(--bg-surface)]', 'text-[var(--text-muted)]');
+  const widget = document.querySelector<HTMLElement>('#featured-widget');
+  const position = document.querySelector<HTMLElement>('#featured-position');
+  const progress = document.querySelector<HTMLElement>('#featured-progress');
+  const slides = widget ? Array.from(widget.querySelectorAll<HTMLElement>('[data-slide-index]')) : [];
+  const dots = widget ? Array.from(widget.querySelectorAll<HTMLButtonElement>('[data-featured-dot]')) : [];
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let activeIndex = 0;
+  let autoAdvance: number | undefined;
 
-      const target = btn.getAttribute('data-genre');
-      bookItems.forEach((item) => {
-        if (target === 'all' || item.getAttribute('data-genre') === target) {
-          (item as HTMLElement).style.display = 'block';
-        } else {
-          (item as HTMLElement).style.display = 'none';
-        }
-      });
-      requestAnimationFrame(fitBookTitles);
+  function resetProgress() {
+    if (!progress || reducedMotion.matches) return;
+    progress.classList.remove('is-running');
+    void progress.offsetWidth;
+    progress.classList.add('is-running');
+  }
+
+  function showSlide(index: number) {
+    if (!widget || slides.length === 0) return;
+    activeIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, slideIndex) => {
+      const active = slideIndex === activeIndex;
+      slide.classList.toggle('is-active', active);
+      slide.setAttribute('aria-hidden', String(!active));
+      slide.toggleAttribute('inert', !active);
+    });
+    dots.forEach((dot, dotIndex) => {
+      const active = dotIndex === activeIndex;
+      dot.classList.toggle('is-active', active);
+      dot.setAttribute('aria-selected', String(active));
+    });
+    if (position) position.textContent = `${activeIndex + 1} / ${slides.length}`;
+    resetProgress();
+  }
+
+  function stopAutoAdvance() {
+    if (autoAdvance !== undefined) window.clearInterval(autoAdvance);
+    autoAdvance = undefined;
+  }
+
+  function startAutoAdvance() {
+    stopAutoAdvance();
+    if (reducedMotion.matches || document.hidden || slides.length < 2) return;
+    widget?.classList.remove('is-paused');
+    resetProgress();
+    autoAdvance = window.setInterval(() => showSlide(activeIndex + 1), 3000);
+  }
+
+  function pauseAutoAdvance() {
+    stopAutoAdvance();
+    widget?.classList.add('is-paused');
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      showSlide(index);
+      startAutoAdvance();
     });
   });
+  widget?.addEventListener('mouseenter', pauseAutoAdvance);
+  widget?.addEventListener('mouseleave', startAutoAdvance);
+  widget?.addEventListener('focusin', pauseAutoAdvance);
+  widget?.addEventListener('focusout', (event) => {
+    if (!widget.contains((event as FocusEvent).relatedTarget as Node | null)) startAutoAdvance();
+  });
+  document.addEventListener('visibilitychange', () => document.hidden ? stopAutoAdvance() : startAutoAdvance());
+  reducedMotion.addEventListener('change', startAutoAdvance);
+  slides.forEach((slide, index) => slide.toggleAttribute('inert', index !== 0));
+  startAutoAdvance();
 </script>
+
+<style>
+  .hero-panel {
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--bg-surface) 88%, var(--accent-soft)), var(--bg-surface));
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 22rem;
+    height: 22rem;
+    right: -7rem;
+    top: -10rem;
+    border-radius: 9999px;
+    background: var(--accent-primary);
+    opacity: 0.09;
+    filter: blur(2px);
+  }
+
+  .featured-widget {
+    width: 100%;
+    min-width: 0;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 1.5rem;
+    background: color-mix(in srgb, var(--bg-surface) 94%, transparent);
+    box-shadow: var(--card-shadow);
+  }
+
+  .featured-widget__header,
+  .featured-widget__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .featured-widget__header {
+    margin-bottom: 0.875rem;
+  }
+
+  .featured-widget__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--accent-primary);
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .featured-widget__pulse {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 18%, transparent);
+    animation: featuredPulse 2.2s ease-in-out infinite;
+  }
+
+  .featured-widget__count {
+    flex: 0 0 auto;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 25%, var(--border-subtle));
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .featured-widget__stage {
+    display: grid;
+  }
+
+  .featured-slide {
+    grid-area: 1 / 1;
+    min-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(0.4rem) scale(0.99);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
+  }
+
+  .featured-slide.is-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .featured-slide__book {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid color-mix(in srgb, var(--accent-primary) 26%, var(--border-subtle));
+    border-radius: 1rem;
+    background: linear-gradient(135deg, var(--bg-page), var(--bg-surface));
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .featured-slide__book:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, var(--accent-primary) 13%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .featured-slide__identity,
+  .featured-slide__details {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .featured-slide__details {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .featured-slide__catalog,
+  .featured-slide__genre {
+    align-self: flex-start;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.35rem;
+    background: var(--bg-muted);
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    font-weight: 700;
+  }
+
+  .featured-slide__genre {
+    align-self: flex-end;
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+  }
+
+  .featured-slide__title {
+    color: var(--text-main);
+    font-family: 'Noto Serif Tamil', serif;
+    font-size: 1.25rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  .featured-slide__author {
+    color: var(--accent-primary);
+    font-size: 1rem;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .featured-slide__english,
+  .featured-slide__sections {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .featured-slide__divider {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--accent-primary);
+    color: var(--accent-contrast);
+    box-shadow: 0 0.25rem 0.65rem color-mix(in srgb, var(--accent-primary) 25%, transparent);
+  }
+
+  .featured-slide__divider svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .featured-slide__quote {
+    margin-top: 0.75rem;
+    padding: 0.75rem 0.9rem;
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 0 0.65rem 0.65rem 0;
+    background: var(--bg-page);
+  }
+
+  .featured-slide__quote span {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--accent-primary);
+    font-size: 0.6875rem;
+    font-weight: 700;
+  }
+
+  .featured-slide__quote p {
+    margin: 0;
+    color: var(--text-main);
+    font-family: 'Noto Serif Tamil', serif;
+    font-size: 0.875rem;
+    line-height: 1.9;
+  }
+
+  .featured-slide__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .featured-slide__read {
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.65rem;
+    background: var(--accent-primary);
+    color: var(--accent-contrast);
+  }
+
+  .featured-slide__info {
+    color: var(--accent-primary);
+  }
+
+  .featured-widget__footer {
+    margin-top: 0.9rem;
+  }
+
+  .featured-widget__progress {
+    height: 3px;
+    flex: 1;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--border-subtle);
+  }
+
+  .featured-widget__progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .featured-widget__progress span.is-running {
+    animation: featuredProgress 3s linear forwards;
+  }
+
+  .featured-widget.is-paused .featured-widget__progress span {
+    animation-play-state: paused;
+  }
+
+  .featured-widget__dots {
+    display: flex;
+    max-width: 12rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.3rem;
+  }
+
+  .featured-widget__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--border-subtle);
+    transition: width 180ms ease, background-color 180ms ease;
+  }
+
+  .featured-widget__dot.is-active {
+    width: 1rem;
+    background: var(--accent-primary);
+  }
+
+  @keyframes featuredProgress {
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes featuredPulse {
+    50% { transform: scale(1.22); opacity: 0.65; }
+  }
+
+  @media (max-width: 639px) {
+    .featured-widget {
+      padding: 1rem;
+    }
+
+    .featured-slide__book {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .featured-slide__divider {
+      display: none;
+    }
+
+    .featured-slide__details {
+      align-items: flex-start;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+
+    .featured-slide__genre {
+      align-self: flex-start;
+    }
+  }
+
+  .catalog-callout {
+    background: linear-gradient(100deg, var(--accent-soft), var(--bg-surface));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-slide,
+    .featured-slide__book,
+    .featured-widget__dot,
+    .genre-tile,
+    .author-search {
+      transition: none;
+    }
+
+    .featured-widget__pulse,
+    .featured-widget__progress span {
+      animation: none;
+    }
+  }
+</style>

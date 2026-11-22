@@ -22,14 +22,17 @@ export const GET: APIRoute = () => {
     url: chapterUrl(book.slug, section.id),
   })));
   const passages = books.flatMap((book) => book.sections.flatMap((section) =>
-    section.passages.map((passage) => ({
-      type: 'verse',
-      title: passage.title ? `${book.title_ta} • ${passage.title}` : `${book.title_ta} • ${section.title}`,
-      author: '',
-      snippet: passage.text,
-      searchable: [passage.title, passage.text],
-      url: `${chapterUrl(book.slug, section.id)}${passage.id ? `#${passage.id}` : ''}`,
-    }))
+    section.passages.map((passage) => {
+      const firstLine = passage.copyText.split('\n')[0].trim();
+      return {
+        type: 'verse',
+        title: passage.title ? `${book.title_ta} • ${passage.title}` : `${book.title_ta} • ${section.title}`,
+        author: '',
+        snippet: passage.text,
+        searchable: Array.from(new Set([passage.title, passage.text, firstLine])).filter(Boolean),
+        url: `${chapterUrl(book.slug, section.id)}${passage.id ? `#${passage.id}` : ''}`,
+      };
+    })
   ));
   return new Response(JSON.stringify([...entries, ...chapters, ...passages]), {
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
