@@ -197,7 +197,8 @@ test('only valid books exist in dist/book and redirect books are not generated',
     'karkandu-naadagangal', 'sathimutha-pulavar', 'vengaiye-ezhuga', 'bharathidasan-pudhinangal',
     'viviliyam-pazhaiya-erpaadu', 'viviliyam-pudhiya-erpaadu', 'seerapuranam', 'periyapuranam',
     'kandhapuranam', 'kanchippuranam', 'prabandhathirattu', 'kandadevi-puranam', 'mayurappuranam',
-    'thiruvarutpa', 'abirami-anthadhi'
+    'thiruvarutpa', 'abirami-anthadhi', 'silappadikaram', 'manimekalai', 'civaka-cintamani',
+    'valayapathi', 'kundalakesi', 'devaram-thirunavukkarasar'
   ]);
   assert.deepEqual(new Set(entries), validSlugs);
 });
